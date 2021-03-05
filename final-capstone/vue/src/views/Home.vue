@@ -4,6 +4,7 @@
     <p>You must be authenticated to see this</p>
   </div>
 </template>
+This is Jacob's test
 
 <script>
 export default {
