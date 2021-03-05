@@ -2,24 +2,24 @@
 -- This script creates the database users and grants them the necessary permissions
 -- ********************************************************************************
 
-CREATE USER final_capstone_owner
+CREATE USER family_reading_tracker_owner
 WITH PASSWORD 'finalcapstone';
 
 GRANT ALL
 ON ALL TABLES IN SCHEMA public
-TO final_capstone_owner;
+TO family_reading_tracker_owner;
 
 GRANT ALL
 ON ALL SEQUENCES IN SCHEMA public
-TO final_capstone_owner;
+TO family_reading_tracker_owner;
 
-CREATE USER final_capstone_appuser
+CREATE USER family_reading_tracker_appuser
 WITH PASSWORD 'finalcapstone';
 
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON ALL TABLES IN SCHEMA public
-TO final_capstone_appuser;
+TO family_reading_tracker_appuser;
 
 GRANT USAGE, SELECT
 ON ALL SEQUENCES IN SCHEMA public
-TO final_capstone_appuser;
+TO family_reading_tracker_appuser;
