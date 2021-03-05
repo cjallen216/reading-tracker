@@ -1,12 +1,9 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-    <p>You must be authenticated to see this</p>
-    <p>This is Arthur's test</p>    
+    <p>You must be authenticated to see this</p>   
   </div>
 </template>
-This is Jacob's test
-This is Allie's test
 
 <script>
 export default {
