@@ -12,7 +12,9 @@
         role="alert"
         v-if="this.$route.query.registration"
       >Thank you for registering, please sign in.</div>
-      <label for="username" class="sr-only">Username</label>
+      <div class="form-body">
+      <div class="input-line">
+      <!-- <label for="username" class="sr-only">Username</label> -->
       <input
         type="text"
         id="username"
@@ -22,7 +24,9 @@
         required
         autofocus
       />
-      <label for="password" class="sr-only">Password</label>
+      </div>
+      <div class="input-line">
+      <!-- <label for="password" class="sr-only">Password</label> -->
       <input
         type="password"
         id="password"
@@ -31,8 +35,14 @@
         v-model="user.password"
         required
       />
+      </div>
+      <div class="input-center">
       <router-link :to="{ name: 'register' }">Need an account?</router-link>
+      </div>
+      <div class="input-center">
       <button type="submit">Sign in</button>
+      </div>
+      </div>
     </form>
   </div>
 </template>
@@ -74,3 +84,53 @@ export default {
   }
 };
 </script>
+
+<style>
+body {
+    font-family: "Roboto";
+    font-size: 14px;
+    background: linear-gradient(to right, #49D49D 10%, #A2C7E5 90%);
+    height: 100%;
+}
+
+#login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-signin {
+  background-color: rgb(247, 244, 231);
+  border-radius: 10px;
+  width: 25%;
+  box-shadow: 10px 10px #888888;
+}
+
+.input-center {
+  text-align: center;
+}
+
+.form-signin div{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1em;
+  padding: 10px;
+}
+
+.form-body input {
+  border-style: none;
+  border-color: gray;
+  background-color: rgb(247, 244, 231);
+}
+
+h1, p {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+.input-line {
+  border-style: none;
+  border-bottom-style: solid;
+  border-color: rgb(194, 194, 194);
+}
+</style>
