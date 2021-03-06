@@ -9,6 +9,6 @@ CREATE TABLE prizes(
     max_awarded int NOT NULL, --Do we want not null here? What if it's a small prize always available?
     awarded int NOT NULL, --Date format should be yyyy-mm-dd by default, so we will need to account for that in how it interacts with the date formatter on the front end.
 
-    CONSTRAINT fk_family_id FOREIGN KEY (family_id) REFERENCES families (family_id),
+    CONSTRAINT fk_prizes_families FOREIGN KEY (family_id) REFERENCES families (family_id),
     
 );
