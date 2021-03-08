@@ -7,6 +7,7 @@
         <li><router-link v-bind:to="{ name: 'register' }">Register</router-link></li>
         <li><router-link v-bind:to="{ name: 'login' }">Login</router-link></li>
         <li><router-link v-bind:to="{ name: 'new-book-form'}">Add Book</router-link></li>
+        <li><router-link v-bind:to="{ name: 'my-books'}">My Books</router-link></li>
         <li v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'logout' }" >Logout</router-link></li>
       </ul>
       <!-- <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
@@ -43,7 +44,6 @@ body {
 
 #nav {
   padding: 6px;
-  /* background-color: whitesmoke; */
 }
 
 #nav a {
@@ -55,7 +55,6 @@ body {
   text-decoration: none;  
   color: whitesmoke;
   text-transform: uppercase;
-  /* background-color: whitesmoke; */
 }
 
 #nav ul {

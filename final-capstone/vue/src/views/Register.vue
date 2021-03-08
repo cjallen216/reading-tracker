@@ -36,7 +36,6 @@
             class="form-control"
             placeholder="    Last Name"
             v-model="user.lastName"
-            required
           />
         </div>
         <div class="input-line" style="color:red;">&nbsp;&nbsp;*
@@ -46,6 +45,7 @@
             class="form-control"
             placeholder="Email Address"
             v-model="user.emailAddress"
+            required
           />
         </div>
         <div class="input-line" style="color:red;">&nbsp;&nbsp;*

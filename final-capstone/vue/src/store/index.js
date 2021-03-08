@@ -22,10 +22,10 @@ export default new Vuex.Store({
     user: currentUser || {},
     books: [
       {
-        title: "",
-        author: "",
+        title: "Go Dog Go",
+        author: "P. D. Eastman",
         read: false,
-        isbn: ""
+        isbn: "0679844902"
       },
     ],
   },
@@ -49,6 +49,9 @@ export default new Vuex.Store({
 
     SAVE_BOOK(state,book) {
       state.books.push(book);
+    },
+    SET_READ_STATUS(state, payload) {
+      payload.book.read = payload.value;
     },
 
     
