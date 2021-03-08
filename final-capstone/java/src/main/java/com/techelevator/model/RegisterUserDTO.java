@@ -16,7 +16,7 @@ public class RegisterUserDTO {
     private String firstName;
 
 	private String LastName;
-    @NotEmpty
+  
     private String email;
 
     public String getUsername() {
