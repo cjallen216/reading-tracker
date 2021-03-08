@@ -8,7 +8,7 @@
         {{ registrationErrorMsg }}
       </div>
       <div class="form-body">
-        <div class="input-line">
+        <div class="input-line" style="color:red;">&nbsp;&nbsp;*
           <input
             type="text"
             id="username"
@@ -19,7 +19,7 @@
             autofocus
           />
         </div>
-        <div class="input-line">
+        <div class="input-line" style="color:red;">&nbsp;&nbsp;*
           <input
             type="text"
             id="first-name"
@@ -34,12 +34,12 @@
             type="text"
             id="last-name"
             class="form-control"
-            placeholder="Last Name"
+            placeholder="    Last Name"
             v-model="user.lastName"
             required
           />
         </div>
-        <div class="input-line">
+        <div class="input-line" style="color:red;">&nbsp;&nbsp;*
           <input
             type="email"
             id="email-address"
@@ -48,7 +48,7 @@
             v-model="user.emailAddress"
           />
         </div>
-        <div class="input-line">
+        <div class="input-line" style="color:red;">&nbsp;&nbsp;*
           <input
             type="password"
             id="password"
@@ -58,7 +58,7 @@
             required
           />
         </div>
-        <div class="input-line">
+        <div class="input-line" style="color:red;">&nbsp;&nbsp;*
           <input
             type="password"
             id="confirmPassword"
@@ -69,6 +69,7 @@
           />
         </div>
         <div class="input-center">
+          <p class="requirements">Fields marked with * are required</p>
           <router-link :to="{ name: 'login' }">Have an account?</router-link>
         </div>
         <div class="input-center">
@@ -184,5 +185,9 @@ p {
   border-style: none;
   border-bottom-style: solid;
   border-color: rgb(194, 194, 194);
+}
+
+.requirements {
+  font-size: 12px;
 }
 </style>
