@@ -14,6 +14,6 @@ psql -U postgres -d $DATABASE -f "$BASEDIR/create_table_prizes.sql" &&
 psql -U postgres -d $DATABASE -f "$BASEDIR/create_table_prizes_users.sql" &&
 psql -U postgres -d $DATABASE -f "$BASEDIR/04_insert_seed_data.sql" &&
 psql -U postgres -d $DATABASE -f "$BASEDIR/05_create_database_users.sql"
-#psql -U postgres -d $DATABASE -f "$BASEDIR/create_foreign_key_constraints.sql" &&
+psql -U postgres -d $DATABASE -f "$BASEDIR/create_foreign_key_constraints.sql" &&
 
 cmd /k
