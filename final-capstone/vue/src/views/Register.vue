@@ -4,7 +4,7 @@
       <div>
         <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
       </div>
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
+      <div class="alert alert-danger" role="alert" id="regerror" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
       <div class="form-body">
@@ -29,12 +29,12 @@
             required
           />
         </div>
-        <div class="input-line">
+        <div class="input-line">&nbsp;&nbsp;&nbsp;&nbsp;
           <input
             type="text"
             id="last-name"
             class="form-control"
-            placeholder="    Last Name"
+            placeholder="Last Name"
             v-model="user.lastName"
           />
         </div>
@@ -126,7 +126,7 @@ export default {
             const response = error.response;
             this.registrationErrors = true;
             if (response.status === 400) {
-              this.registrationErrorMsg = "Bad Request: Validation Errors";
+              this.registrationErrorMsg = "This user already exists, please try again.";
             }
           });
       }
@@ -189,5 +189,13 @@ p {
 
 .requirements {
   font-size: 12px;
+  color: red;
+}
+
+#regerror {
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  
 }
 </style>
