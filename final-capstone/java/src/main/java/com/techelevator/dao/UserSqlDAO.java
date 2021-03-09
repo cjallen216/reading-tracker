@@ -38,7 +38,7 @@ public class UserSqlDAO implements UserDAO {
         		+ "        , p.last_name "
         		+ "        , email  "
         		+ "FROM users AS U "
-        		+ "LEFT JOIN people AS P ON u.people_id = p.people_id "
+        		+ "LEFT JOIN people AS P ON U.people_id = P.people_id "
 				+ "WHERE user_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
 		if(results.next()) {
@@ -59,7 +59,7 @@ public class UserSqlDAO implements UserDAO {
         		+ "        , p.last_name "
         		+ "        , email  "
         		+ "FROM users AS U "
-        		+ "LEFT JOIN people AS P ON u.people_id = p.people_id;";
+        		+ "LEFT JOIN people AS P ON U.people_id = P.people_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while(results.next()) {
             User user = mapRowToUser(results);
@@ -99,36 +99,41 @@ public class UserSqlDAO implements UserDAO {
 
     @Override
     public boolean create(String firstName, String lastName, String email, String username, String password, String role) {
-        boolean userCreated = false;
+
 	     
         // create people record
-        String nextValPeopleID = "select nextVal('people_id');";
-        SqlRowSet nextPeopleId = jdbcTemplate.queryForRowSet(nextValPeopleID);
-        nextPeopleId.next();
-        int peopleId = nextPeopleId.getInt("people_id");
-        
-        String insertPeopleString = "insert into people (people_id, first_name, last_name) values(?,?,?)";
-        jdbcTemplate.update(insertPeopleString, nextPeopleId, firstName, lastName);
+    	String insertPeople = "insert into people (first_name, last_name) values(?,?)";
+    	GeneratedKeyHolder peopleKeyHolder = new GeneratedKeyHolder();
+        String people_id_column = "people_id";
+        boolean peopleCreated = false;
+        peopleCreated = jdbcTemplate.update(con -> {
+        	PreparedStatement prepared = con.prepareStatement(insertPeople, new String[]{people_id_column});
+        		prepared.setString(1, firstName);
+        		prepared.setString(2, lastName);
+        		return prepared;
+        }
+        , peopleKeyHolder) == 1;
+        int newPeopleId = (int) peopleKeyHolder.getKeys().get(people_id_column);
 
         // create user
-        String insertUser = "insert into users (username,password_hash,role,people_id,email) values(?,?,?,?)";
+        String insertUser = "insert into users (username, password_hash, role, people_id, email) values(?,?,?,?,?)";
         String password_hash = new BCryptPasswordEncoder().encode(password);
         String ssRole = "ROLE_" + role.toUpperCase();        
 
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-        String id_column = "user_id";
+        GeneratedKeyHolder userKeyHolder = new GeneratedKeyHolder();
+        String user_id_column = "user_id";
+        boolean userCreated = false;
         userCreated = jdbcTemplate.update(con -> {
-                    PreparedStatement ps = con.prepareStatement(insertUser, new String[]{id_column});
+                    PreparedStatement ps = con.prepareStatement(insertUser, new String[]{user_id_column});
                     ps.setString(1, username);
                     ps.setString(2, password_hash);
                     ps.setString(3, ssRole);
-                    ps.setInt(4, peopleId);
+                    ps.setInt(4, newPeopleId);
                     ps.setString(5,  email);
                     return ps;
                 }
-                , keyHolder) == 1;
-        int newUserId = (int) keyHolder.getKeys().get(id_column);
-
+                , userKeyHolder) == 1;
+        int newUserId = (int) userKeyHolder.getKeys().get(user_id_column);
         return userCreated;
     }
 
