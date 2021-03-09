@@ -21,6 +21,7 @@ public Book(int bookId, String isbnNumber, String title, int authorId, String im
 	this.firstName = firstName;
 	this.lastName = lastName;
 }
+public Book () {}
 public int getBookId() {
 	return bookId;
 }
