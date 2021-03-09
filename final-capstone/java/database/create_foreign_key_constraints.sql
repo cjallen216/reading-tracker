@@ -15,19 +15,13 @@ ALTER TABLE families ADD CONSTRAINT fk_families_users FOREIGN KEY (user_id) REFE
 ALTER TABLE books_users ADD CONSTRAINT fk_books_users_books  FOREIGN KEY (book_id)  REFERENCES books (book_id);
 
 --books-- 
-<<<<<<< HEAD
 ALTER TABLE books ADD CONSTRAINT fk_books_people  FOREIGN KEY (author_people_id)  REFERENCES people (people_id);
 
---time 
-=======
-ALTER TABLE books  ADD CONSTRAINT fk_books_people  FOREIGN KEY (author_people_id)  REFERENCES people (people_id);
-
---reading_time 
->>>>>>> jacob
+--time--
 ALTER TABLE reading_time ADD CONSTRAINT fk_time_users  FOREIGN KEY (user_id)  REFERENCES users (user_id);
 ALTER TABLE reading_time ADD CONSTRAINT fk_time_books  FOREIGN KEY (book_id)  REFERENCES books (book_id);
 
 --users--
 ALTER TABLE users ADD CONSTRAINT fk_users_people FOREIGN KEY (people_id)  REFERENCES people (people_id);
  
-ROLLBACK TRANSACTION;
+COMMIT TRANSACTION;
