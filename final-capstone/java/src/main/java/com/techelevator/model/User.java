@@ -14,17 +14,12 @@ public class User {
    private String password;
    @JsonIgnore
    private boolean activated;
-   @JsonIgnore
+   private Set<Authority> authorities = new HashSet<>();
+   
    private String firstName;
- 
-
-   @JsonIgnore
    private String lastName;
-   @JsonIgnore
    private String email;
    
-   
-   private Set<Authority> authorities = new HashSet<>();
 
    public User() { }
 
@@ -61,6 +56,30 @@ public class User {
    public void setPassword(String password) {
       this.password = password;
    }
+   
+   public String getFirstName() {
+	      return firstName;
+   }
+   
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
+
+   public String getLastName() {
+      return lastName;
+   }
+
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
+   }  
+
+   public String getEmail() {
+      return email;
+   }
+   
+   public void setEmail(String email) {
+      this.email = email;
+   }
 
    public boolean isActivated() {
       return activated;
@@ -77,29 +96,6 @@ public class User {
    public void setAuthorities(Set<Authority> authorities) {
       this.authorities = authorities;
    }
-   public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
    public void setAuthorities(String authorities) {
       String[] roles = authorities.split(",");

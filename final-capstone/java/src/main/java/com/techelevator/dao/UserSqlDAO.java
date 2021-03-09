@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.relational.core.sql.IdentifierProcessing;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -29,7 +30,16 @@ public class UserSqlDAO implements UserDAO {
 
 	@Override
 	public User getUserById(Long userId) {
-		String sql = "SELECT * FROM users WHERE user_id = ?";
+		String sql = "select user_id "
+        		+ "        , username "
+        		+ "        , password_hash "
+        		+ "        , role "
+        		+ "        , p.first_name "
+        		+ "        , p.last_name "
+        		+ "        , email  "
+        		+ "FROM users AS U "
+        		+ "LEFT JOIN people AS P ON u.people_id = p.people_id "
+				+ "WHERE user_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
 		if(results.next()) {
 			return mapRowToUser(results);
@@ -41,14 +51,20 @@ public class UserSqlDAO implements UserDAO {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        String sql = "select * from users";
-
+        String sql = "select user_id "
+        		+ "        , username "
+        		+ "        , password_hash "
+        		+ "        , role "
+        		+ "        , p.first_name "
+        		+ "        , p.last_name "
+        		+ "        , email  "
+        		+ "FROM users AS U "
+        		+ "LEFT JOIN people AS P ON u.people_id = p.people_id;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while(results.next()) {
             User user = mapRowToUser(results);
             users.add(user);
         }
-
         return users;
     }
 
@@ -60,7 +76,7 @@ public class UserSqlDAO implements UserDAO {
             }
         }
         throw new UsernameNotFoundException("User " + username + " was not found.");
-    }
+    }    
     
     @Override
     public User findByEmail(String email) throws UsernameNotFoundException {
@@ -81,26 +97,33 @@ public class UserSqlDAO implements UserDAO {
         throw new UsernameNotFoundException("User " + firstName + " was not found.");
     }
 
-
     @Override
     public boolean create(String firstName, String lastName, String email, String username, String password, String role) {
         boolean userCreated = false;
+	     
+        // create people record
+        String nextValPeopleID = "select nextVal('people_id');";
+        SqlRowSet nextPeopleId = jdbcTemplate.queryForRowSet(nextValPeopleID);
+        nextPeopleId.next();
+        int peopleId = nextPeopleId.getInt("people_id");
+        
+        String insertPeopleString = "insert into people (people_id, first_name, last_name) values(?,?,?)";
+        jdbcTemplate.update(insertPeopleString, nextPeopleId, firstName, lastName);
 
         // create user
-        String insertUser = "insert into users (firstname,lastname,email,username,password_hash,role) values(?,?,?,?,?,?)";
+        String insertUser = "insert into users (username,password_hash,role,people_id,email) values(?,?,?,?)";
         String password_hash = new BCryptPasswordEncoder().encode(password);
-        String ssRole = "ROLE_" + role.toUpperCase();
+        String ssRole = "ROLE_" + role.toUpperCase();        
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         String id_column = "user_id";
         userCreated = jdbcTemplate.update(con -> {
                     PreparedStatement ps = con.prepareStatement(insertUser, new String[]{id_column});
-                    ps.setString(1, firstName);
-                    ps.setString(2, lastName);
-                    ps.setString(3, email);
-                    ps.setString(4, username);
-                    ps.setString(5, password_hash);
-                    ps.setString(6, ssRole);
+                    ps.setString(1, username);
+                    ps.setString(2, password_hash);
+                    ps.setString(3, ssRole);
+                    ps.setInt(4, peopleId);
+                    ps.setString(5,  email);
                     return ps;
                 }
                 , keyHolder) == 1;
@@ -115,10 +138,10 @@ public class UserSqlDAO implements UserDAO {
         user.setUsername(rs.getString("username"));
         user.setPassword(rs.getString("password_hash"));
         user.setAuthorities(rs.getString("role"));
-        user.setActivated(true);
-        user.setFirstName(rs.getString("firstname"));
-        user.setLastName(rs.getString("lastname"));
+        user.setFirstName(rs.getString("first_name"));
+        user.setLastName(rs.getString("last_name"));
         user.setEmail(rs.getString("email"));
+        user.setActivated(true);
         return user;
     }
 }
