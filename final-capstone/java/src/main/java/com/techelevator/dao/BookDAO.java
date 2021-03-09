@@ -8,4 +8,7 @@ public interface BookDAO {
 	public void createBook(String firstName, String lastName, String isbnNumber, String title, String imgLink,
 			int authorId);
 public List<Book> listAll();
+
+
+public Book getBookByID(int book_id);
 }
