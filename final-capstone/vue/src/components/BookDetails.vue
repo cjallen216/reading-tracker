@@ -1,7 +1,7 @@
 <template>
   <div class="details" v-bind:class="{isbn : book.isbn}">
       <h2 class="book-title">{{book.title}}</h2>
-      <h3 class="book-author">{{book.author}}</h3>
+      <h3 class="book-author">{{book.lastName}}, {{book.firstName}}</h3>
       <img v-if="book.isbn" v-bind:src="'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'" />
       <p></p>
       <router-link v-bind:to="{name: 'my-books'}">Return to Reading List</router-link>
@@ -14,7 +14,8 @@ export default {
     data() {
         return {
             title: '',
-            author: '',
+            firstName: '',
+            lastName: '',
             isbn: ''
         }
     },

@@ -1,6 +1,6 @@
 <template>
   <div id="new-book">
-    <form class="new-book-form" v-on:submit.prevent="saveBook">
+    <form class="new-book-form">
       <div>
         <h1>Add A Book</h1>
       </div>
@@ -17,8 +17,16 @@
           <input
             class="author-input"
             type="text"
-            placeholder="Author"
-            v-model="book.author"
+            placeholder="Author First Name"
+            v-model="book.firstName"
+          />
+        </div>
+          <div class="input-line">
+          <input
+            class="author-input"
+            type="text"
+            placeholder="Author Last Name"
+            v-model="book.lastName"
           />
         </div>
         <div class="input-line">
@@ -30,7 +38,7 @@
           />
         </div>
         <div class="input-center">
-          <button>Add Book</button>
+          <button v-on:click.prevent="saveBook()">Add Book</button>
         </div>
       </div>
     </form>
@@ -38,13 +46,16 @@
 </template>
 
 <script>
+import docsService from '../services/DocsService'
+
 export default {
   name: "new-book-form",
   data() {
     return {
       book: {
         title: "",
-        author: "",
+        firstName: "",
+        lastName: "",
         read: false,
         isbn: "",
       },
@@ -61,16 +72,26 @@ export default {
     },
   },
   methods: {
+    // saveBook() {
+    //   this.$store.commit("SAVE_BOOK", this.book);
+    //   this.book = {
+    //     title: "",
+    //     author: "",
+    //     read: false,
+    //     isbn: "",
+    //   };
+    //   this.$router.push(this.bookURL);
+    // },
     saveBook() {
-      this.$store.commit("SAVE_BOOK", this.book);
-      this.book = {
-        title: "",
-        author: "",
-        read: false,
-        isbn: "",
-      };
-      this.$router.push(this.bookURL);
-    },
+      docsService
+        .create(this.book)
+        .then((response) => {
+          if (response.status === 200) {
+            this.$router.push('/myBooks');
+          }
+        })
+
+    }
   },
 };
 </script>

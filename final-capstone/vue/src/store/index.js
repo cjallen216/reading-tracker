@@ -23,7 +23,8 @@ export default new Vuex.Store({
     books: [
       {
         title: "Go Dog Go",
-        author: "P. D. Eastman",
+        firstName: "P. D.",
+        lastName: "Eastman",
         read: false,
         isbn: "0679844902"
       },
