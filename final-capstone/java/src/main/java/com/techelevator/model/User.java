@@ -15,12 +15,6 @@ public class User {
    @JsonIgnore
    private boolean activated;
    @JsonIgnore
-   private String firstName;
- 
-
-   @JsonIgnore
-   private String lastName;
-   @JsonIgnore
    private String email;
    
    
@@ -28,13 +22,11 @@ public class User {
 
    public User() { }
 
-   public User(Long id, String username, String password, String authorities, String firstName, String lastName, String email) {
+   public User(Long id, String username, String password, String authorities,String email) {
       this.id = id;
       this.username = username;
       this.password = password;
       this.activated = true;
-      this.firstName = firstName;
-      this.lastName = lastName;
       this.email = email;
    }
 
@@ -77,21 +69,7 @@ public class User {
    public void setAuthorities(Set<Authority> authorities) {
       this.authorities = authorities;
    }
-   public String getFirstName() {
-		return firstName;
-	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 
 	public String getEmail() {
 		return email;

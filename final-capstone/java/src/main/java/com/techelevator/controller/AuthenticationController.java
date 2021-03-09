@@ -13,8 +13,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.techelevator.dao.PeopleDAO;
 import com.techelevator.dao.UserDAO;
 import com.techelevator.model.LoginDTO;
+import com.techelevator.model.People;
 import com.techelevator.model.RegisterUserDTO;
 import com.techelevator.model.User;
 import com.techelevator.model.UserAlreadyExistsException;
@@ -28,6 +30,7 @@ public class AuthenticationController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private UserDAO userDAO;
+    private PeopleDAO peopleDAO;
 
     public AuthenticationController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, UserDAO userDAO) {
         this.tokenProvider = tokenProvider;
@@ -54,12 +57,14 @@ public class AuthenticationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public void register(@Valid @RequestBody RegisterUserDTO newUser) {
+    public void register(@Valid @RequestBody RegisterUserDTO newUser,People newPerson) {
         try {
             User user = userDAO.findByUsername(newUser.getUsername());
             throw new UserAlreadyExistsException();
         } catch (UsernameNotFoundException e) {
-            userDAO.create(newUser.getFirstName(), newUser.getLastName(), newUser.getEmail(), newUser.getUsername(),newUser.getPassword(), newUser.getRole());
+            userDAO.create(newUser.getEmail(), newUser.getUsername(),newUser.getPassword(), newUser.getRole());
+            peopleDAO.createPeople(newPerson.getFirstName(), newPerson.getLastName());
+            
         }
     }
 

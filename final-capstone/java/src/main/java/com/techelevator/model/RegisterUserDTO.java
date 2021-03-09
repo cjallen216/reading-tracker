@@ -13,10 +13,7 @@ public class RegisterUserDTO {
     @NotEmpty(message = "Please select a role for this user.")
     private String role;
     @NotEmpty
-    private String firstName;
 
-	private String LastName;
-  
     private String email;
 
     public String getUsername() {
@@ -51,19 +48,8 @@ public class RegisterUserDTO {
     public void setRole(String role) {
         this.role = role;
     }
-    public String getFirstName() {
-    	return firstName;
-    }
-    public void setfirstName(String firstName) {
-    	this.firstName = firstName;
-    }
-    public String getLastName() {
-		return LastName;
-	}
+  
 
-	public void setLastName(String lastName) {
-		LastName = lastName;
-	}
 
 	public String getEmail() {
 		return email;

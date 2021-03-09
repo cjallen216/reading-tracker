@@ -7,8 +7,7 @@ import com.techelevator.model.Books;
 public class BooksSqlDAO implements BooksDAO {
 
 	@Override
-	public List<Books> listAll() {
-		
+	public List<Books> listAll(int accountID) {
 		return null;
 	}
 
@@ -19,9 +18,12 @@ public class BooksSqlDAO implements BooksDAO {
 	}
 
 	@Override
-	public void createBook(String isbnNumber, String title, int authorPeopleId, String imgLink) {
-		// TODO Auto-generated method stub
-		
+	public void createBook(String isbnNumber, String title) {
+		String sql = "Insert into books"
+				+ "("
+				+ "isbn_number, title"
+				+ ")"
+				+ "Values (?, ?)";
 	}
 
 }

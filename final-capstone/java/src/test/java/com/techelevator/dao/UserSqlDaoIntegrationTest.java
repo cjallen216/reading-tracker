@@ -31,8 +31,6 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
     public void createNewUserName() {
         boolean userCreated = userSqlDAO.create("Arthur", "Summers", "Arthur.summers.jd@gmail.com", "TEST_USER","test_password","user");
         Assert.assertTrue(userCreated);
-        User user = userSqlDAO.findByFirstName("Arthur");
-        Assert.assertEquals("Arthur", user.getFirstName());
     }
 
 }

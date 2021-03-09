@@ -3,9 +3,9 @@ import java.util.List;
 
 import com.techelevator.model.Books;
 public interface BooksDAO {
-List<Books> listAll();
+List<Books> listAll(int accountID);
 
 Books getBookbyISBN(String isbnNumber);
 
-void createBook(String isbnNumber,String title,int authorPeopleId, String imgLink);
+void createBook(String isbnNumber,String title);
 }

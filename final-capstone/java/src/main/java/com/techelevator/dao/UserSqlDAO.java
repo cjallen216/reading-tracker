@@ -71,23 +71,15 @@ public class UserSqlDAO implements UserDAO {
         }
         throw new UsernameNotFoundException("User " + email + " was not found.");
     }
-    @Override
-    public User findByFirstName(String firstName) throws UsernameNotFoundException {
-        for (User user : this.findAll()) {
-            if(user.getFirstName().toLowerCase().equals(firstName.toLowerCase())) {
-                return user;
-            }
-        }
-        throw new UsernameNotFoundException("User " + firstName + " was not found.");
-    }
+ 
 
 
     @Override
-    public boolean create(String firstName, String lastName, String email, String username, String password, String role) {
+    public boolean create(String email, String username, String password, String role) {
         boolean userCreated = false;
 
         // create user
-        String insertUser = "insert into users (firstname,lastname,email,username,password_hash,role) values(?,?,?,?,?,?)";
+        String insertUser = "insert into users (email,username,password_hash,role) values(?,?,?,?)";
         String password_hash = new BCryptPasswordEncoder().encode(password);
         String ssRole = "ROLE_" + role.toUpperCase();
 
@@ -95,12 +87,10 @@ public class UserSqlDAO implements UserDAO {
         String id_column = "user_id";
         userCreated = jdbcTemplate.update(con -> {
                     PreparedStatement ps = con.prepareStatement(insertUser, new String[]{id_column});
-                    ps.setString(1, firstName);
-                    ps.setString(2, lastName);
-                    ps.setString(3, email);
-                    ps.setString(4, username);
-                    ps.setString(5, password_hash);
-                    ps.setString(6, ssRole);
+                    ps.setString(1, email);
+                    ps.setString(2, username);
+                    ps.setString(3, password_hash);
+                    ps.setString(4, ssRole);
                     return ps;
                 }
                 , keyHolder) == 1;
@@ -116,9 +106,8 @@ public class UserSqlDAO implements UserDAO {
         user.setPassword(rs.getString("password_hash"));
         user.setAuthorities(rs.getString("role"));
         user.setActivated(true);
-        user.setFirstName(rs.getString("firstname"));
-        user.setLastName(rs.getString("lastname"));
         user.setEmail(rs.getString("email"));
         return user;
     }
+
 }
