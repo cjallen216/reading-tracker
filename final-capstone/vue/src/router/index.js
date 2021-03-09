@@ -61,7 +61,7 @@ const router = new Router({
       name: "new-book-form",
       component: NewBook,
       meta: {
-        requiresAuth: false
+        requiresAuth: true
       }
     },
     {
@@ -69,13 +69,16 @@ const router = new Router({
       name: "my-books",
       component: MyBooks,
       meta: {
-        requiresAuth: false
+        requiresAuth: true
       }
     },
     {
       path: "/book/:isbn",
       name: 'book-details',
-      component: BookDetails
+      component: BookDetails,
+      meta: {
+        requiresAuth: true
+      }
     }
     
   ]

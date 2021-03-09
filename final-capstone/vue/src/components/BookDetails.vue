@@ -3,7 +3,7 @@
       <h2 class="book-title">{{book.title}}</h2>
       <h3 class="book-author">{{book.author}}</h3>
       <img v-if="book.isbn" v-bind:src="'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'" />
-      
+      <p></p>
       <router-link v-bind:to="{name: 'my-books'}">Return to Reading List</router-link>
   </div>
 </template>

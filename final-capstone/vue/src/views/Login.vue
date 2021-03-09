@@ -21,7 +21,6 @@
             placeholder="Username"
             v-model="user.username"
             required
-            autofocus
           />
         </div>
         <div class="input-line">
@@ -35,7 +34,7 @@
           />
         </div>
         <div class="input-center">
-          <router-link :to="{ name: 'register' }">Need an account?</router-link>
+          <router-link :to="{ name: 'register' }">Register New User</router-link>
         </div>
         <div class="input-center">
           <button type="submit">Sign in</button>
@@ -122,7 +121,7 @@ export default {
 }
 
 h1,
-p {
+h3 {
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
 }
