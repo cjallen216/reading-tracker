@@ -1,19 +1,6 @@
 <template>
   <div id="app">
-    <!-- <nav></nav> -->
-    <div id="nav">
-      <ul>
-        <li v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'home' }">Home</router-link></li>
-        <li v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'my-books'}">My Books</router-link></li>
-        <li v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'new-book-form'}">Add Book</router-link></li>
-        <li v-if="$store.state.token != ''"><router-link v-bind:to="{ name: 'logout' }" >Logout</router-link></li>
-      </ul>
-      <!-- <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
-      <router-link v-bind:to="{ name: 'register' }">Register</router-link>&nbsp;|&nbsp;
-      <router-link v-bind:to="{ name: 'login' }">Login</router-link>&nbsp;|&nbsp;
-      <router-link v-bind:to="{ name: 'new-book-form'}">Add Book</router-link>
-      <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link> -->
-    </div>
+    <nav-bar />
     <h1>Welcome To The Dewey Decimal Reading Tracker</h1>
     <h3>Conan The Librarian Approved!</h3>
     <router-view />
@@ -21,12 +8,12 @@
 </template>
 
 <script>
-// import nav from "@/components/nav.vue";
+import NavBar from "@/components/NavBar.vue";
 
 export default {
-  // components: {
-  //   nav
-  // }
+  components: {
+    NavBar
+  }
   
 }
 </script>
