@@ -13,6 +13,7 @@
       <button v-if="enableAdd" v-on:click.prevent="addToReadingList(book)">Add to Reading List</button>
   </div>
 </template>
+
 <script>
 export default {
     name: 'book-card',
@@ -32,28 +33,30 @@ export default {
             this.$store.commit('SAVE_BOOK', addedBook);
         }
     }
+
 }
 </script>
+
 <style>
-    .card {
-        border: 1px solid black;
-        width: 250px;
-        height: 450px;
-        margin: 20px;
-        background-color: whitesmoke;
-        text-align: center;
-        box-shadow: 5px 5px #505050;
-    }
+.card {
+    border: 1px solid black;
+    width: 250px;
+    height: 450px;
+    margin: 20px;
+    background-color: whitesmoke;
+    text-align: center;
+    box-shadow: 5px 5px #505050;
+}
 
-    .card.read {
-        background-color: #A2C7E5;
-    }
+.card.read {
+    background-color: #A2C7E5;
+}
 
-    .card .book-title {
-        font-size: 1rem;
-    }
+.card .book-title {
+    font-size: 1rem;
+}
 
-    .card .book-author {
-        font-size: .75rem;
-    }
+.card .book-author {
+    font-size: .75rem;
+}
 </style>
