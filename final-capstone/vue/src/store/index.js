@@ -23,8 +23,7 @@ export default new Vuex.Store({
     books: [
       {
         title: "Go Dog Go",
-        firstName: "P. D.",
-        lastName: "Eastman",
+        author: "P. D. Eastman",
         read: false,
         isbn: "0679844902"
       },
@@ -53,8 +52,6 @@ export default new Vuex.Store({
     },
     SET_READ_STATUS(state, payload) {
       payload.book.read = payload.value;
-    },
-
-    
+    }
   }
 })

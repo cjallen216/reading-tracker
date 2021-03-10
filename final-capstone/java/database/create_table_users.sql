@@ -16,15 +16,13 @@ CREATE SEQUENCE seq_user_id
 -- create tables
 CREATE TABLE users (
 	user_id INTEGER DEFAULT nextval('seq_user_id') PRIMARY KEY NOT NULL,
-	username VARCHAR(50) NOT NULL,
+	username VARCHAR(64) NOT NULL,
 	password_hash VARCHAR(200) NOT NULL,
-	role VARCHAR(50) NOT NULL,
-	people_id INTEGER ,
-	email VARCHAR(50)
+	role VARCHAR(64) NOT NULL,
+	first_name VARCHAR(64),
+	last_name VARCHAR(64),
+	email VARCHAR(64)
 );
 
-
--- create foreign key constra INTEGER s
-
-
+-- create foreign key constraints 
 COMMIT TRANSACTION;

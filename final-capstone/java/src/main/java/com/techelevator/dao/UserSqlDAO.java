@@ -23,23 +23,26 @@ public class UserSqlDAO implements UserDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public int findNextUserId() {
+    	return jdbcTemplate.queryForObject("SELECT last_value + 1 FROM seq_user_id", int.class);
+    }
+    
     @Override
     public int findIdByUsername(String username) {
-        return jdbcTemplate.queryForObject("select user_id from users where username = ?", int.class, username);
+        return jdbcTemplate.queryForObject("SELECT user_id FROM users WHERE username = ?", int.class, username);
     }
 
 	@Override
 	public User getUserById(Long userId) {
-		String sql = "select user_id "
-        		+ "        , username "
-        		+ "        , password_hash "
-        		+ "        , role "
-        		+ "        , p.first_name "
-        		+ "        , p.last_name "
-        		+ "        , email  "
-        		+ "FROM users AS U "
-        		+ "LEFT JOIN people AS P ON U.people_id = P.people_id "
-				+ "WHERE user_id = ?";
+		String sql = "SELECT user_id "
+						+ ", username "
+						+ ", password_hash "
+						+ ", role "
+						+ ", first_name "
+						+ ", last_name "
+						+ ", email  "
+					+ "FROM users "
+					+ "WHERE user_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
 		if(results.next()) {
 			return mapRowToUser(results);
@@ -51,16 +54,15 @@ public class UserSqlDAO implements UserDAO {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        String sql = "select user_id "
-        		+ "        , username "
-        		+ "        , password_hash "
-        		+ "        , role "
-        		+ "        , p.first_name "
-        		+ "        , p.last_name "
-        		+ "        , email  "
-        		+ "FROM users AS U "
-        		+ "LEFT JOIN people AS P ON U.people_id = P.people_id;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+		String sql = "SELECT user_id "
+						+ ", username "
+						+ ", password_hash "
+						+ ", role "
+						+ ", first_name "
+						+ ", last_name "
+						+ ", email  "
+					+ "FROM users ";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while(results.next()) {
             User user = mapRowToUser(results);
             users.add(user);
@@ -81,7 +83,7 @@ public class UserSqlDAO implements UserDAO {
     @Override
     public User findByEmail(String email) throws UsernameNotFoundException {
         for (User user : this.findAll()) {
-            if(user.getEmail().toLowerCase().equals(email.toLowerCase())) {
+            if(user.getEmail() != null && user.getEmail().toLowerCase().equals(email.toLowerCase())) {
                 return user;
             }
         }
@@ -90,7 +92,7 @@ public class UserSqlDAO implements UserDAO {
     @Override
     public User findByFirstName(String firstName) throws UsernameNotFoundException {
         for (User user : this.findAll()) {
-            if(user.getFirstName().toLowerCase().equals(firstName.toLowerCase())) {
+            if(user.getFirstName() != null && user.getFirstName().toLowerCase().equals(firstName.toLowerCase())) {
                 return user;
             }
         }
@@ -99,40 +101,25 @@ public class UserSqlDAO implements UserDAO {
 
     @Override
     public boolean create(String firstName, String lastName, String email, String username, String password, String role) {
-
-	     
-        // create people record
-    	String insertPeople = "insert into people (first_name, last_name) values(?,?)";
-    	GeneratedKeyHolder peopleKeyHolder = new GeneratedKeyHolder();
-        String people_id_column = "people_id";
-        boolean peopleCreated = false;
-        peopleCreated = jdbcTemplate.update(con -> {
-        	PreparedStatement prepared = con.prepareStatement(insertPeople, new String[]{people_id_column});
-        		prepared.setString(1, firstName);
-        		prepared.setString(2, lastName);
-        		return prepared;
-        }
-        , peopleKeyHolder) == 1;
-        int newPeopleId = (int) peopleKeyHolder.getKeys().get(people_id_column);
-
-        // create user
-        String insertUser = "insert into users (username, password_hash, role, people_id, email) values(?,?,?,?,?)";
+        String insertUser = "INSERT INTO users (username, password_hash, role, first_name, last_name, email) VALUES(?,?,?,?,?,?)";
         String password_hash = new BCryptPasswordEncoder().encode(password);
         String ssRole = "ROLE_" + role.toUpperCase();        
 
         GeneratedKeyHolder userKeyHolder = new GeneratedKeyHolder();
         String user_id_column = "user_id";
         boolean userCreated = false;
+		
         userCreated = jdbcTemplate.update(con -> {
-                    PreparedStatement ps = con.prepareStatement(insertUser, new String[]{user_id_column});
-                    ps.setString(1, username);
-                    ps.setString(2, password_hash);
-                    ps.setString(3, ssRole);
-                    ps.setInt(4, newPeopleId);
-                    ps.setString(5,  email);
-                    return ps;
-                }
-                , userKeyHolder) == 1;
+			PreparedStatement ps = con.prepareStatement(insertUser, new String[]{user_id_column});
+			ps.setString(1, username);
+			ps.setString(2, password_hash);
+			ps.setString(3, ssRole);
+			ps.setString(4, firstName);
+			ps.setString(5, lastName);
+			ps.setString(6,  email);
+			return ps;
+		}, userKeyHolder) == 1;
+		
         int newUserId = (int) userKeyHolder.getKeys().get(user_id_column);
         return userCreated;
     }

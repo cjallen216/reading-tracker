@@ -15,7 +15,7 @@ public class RegisterUserDTO {
     @NotEmpty
     private String firstName;
     private String lastName;
-    @NotEmpty
+    //@NotEmpty -- this breaks registration
     private String email;
 
     public String getUsername() {
