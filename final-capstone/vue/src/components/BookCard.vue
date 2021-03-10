@@ -3,7 +3,7 @@
       <h2 class="book-title">
           <router-link v-bind:to="{name: 'book-details', params: {isbn: book.isbn}}">{{book.title}}</router-link>
       </h2>
-      <h3 class="book-author">By: {{book.author}}</h3>
+      <h3 class="book-author">By: {{book.lastName}}, {{book.firstName}}</h3>
       <img v-if="book.isbn" v-bind:src="'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'" />
       <p>&nbsp;</p>
       <div class="button-container" v-if="! enableAdd">

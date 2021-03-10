@@ -81,12 +81,6 @@ public class BookSqlDAO implements BookDAO{
 	}else {
 		throw new RuntimeException("Book ID "+ bookId +" was not found.");
 	}}
-	@Override
-	public Book deleteBookById(int book_id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	 
 	
 	
 	

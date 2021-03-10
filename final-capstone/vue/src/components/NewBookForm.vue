@@ -42,6 +42,8 @@
         </div>
       </div>
     </form>
+    <p></p>
+      <router-link v-bind:to="{name: 'my-books'}">I'm done adding books</router-link>
   </div>
 </template>
 
@@ -77,11 +79,21 @@ export default {
         .create(this.book)
         .then((response) => {
           if (response.status === 200) {
-            this.$router.push('/myBooks');
+            alert(
+            `Book Added Successfully!
+            
+            Title: ${this.book.title}
+            Author: ${this.book.lastName}, ${this.book.firstName}
+            ISBN #${this.book.isbn}`
+            );
+            this.book.title = '';
+            this.book.firstName = '';
+            this.book.lastName = '';
+            this.book.isbn = '';
+            // this.$router.push('/myBooks');
           }
         })
-
-    }
+    },
   },
 };
 </script>
