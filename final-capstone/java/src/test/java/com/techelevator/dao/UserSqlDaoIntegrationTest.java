@@ -42,14 +42,6 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
     }
     
     @Test
-    public void createNewUserWithoutFirstName() {
-        boolean userCreated = userSqlDAO.create("test_lastName", "test", "test@email.com", "TEST_USER","test_password","user");
-        Assert.assertTrue(userCreated);
-        User user = userSqlDAO.findByUsername("TEST_USER");
-        Assert.assertEquals("TEST_USER", user.getUsername());
-    }
-    
-    @Test
     public void createNewUserWithoutLastName() {
         boolean userCreated = userSqlDAO.create("test_firstName", "test", "test@email.com", "TEST_USER","test_password","user");
         Assert.assertTrue(userCreated);
@@ -58,13 +50,6 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
         
     }
     
-    @Test
-    public void createNewUserWithoutEmail() {
-        boolean userCreated = userSqlDAO.create("test_firstName", "test", "test_lastName","TEST_USER","test_password","user");
-        Assert.assertTrue(userCreated);
-        User user = userSqlDAO.findByUsername("TEST_USER");
-        Assert.assertEquals("TEST_USER", user.getUsername());
-    }
-    
+
     
 }
