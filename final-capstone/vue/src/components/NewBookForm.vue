@@ -17,8 +17,16 @@
           <input
             class="author-input"
             type="text"
-            placeholder="Author"
-            v-model="book.author"
+            placeholder="Author First Name"
+            v-model="book.firstName"
+          />
+        </div>
+          <div class="input-line">
+          <input
+            class="author-input"
+            type="text"
+            placeholder="Author Last Name"
+            v-model="book.lastName"
           />
         </div>
         <div class="input-line">
@@ -48,7 +56,8 @@ export default {
     return {
       book: {
         title: "",
-        author: "",
+        firstName: "",
+        lastName: "",
         read: false,
         isbn: "",
       },
@@ -84,48 +93,49 @@ export default {
             // this.$router.push('/myBooks');
           }
         })
-    }
-  }
+    },
+  },
 };
 </script>
+
 <style>
-  #new-book {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+#new-book {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-  .new-book-form {
-    margin: 20px;
-  }
+.new-book-form {
+  margin: 20px;
+}
 
-  .new-book-form input,
-  .new-book-form button {
-    margin: 10px;
-    font-size: 1rem;
-  }
+.new-book-form input,
+.new-book-form button {
+  margin: 10px;
+  font-size: 1rem;
+}
 
-  .new-book-form {
-    background-color: rgb(247, 244, 231);
-    border-radius: 10px;
-    width: 25%;
-    box-shadow: 10px 10px #888888;
-  }
+.new-book-form {
+  background-color: rgb(247, 244, 231);
+  border-radius: 10px;
+  width: 25%;
+  box-shadow: 10px 10px #888888;
+}
 
-  .input-center {
-    text-align: center;
-  }
+.input-center {
+  text-align: center;
+}
 
-  .input-line {
-    border-style: none;
-    border-bottom-style: solid;
-    border-color: rgb(194, 194, 194);
-  }
+.input-line {
+  border-style: none;
+  border-bottom-style: solid;
+  border-color: rgb(194, 194, 194);
+}
 
-  .form-body input {
-    border-style: none;
-    border-color: gray;
-    background-color: rgb(247, 244, 231);
-  }
+.form-body input {
+  border-style: none;
+  border-color: gray;
+  background-color: rgb(247, 244, 231);
+}
 </style>
