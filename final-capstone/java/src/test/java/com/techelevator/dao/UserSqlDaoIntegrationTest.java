@@ -40,6 +40,7 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
         User user = userSqlDAO.findByEmail("test@email.com");
         Assert.assertEquals("test@email.com", user.getEmail());
     }
+
     
     @Test
     public void createNewUserWithoutLastName() {
@@ -49,7 +50,5 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
         Assert.assertEquals("TEST_USER", user.getUsername());
         
     }
-    
-
-    
+  
 }

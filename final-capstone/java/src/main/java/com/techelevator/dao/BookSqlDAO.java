@@ -66,22 +66,6 @@ public class BookSqlDAO implements BookDAO{
 	        return book;
 	    }
 
-	@Override
-	public Book getBookByID(int bookId) {
-		String sql = "select book_id,\r\n"
-				+ "isbn_number, title, author_people_id, cover_img_link,\r\n"
-				+ "p.first_name,\r\n"
-				+ "p.last_name\r\n"
-				+ "From books as B\r\n"
-				+ "LEFT JOIN people as P on b.author_people_id = P.people_id\r\n"
-				+ "WHERE b.book_id = ?";
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, bookId);
-		if(results.next()) {
-			return mapRowToBook(results);			
-	}else {
-		throw new RuntimeException("Book ID "+ bookId +" was not found.");
-	}}
-	
 	
 	
 	
