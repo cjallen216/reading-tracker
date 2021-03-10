@@ -19,14 +19,11 @@ public class BookController {
 
 	@PostMapping("")
 	public void createBook(@Valid @RequestBody Book newBook) {
-		booksDAO.createBook(newBook.getFirstName(), newBook.getLastName(), newBook.getIsbnNumber(), newBook.getTitle(), newBook.getImgLink(), newBook.getAuthorId());
+		booksDAO.createBook(newBook.getAuthor(), newBook.getIsbn(), newBook.getTitle(), newBook.getImgLink());
 	}
 	
 	@GetMapping("")
 	public List<Book> listAll() {
-		return booksDAO.listAll();
-		
-	
-	}
-	 
+		return booksDAO.listAll();	
+	}	 
 }
