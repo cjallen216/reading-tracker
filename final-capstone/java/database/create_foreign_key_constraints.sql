@@ -13,6 +13,7 @@ ALTER TABLE families ADD CONSTRAINT fk_families_users FOREIGN KEY (user_id) REFE
 
 --books_users-- 
 ALTER TABLE books_users ADD CONSTRAINT fk_books_users_books  FOREIGN KEY (book_id)  REFERENCES books (book_id);
+ALTER TABLE books_users ADD CONSTRAINT fk_books_users_users_id FOREIGN KEY (user_id) REFERENCES users (user_id);
 
 --time--
 ALTER TABLE reading_time ADD CONSTRAINT fk_time_users  FOREIGN KEY (user_id)  REFERENCES users (user_id);
