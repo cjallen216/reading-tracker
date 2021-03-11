@@ -1,4 +1,4 @@
-
+/*
 Select title, isbn_number, cover_img_link, b.book_id
 FROM books as b
 JOIN books_users as bu
@@ -8,7 +8,36 @@ JOIN users as u
 LEFT JOIN people as p
         ON b.author_people_id = p.people_id
 WHERE BU.USER_ID = ?
+*/
 
+
+--Gets all child logs for family
+    SELECT reading_log.log_id, reading_log.user_id, users.username, books.book_id, books.title, reading_time.reading_format,
+    reading_time.time_spent, reading_time.notes
+    FROM families,
+    JOIN users ON families.family_id = users.user_id
+    JOIN books ON reading_time.book_id = books.book_id
+    WHERE families.family_id = 1 AND users.role = 'child';
+ 
+    
+--Gets the books someone is reading based on the books they have logged
+ SELECT books.book_id, books.family_id, isbn, title, author, image, description
+ FROM users
+ JOIN book_id ON users.id = reading_log.user_id
+ JOIN books ON reading_time.book_id = books.book_id
+ WHERE users.id = 1 AND reading_time.completed_book = false 
+ ORDER BY title;
+
+
+--Adds a book to someones personal bookshelf
+  INSERT INTO books (book_id)
+  VALUES (1, 2)
+
+
+
+
+--Select *
+--FROM books
 
 /*
 INSERT INTO people
@@ -16,8 +45,7 @@ INSERT INTO people
 VALUES ('Theodore', 'Suess')
 
 
-Select *
-FROM books_users
+
 
 
 UPDATE books
