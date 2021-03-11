@@ -17,16 +17,8 @@
           <input
             class="author-input"
             type="text"
-            placeholder="Author First Name"
-            v-model="book.firstName"
-          />
-        </div>
-          <div class="input-line">
-          <input
-            class="author-input"
-            type="text"
-            placeholder="Author Last Name"
-            v-model="book.lastName"
+            placeholder="Author"
+            v-model="book.author"
           />
         </div>
         <div class="input-line">
@@ -36,15 +28,25 @@
             placeholder="ISBN"
             v-model="book.isbn"
           />
+             </div>
+        <div class="input-line">
+          <input
+            class="imgLink-input"
+            type="text"
+            placeholder="Cover Image Link"
+            v-model="book.imgLink"
+          />
         </div>
+        
         <div class="input-center">
           <button v-on:click.prevent="saveBook()">Add Book</button>
         </div>
       </div>
     </form>
+    <p></p>
+      <router-link v-bind:to="{name: 'my-books'}">I'm done adding books</router-link>
   </div>
 </template>
-
 <script>
 import docsService from '../services/DocsService'
 
@@ -54,10 +56,10 @@ export default {
     return {
       book: {
         title: "",
-        firstName: "",
-        lastName: "",
+        author: "",
         read: false,
         isbn: "",
+        imgLink: "",
       },
     };
   },
@@ -77,53 +79,63 @@ export default {
         .create(this.book)
         .then((response) => {
           if (response.status === 200) {
-            this.$router.push('/myBooks');
+            alert(
+            `Book Added Successfully!
+            
+            Title: ${this.book.title}
+            Author: ${this.book.author}
+            ISBN #${this.book.isbn}
+            imgLink: ${this.book.imgLink}`
+            );
+            this.book.title = '';
+            this.book.author = '';
+            this.book.isbn = '';
+            this.book.imgLink= '';
+            // this.$router.push('/myBooks');
           }
         })
-
     }
-  },
+  }
 };
 </script>
-
 <style>
-#new-book {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+  #new-book {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-.new-book-form {
-  margin: 20px;
-}
+  .new-book-form {
+    margin: 20px;
+  }
 
-.new-book-form input,
-.new-book-form button {
-  margin: 10px;
-  font-size: 1rem;
-}
+  .new-book-form input,
+  .new-book-form button {
+    margin: 10px;
+    font-size: 1rem;
+  }
 
-.new-book-form {
-  background-color: rgb(247, 244, 231);
-  border-radius: 10px;
-  width: 25%;
-  box-shadow: 10px 10px #888888;
-}
+  .new-book-form {
+    background-color: rgb(247, 244, 231);
+    border-radius: 10px;
+    width: 25%;
+    box-shadow: 10px 10px #888888;
+  }
 
-.input-center {
-  text-align: center;
-}
+  .input-center {
+    text-align: center;
+  }
 
-.input-line {
-  border-style: none;
-  border-bottom-style: solid;
-  border-color: rgb(194, 194, 194);
-}
+  .input-line {
+    border-style: none;
+    border-bottom-style: solid;
+    border-color: rgb(194, 194, 194);
+  }
 
-.form-body input {
-  border-style: none;
-  border-color: gray;
-  background-color: rgb(247, 244, 231);
-}
+  .form-body input {
+    border-style: none;
+    border-color: gray;
+    background-color: rgb(247, 244, 231);
+  }
 </style>

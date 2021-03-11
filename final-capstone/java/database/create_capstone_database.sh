@@ -5,7 +5,6 @@ export PGPASSWORD='postgres1'
 
 psql -U postgres -f "$BASEDIR/01_drop_and_create_db.sql" &&
 psql -U postgres -d $DATABASE -f "$BASEDIR/create_table_users.sql" &&
-psql -U postgres -d $DATABASE -f "$BASEDIR/create_table_people.sql" &&
 psql -U postgres -d $DATABASE -f "$BASEDIR/create_table_families.sql" &&
 psql -U postgres -d $DATABASE -f "$BASEDIR/create_table_books.sql" &&
 psql -U postgres -d $DATABASE -f "$BASEDIR/create_table_reading_time.sql" &&
