@@ -28,7 +28,16 @@
             placeholder="ISBN"
             v-model="book.isbn"
           />
+             </div>
+        <div class="input-line">
+          <input
+            class="imgLink-input"
+            type="text"
+            placeholder="Cover Image Link"
+            v-model="book.imgLink"
+          />
         </div>
+        
         <div class="input-center">
           <button v-on:click.prevent="saveBook()">Add Book</button>
         </div>
@@ -50,6 +59,7 @@ export default {
         author: "",
         read: false,
         isbn: "",
+        imgLink: "",
       },
     };
   },
@@ -74,11 +84,13 @@ export default {
             
             Title: ${this.book.title}
             Author: ${this.book.author}
-            ISBN #${this.book.isbn}`
+            ISBN #${this.book.isbn}
+            imgLink: ${this.book.imgLink}`
             );
             this.book.title = '';
             this.book.author = '';
             this.book.isbn = '';
+            this.book.imgLink= '';
             // this.$router.push('/myBooks');
           }
         })
