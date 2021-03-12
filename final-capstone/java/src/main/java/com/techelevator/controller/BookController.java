@@ -36,7 +36,7 @@ public class BookController
 		}
 		catch (Exception e) {
 			int currentUserId = userDAO.findIdByUsername(currentUser.getName());
-			booksDAO.createBook(newBook.getTitle(), newBook.getIsbn(), newBook.getAuthor(), newBook.getImgLink(), currentUserId);
+			booksDAO.createBook(newBook.getTitle(), newBook.getAuthor(), newBook.getIsbn(), newBook.getImgLink(), currentUserId);
 		}
 		
 //		Book book = booksDAO.getBookByTitle(newBook.getTitle());

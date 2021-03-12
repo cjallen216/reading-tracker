@@ -22,19 +22,17 @@ public class BookSqlDAO implements BookDAO
 	}
 
 	@Override
-
-	public boolean createBook(String author, String isbn, String title, String imgLink, int currentUserId) {
-
-		String insertBook = "INSERT INTO books (isbn, title, author, cover_img_link) VALUES (?,?,?,?)";
+	public boolean createBook(String title, String author, String isbn, String imgLink, int currentUserId) {
+		String insertBook = "INSERT INTO books (title, author, isbn, cover_img_link) VALUES (?,?,?,?)";
 		GeneratedKeyHolder bookKeyHolder = new GeneratedKeyHolder();
 		String book_id_column = "book_id";
 		boolean bookCreated = false;
 		
 		bookCreated = jdbcTemplate.update(connection -> {
 			PreparedStatement prepared = connection.prepareStatement(insertBook, new String[] { book_id_column });
-			prepared.setString(1, isbn);
-			prepared.setString(2, title);
-			prepared.setString(3, author);
+			prepared.setString(1, title);
+			prepared.setString(2, author);
+			prepared.setString(3, isbn);
 			prepared.setString(4, imgLink);
 			return prepared;
 		}, bookKeyHolder) == 1;
