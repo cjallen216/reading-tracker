@@ -20,11 +20,9 @@ public class BookSqlDAO implements BookDAO {
 	}
 
 	@Override
-<<<<<<< HEAD
-	public boolean createBook(String author, String isbn, String title, String imgLink, int booksUsersId, int bookId, int userId, boolean currentBook, boolean completed) {
-=======
+
 	public boolean createBook(String author, String isbn, String title, String imgLink, int currentUserId) {
->>>>>>> 00b14d7583174423972eb2ddfdbcc059cbc0e7d0
+
 		String insertBook = "INSERT INTO books (isbn, title, author, cover_img_link) VALUES (?,?,?,?)";
 		GeneratedKeyHolder bookKeyHolder = new GeneratedKeyHolder();
 		String book_id_column = "book_id";
@@ -54,14 +52,9 @@ public class BookSqlDAO implements BookDAO {
 			return prepared;
 		}, bookUserKeyHolder) == 1;
 		int newBookUserId = (int) bookUserKeyHolder.getKeys().get(book_user_id_column);
-		
-<<<<<<< HEAD
-		String bookStuff = "Insert into books_users (book_id, user_id,current_book, completed) values (?,?,?,?)";
-		jdbcTemplate.update(bookStuff, )
-		
-=======
+
 		return (bookCreated && bookUserCreated);
->>>>>>> 00b14d7583174423972eb2ddfdbcc059cbc0e7d0
+
 	}
 
 	@Override
