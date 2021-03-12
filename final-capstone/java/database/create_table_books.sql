@@ -18,7 +18,7 @@ CREATE TABLE books(
 	isbn VARCHAR(13),
 	title VARCHAR(128),
 	author VARCHAR(64),
-	cover_img_link VARCHAR(256)        
+	cover_img_link TEXT        
 );
 
 COMMIT TRANSACTION;
