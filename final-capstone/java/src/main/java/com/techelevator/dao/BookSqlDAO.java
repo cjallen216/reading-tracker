@@ -22,16 +22,14 @@ public class BookSqlDAO implements BookDAO
 	}
 
 	@Override
-	public boolean createBook(String author, String isbn, String title, String imgLink)
-	{
+	public boolean createBook(String author, String isbn, String title, String imgLink, int currentUserId) {
 		String insertBook = "INSERT INTO books (isbn, title, author, cover_img_link) VALUES (?,?,?,?)";
 		GeneratedKeyHolder bookKeyHolder = new GeneratedKeyHolder();
 		String book_id_column = "book_id";
 		boolean bookCreated = false;
-		bookCreated = jdbcTemplate.update(con ->
-		{
-			PreparedStatement prepared = con.prepareStatement(insertBook, new String[]
-			{ book_id_column });
+		
+		bookCreated = jdbcTemplate.update(connection -> {
+			PreparedStatement prepared = connection.prepareStatement(insertBook, new String[] { book_id_column });
 			prepared.setString(1, isbn);
 			prepared.setString(2, title);
 			prepared.setString(3, author);
@@ -39,7 +37,23 @@ public class BookSqlDAO implements BookDAO
 			return prepared;
 		}, bookKeyHolder) == 1;
 		int newBookId = (int) bookKeyHolder.getKeys().get(book_id_column);
-		return bookCreated;
+
+		String insertBookUser = "INSERT INTO books_users (user_id, book_id, current_book, completed) VALUES (?,?,?,?)";
+		GeneratedKeyHolder bookUserKeyHolder = new GeneratedKeyHolder();
+		String book_user_id_column = "books_users_id";
+		boolean bookUserCreated = false;
+		
+		bookUserCreated = jdbcTemplate.update(connection -> {
+			PreparedStatement prepared = connection.prepareStatement(insertBookUser, new String[] { book_user_id_column });
+			prepared.setInt(1, currentUserId);
+			prepared.setInt(2, newBookId);
+			prepared.setBoolean(3, false);
+			prepared.setBoolean(4, false);
+			return prepared;
+		}, bookUserKeyHolder) == 1;
+		int newBookUserId = (int) bookUserKeyHolder.getKeys().get(book_user_id_column);
+		
+		return (bookCreated && bookUserCreated);
 	}
 
 	@Override
@@ -85,17 +99,17 @@ public class BookSqlDAO implements BookDAO
 	public List<Book> getBooksByUserId(int user_id)
 	{
 		List<Book> books = new ArrayList<>();
-		String sql = "SELECT b.book_id\r\n" + 
-						"	, u.user_id\r\n" +
-						"	, b.isbn\r\n" +
-						"	, b.title\r\n" +
-						"	, b.author\r\n" +
-						"	, b.cover_img_link\r\n"	+
-					"FROM books AS b\r\n" +
-					"INNER JOIN books_users AS bu\r\n" +
-					"	ON b.book_id = bu.book_id\r\n" +
-					"INNER JOIN users AS u\r\n" +
-					"	ON bu.user_id = u.user_id\r\n" +
+		String sql = "SELECT b.book_id " + 
+						"	, u.user_id " +
+						"	, b.isbn " +
+						"	, b.title " +
+						"	, b.author " +
+						"	, b.cover_img_link "	+
+					"FROM books AS b " +
+					"INNER JOIN books_users AS bu " +
+					"	ON b.book_id = bu.book_id " +
+					"INNER JOIN users AS u " +
+					"	ON bu.user_id = u.user_id " +
 					"WHERE u.user_id = ?;";
 
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
@@ -109,12 +123,12 @@ public class BookSqlDAO implements BookDAO
 
 	public Book getBookByIsbn(String isbn)
 	{
-		String sql = "SELECT book_id\r\n" + 
-				"        , isbn\r\n" + 
-				"        , title\r\n" + 
-				"        , author\r\n" + 
-				"        , cover_img_link\r\n" + 
-				"FROM books\r\n" + 
+		String sql = "SELECT book_id " + 
+				"        , isbn " + 
+				"        , title " + 
+				"        , author " + 
+				"        , cover_img_link " + 
+				"FROM books " + 
 				"WHERE isbn = ?;";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, isbn);
 		if (results.next())
@@ -129,12 +143,12 @@ public class BookSqlDAO implements BookDAO
 	@Override
 	public Book getBookByTitle(String title)
 	{
-		String sql = "SELECT book_id\r\n" + 
-				"        , isbn\r\n" + 
-				"        , title\r\n" + 
-				"        , author\r\n" + 
-				"        , cover_img_link\r\n" + 
-				"FROM books\r\n" + 
+		String sql = "SELECT book_id " + 
+				"        , isbn " + 
+				"        , title " + 
+				"        , author " + 
+				"        , cover_img_link " + 
+				"FROM books " + 
 				"WHERE title = ?;";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, title);
 		if (results.next())
