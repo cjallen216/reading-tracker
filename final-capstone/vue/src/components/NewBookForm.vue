@@ -68,6 +68,7 @@ export default {
       docsService
         .create(this.book)
         .then((response) => {
+          // this.$router.push('/myBooks');
           if (response.status === 200) {
             alert(
             `Book Added Successfully!
@@ -79,7 +80,9 @@ export default {
             this.book.title = '';
             this.book.author = '';
             this.book.isbn = '';
-            // this.$router.push('/myBooks');
+          }
+          else {
+            alert('Book Already Exists In Your Book List - Please Try Another');
           }
         })
     }
