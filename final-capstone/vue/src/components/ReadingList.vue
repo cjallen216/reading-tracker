@@ -1,6 +1,6 @@
 <template>
   <div class="book-container">
-      <book-card v-bind:book="book" v-for="book in $store.state.books" v-bind:key="book.isbn" />
+      <book-card v-bind:book="book" v-for="book in $store.state.books" v-bind:key="book.title" />
   </div>
 </template>
 

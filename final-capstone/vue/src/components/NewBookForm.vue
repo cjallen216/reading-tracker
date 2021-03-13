@@ -79,7 +79,7 @@ export default {
         .create(this.book)
         .then((response) => {
           if (response.status === 200) {
-            alert(
+          alert(
             `Book Added Successfully!
             
             Title: ${this.book.title}
@@ -90,12 +90,12 @@ export default {
             this.book.title = '';
             this.book.author = '';
             this.book.isbn = '';
-          this.book.imgLink= '';
+            this.book.imgLink= '';
           }
           else {
             alert('Book Already Exists In Your Book List - Please Try Another');
           }
-        })
+        });
     }
   }
 };
