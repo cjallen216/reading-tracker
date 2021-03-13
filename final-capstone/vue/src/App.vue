@@ -7,11 +7,11 @@
   </div>
 </template>
 <script>
-import NavBar from "@/components/NavBar.vue";
+import navBar from "@/components/NavBar.vue";
 
 export default {
   components: {
-    NavBar
+    navBar
   }
 }  
 </script>

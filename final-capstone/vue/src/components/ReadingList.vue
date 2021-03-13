@@ -6,35 +6,13 @@
 </template>
 
 <script>
-import BookCard from '../components/BookCard'
-import docsService from '../services/DocsService'
+import bookCard from '../components/BookCard.vue'
+
 export default {
     name: 'reading-list',
     components: {
-        BookCard
-    },
-    data(){
-        return{
-           
-        }
-    },
-
-   beforeMount(){
-       this.list()
- 
-    
-    },
-    methods: {
-        list() {
-             docsService.list().then(response => {
-             if (response.status == 200){  this.$store.commit('LIST_EVERYTHING', response.data )}}
-             )
-              
+        bookCard
     }
-   
-    }
-   
-
 }
 </script>
 

@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import authService from "../services/AuthService";
+import authService from "../services/AuthService.js";
 
 export default {
   name: "register",
@@ -195,7 +195,6 @@ p {
 #regerror {
   font-size: 1rem;
   font-weight: bold;
-  text-align: center;
-  
+  text-align: center;  
 }
 </style>

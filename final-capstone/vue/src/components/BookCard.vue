@@ -13,7 +13,6 @@
         'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'
       "
     />
-
     <div class="button-container" v-if="!enableAdd">
       <button
         class="mark-read"
@@ -36,6 +35,7 @@
   </div>
 </template>
 <script>
+
 export default {
   name: "book-card",
   props: {

@@ -10,7 +10,9 @@ export default {
         return http.post(`/books/`, book);
     },
 
-    list() {
-        return http.get(`/books/`);
+    list(user) {
+        return http.get('books/myBooks/', user).then(results => {
+            this.$store.commit('SET_BOOK_LIST_RESULTS', results);
+        });
     },
 }

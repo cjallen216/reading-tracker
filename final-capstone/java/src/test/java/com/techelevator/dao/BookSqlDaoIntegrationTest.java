@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import com.techelevator.model.Book;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -20,7 +22,7 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
     private String TITLE;
     private String AUTHOR;
     private String IMG;
-    private int USER_ID;
+    private int USER_ID = 2;
 
     @Before
     public void setup() {
@@ -37,7 +39,6 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
         TITLE = "book_title";
         AUTHOR = "author_name";
         IMG = "img_link";
-        USER_ID = 1;
         boolean expected = true;
 
         // act
@@ -49,19 +50,12 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
     
     @Test
     public void createNewBookUpdatesBooksUsersTable(){
-        // arrange 
-        String userIdSql = "SELECT user_id from users where username = ?";
-        SqlRowSet userIdResult = jdbcTemplate.queryForRowSet(userIdSql, "family_reading_tracker_appuser");
-        int user_id = 0;
-        if(userIdResult.next()) {
-        	user_id = userIdResult.getInt("user_id");
-        }
-        
+        // arrange         
         ISBN = "isbn";
         TITLE = "book_title";
         AUTHOR = "author_name";
         IMG = "img_link";
-        bookSqlDAO.createBook(AUTHOR, ISBN, TITLE, IMG, user_id);               
+        bookSqlDAO.createBook(AUTHOR, ISBN, TITLE, IMG, USER_ID);               
         
         String BookIdSql = "SELECT book_id FROM books WHERE title = ? AND author = ? AND isbn = ?";
         SqlRowSet bookIdResult = jdbcTemplate.queryForRowSet(BookIdSql, TITLE, AUTHOR, ISBN);
@@ -72,7 +66,7 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
 
         // act
         String bookUserSql = "SELECT books_users_id, book_id, user_id FROM books_users WHERE book_id = ? AND user_id = ?";
-        SqlRowSet booksUsersResult = jdbcTemplate.queryForRowSet(bookUserSql, bookId, user_id);
+        SqlRowSet booksUsersResult = jdbcTemplate.queryForRowSet(bookUserSql, bookId, USER_ID);
         int bookUserId = 0;
         if(booksUsersResult.next()) {
         	bookUserId = booksUsersResult.getInt("books_users_id");
@@ -80,7 +74,6 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
         
         // assert
         assertNotEquals(0, bookUserId);
-        assertNotNull(bookUserId);
     }
 
 }

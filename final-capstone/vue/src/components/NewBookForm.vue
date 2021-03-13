@@ -51,7 +51,7 @@
   </div>
 </template>
 <script>
-import docsService from "../services/DocsService";
+import booksService from "../services/BooksService.js"
 
 export default {
   name: "new-book-form",
@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     saveBook() {
-      docsService.create(this.book).then((response) => {
+      booksService.create(this.book).then((response) => {
         if (response.status === 200) {
           alert(
             `Book Added Successfully!
@@ -120,11 +120,11 @@ export default {
   border-radius: 10px;
   width: 25%;
   box-shadow: 10px 10px #888888;
-}
+  }
 
 .input-center {
   text-align: center;
-}
+  }
 
 .input-line {
   border-style: none;

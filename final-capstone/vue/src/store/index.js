@@ -35,10 +35,12 @@ export default new Vuex.Store({
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     },
+
     SET_USER(state, user) {
       state.user = user;
       localStorage.setItem('user',JSON.stringify(user));
     },
+    
     LOGOUT(state) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -51,10 +53,10 @@ export default new Vuex.Store({
       state.books.push(book);
     },
 
-   
     SET_READ_STATUS(state, payload) {
       payload.book.read = payload.value;
     },
+    
     LIST_EVERYTHING(state,books){
       state.books = books
     }
