@@ -49,16 +49,17 @@ public class BookController
 //		}
 	}
 
-	@GetMapping("")
-	public List<Book> listAll()
-	{
-		return booksDAO.listAll();
-	}
+	//@GetMapping("")
+	//public List<Book> listAll()
+	//{
+		//return booksDAO.listAll();
+	//}
 
-	@GetMapping("{user_id}/")
-	public List<Book> getBooksByUserId(@PathVariable int user_id)
+	@GetMapping("")
+	public List<Book> getBooksByUserId(Principal currentUser)
 	{
-		return booksDAO.getBooksByUserId(user_id);
+		int currentUserId = userDAO.findIdByUsername(currentUser.getName());
+		return booksDAO.getBooksByUserId(currentUserId);
 	}
 
 }

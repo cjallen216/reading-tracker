@@ -52,8 +52,9 @@ public class BookSqlDAO implements BookDAO
 			return prepared;
 		}, bookUserKeyHolder) == 1;
 		int newBookUserId = (int) bookUserKeyHolder.getKeys().get(book_user_id_column);
-		
+
 		return (bookCreated && bookUserCreated);
+
 	}
 
 	@Override
