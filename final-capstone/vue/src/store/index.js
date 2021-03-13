@@ -50,8 +50,13 @@ export default new Vuex.Store({
     SAVE_BOOK(state,book) {
       state.books.push(book);
     },
+
+   
     SET_READ_STATUS(state, payload) {
       payload.book.read = payload.value;
+    },
+    LIST_EVERYTHING(state,books){
+      state.books = books
     }
   }
 })
