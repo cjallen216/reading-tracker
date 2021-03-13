@@ -45,12 +45,6 @@ public class BookController
 		}
 	}
 
-	//@GetMapping("")
-	//public List<Book> listAll()
-	//{
-		//return booksDAO.listAll();
-	//}
-
 	@GetMapping("")
 	public List<Book> getBooksByUserId(Principal currentUser)
 	{

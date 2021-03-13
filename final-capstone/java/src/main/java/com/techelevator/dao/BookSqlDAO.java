@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 import com.techelevator.model.Book;
 
 @Service
-public class BookSqlDAO implements BookDAO
-{
+public class BookSqlDAO implements BookDAO {
 	private JdbcTemplate jdbcTemplate;
 
-	public BookSqlDAO(JdbcTemplate jdbcTemplate)
-	{
+	public BookSqlDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
@@ -54,12 +52,10 @@ public class BookSqlDAO implements BookDAO
 		int newBookUserId = (int) bookUserKeyHolder.getKeys().get(book_user_id_column);
 
 		return (bookCreated && bookUserCreated);
-
 	}
 
 	@Override
-	public List<Book> listAll()
-	{
+	public List<Book> listAll()	{
 		List<Book> books = new ArrayList<>();
 		String sql = "SELECT book_id " +
 						"	, isbn " +
@@ -77,8 +73,7 @@ public class BookSqlDAO implements BookDAO
 	}
 
 	@Override
-	public Book getBookByID(int bookId)
-	{
+	public Book getBookByID(int bookId)	{
 		String sql = "SELECT book_id " +
 						"	, isbn " +
 						"	, title " +
@@ -95,8 +90,7 @@ public class BookSqlDAO implements BookDAO
 	}
 
 	@Override
-	public List<Book> getBooksByUserId(int user_id)
-	{
+	public List<Book> getBooksByUserId(int user_id)	{
 		List<Book> books = new ArrayList<>();
 		String sql = "SELECT b.book_id "
 						+ ", title "
@@ -108,16 +102,14 @@ public class BookSqlDAO implements BookDAO
 				+ "WHERE bu.user_id = ?; ";
 
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
-		while (results.next())
-		{
+		while (results.next()) {
 			Book book = mapRowToBook(results);
 			books.add(book);
 		}
 		return books;
 	}
 
-	public Book getBookByIsbn(String isbn)
-	{
+	public Book getBookByIsbn(String isbn) {
 		String sql = "SELECT book_id " + 
 				"        , isbn " + 
 				"        , title " + 
@@ -126,18 +118,15 @@ public class BookSqlDAO implements BookDAO
 				"FROM books " + 
 				"WHERE isbn = ?;";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, isbn);
-		if (results.next())
-		{
+		if (results.next())	{
 			return mapRowToBook(results);
-		} else
-		{
+		} else	{
 			throw new RuntimeException("Book isbn " + isbn + " was not found.");
 		}
 	}
 	
 	@Override
-	public Book getBookByTitle(String title)
-	{
+	public Book getBookByTitle(String title) {
 		String sql = "SELECT book_id " + 
 				"        , isbn " + 
 				"        , title " + 
@@ -146,17 +135,28 @@ public class BookSqlDAO implements BookDAO
 				"FROM books " + 
 				"WHERE title = ?;";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, title);
-		if (results.next())
-		{
+		if (results.next())	{
 			return mapRowToBook(results);
-		} else
-		{
+		} else	{
 			throw new RuntimeException("Book title: " + title + " was not found.");
 		}
 	}
+	
+	@Override
+	public int getBookUserId(int book_id, int user_id) {
+		String sql = "SELECT books_users_id " 
+				+ "FROM books_users "
+				+ "WHERE book_id = ? "
+				+ "AND user_id = ?;";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, book_id, user_id);
+		if(results.next()) {
+			return results.getInt("books_users_id");
+		} else {
+			throw new RuntimeException("No book user found for " + book_id + "book id and " + user_id + "user id.");
+		}
+	}
 
-	private Book mapRowToBook(SqlRowSet rs)
-	{
+	private Book mapRowToBook(SqlRowSet rs)	{
 		Book book = new Book();
 		book.setBookId(rs.getInt("book_id"));
 		book.setIsbn(rs.getString("isbn"));
