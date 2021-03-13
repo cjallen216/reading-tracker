@@ -1,13 +1,3 @@
-<script>
-  export default {
-    name: 'modal',
-    methods: {
-      close() {
-        this.$emit('close');
-      },
-    },
-  };
-</script>
 <template>
   <transition name="modal-fade">
     <div class="modal-backdrop">
@@ -21,7 +11,7 @@
           id="modalTitle"
         >
           <slot name="header">
-            This is the default tile!
+            Success!
           </slot>
         </header>
         <section
@@ -29,7 +19,7 @@
           id="modalDescription"
         >
           <slot name="body">
-            HELLO BODY!!!
+            body
           </slot>
         </section>
         <footer class="modal-footer">
@@ -49,6 +39,18 @@
     </div>
   </transition>
 </template>
+
+<script>
+  export default {
+    name: 'modal',
+    methods: {
+      close() {
+        this.$emit('close');
+      },
+    },
+  };
+</script>
+
 <style>
   .modal-backdrop {
     position: fixed;

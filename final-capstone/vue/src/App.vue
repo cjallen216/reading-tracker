@@ -4,45 +4,16 @@
     <h1>Welcome To The Dewey Decimal Reading Tracker</h1>
     <h3>Conan The Librarian Approved!</h3>
     <router-view />
-<p>
-  <button
-      type="button"
-      class="btn"
-      @click="showModal"
-    >
-      Open Modal
-    </button>
-
-    <modal
-      v-show="isModalVisible"
-      @close="closeModal"
-    />
-</p>
 
   </div>
 </template>
 <script>
 import NavBar from "@/components/NavBar.vue";
-import modal from '@/components/Modal.vue';
 
   export default {
     name: 'app',
     components: {
       NavBar,
-      modal,
-    },
-    data () {
-      return {
-        isModalVisible: false,
-      };
-    },
-    methods: {
-      showModal() {
-        this.isModalVisible = true;
-      },
-      closeModal() {
-        this.isModalVisible = false;
-      }
     },
   };
 </script>
