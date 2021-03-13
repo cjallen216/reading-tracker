@@ -11,6 +11,6 @@ export default {
     },
 
     list() {
-        return http.get('/books/');
+        return http.get(`/books/`);
     },
 }
