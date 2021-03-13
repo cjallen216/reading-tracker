@@ -90,8 +90,10 @@ export default {
             this.book.title = '';
             this.book.author = '';
             this.book.isbn = '';
-            this.book.imgLink= '';
-            // this.$router.push('/myBooks');
+          this.book.imgLink= '';
+          }
+          else {
+            alert('Book Already Exists In Your Book List - Please Try Another');
           }
         })
     }
