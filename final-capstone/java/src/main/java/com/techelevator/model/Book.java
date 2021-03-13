@@ -6,9 +6,20 @@ public class Book {
 	private String title;
 	private String author;
 	private String imgLink;
+	private boolean completed;
+	private boolean currentBook;
 	
+	
+	public Book(int bookId, String isbn, String title, String author, String imgLink, boolean completed, boolean currentBook) {
+		this.bookId = bookId;
+		this.isbn = isbn;
+		this.title = title;
+		this.author = author;
+		this.imgLink = imgLink;
+		this.completed = completed;
+		this.currentBook = currentBook;
+	}
 	public Book(int bookId, String isbn, String title, String author, String imgLink) {
-		super();
 		this.bookId = bookId;
 		this.isbn = isbn;
 		this.title = title;
@@ -57,4 +68,20 @@ public class Book {
 	public void setImgLink(String imgLink) {
 		this.imgLink = imgLink;
 	}
+	public boolean getCompleted() {
+		return completed;
+	}
+	
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
+	public boolean getCurrentBook() {
+		return currentBook;
+	}
+	
+	public void setCurrentBook(boolean currentBook) {
+		this.currentBook = currentBook;
+	}
+	
+	
 }
