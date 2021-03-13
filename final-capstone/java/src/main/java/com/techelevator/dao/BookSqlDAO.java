@@ -61,12 +61,9 @@ public class BookSqlDAO implements BookDAO
 	public List<Book> listAll()
 	{
 		List<Book> books = new ArrayList<>();
-		String sql = "SELECT book_id " +
-						"	, isbn " +
-						"	, title " +
-						"	, author " +
-						"	, cover_img_link " +
-					"FROM books ";
+		String sql = "SELECT books.book_id, isbn, title, author, cover_img_link, completed, current_book\r\n" + 
+				" FROM books\r\n" + 
+				" JOIN books_users ON books_users.book_id = books.book_id ";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
 		while (results.next())
 		{
@@ -79,13 +76,10 @@ public class BookSqlDAO implements BookDAO
 	@Override
 	public Book getBookByID(int bookId)
 	{
-		String sql = "SELECT book_id " +
-						"	, isbn " +
-						"	, title " +
-						"	, author " +
-						"	, cover_img_link " +
-					"FROM books " +
-					"WHERE book_id = ?";
+		String sql = "SELECT books.book_id, isbn, title, author, cover_img_link, completed, current_book\r\n" + 
+				" FROM books\r\n" + 
+				" JOIN books_users ON books_users.book_id = books.book_id \r\n" + 
+				" WHERE books.book_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, bookId);
 		if (results.next())
 		{
@@ -100,18 +94,11 @@ public class BookSqlDAO implements BookDAO
 	public List<Book> getBooksByUserId(int user_id)
 	{
 		List<Book> books = new ArrayList<>();
-		String sql = "SELECT b.book_id " + 
-						"	, u.user_id " +
-						"	, b.isbn " +
-						"	, b.title " +
-						"	, b.author " +
-						"	, b.cover_img_link "	+
-					"FROM books AS b " +
-					"INNER JOIN books_users AS bu " +
-					"	ON b.book_id = bu.book_id " +
-					"INNER JOIN users AS u " +
-					"	ON bu.user_id = u.user_id " +
-					"WHERE u.user_id = ?;";
+		String sql = "SELECT books.book_id, isbn, title, author, cover_img_link, completed, current_book\r\n" + 
+				" FROM books\r\n" + 
+				" JOIN books_users ON books_users.book_id = books.book_id \r\n" + 
+				" WHERE books_users.user_id = ? \r\n" + 
+				" ORDER BY title;";
 
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
 		while (results.next())
@@ -124,13 +111,10 @@ public class BookSqlDAO implements BookDAO
 
 	public Book getBookByIsbn(String isbn)
 	{
-		String sql = "SELECT book_id " + 
-				"        , isbn " + 
-				"        , title " + 
-				"        , author " + 
-				"        , cover_img_link " + 
-				"FROM books " + 
-				"WHERE isbn = ?;";
+		String sql = "SELECT books.book_id, isbn, title, author, cover_img_link, completed, current_book\r\n" + 
+				" FROM books\r\n" + 
+				" JOIN books_users ON books_users.book_id = books.book_id \r\n" + 
+				" WHERE isbn = ? ";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, isbn);
 		if (results.next())
 		{
@@ -144,13 +128,10 @@ public class BookSqlDAO implements BookDAO
 	@Override
 	public Book getBookByTitle(String title)
 	{
-		String sql = "SELECT book_id " + 
-				"        , isbn " + 
-				"        , title " + 
-				"        , author " + 
-				"        , cover_img_link " + 
-				"FROM books " + 
-				"WHERE title = ?;";
+		String sql = "SELECT books.book_id, isbn, title, author, cover_img_link, completed, current_book\r\n" + 
+				" FROM books\r\n" + 
+				" JOIN books_users ON books_users.book_id = books.book_id \r\n" + 
+				" WHERE title = ? ";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, title);
 		if (results.next())
 		{
@@ -166,9 +147,11 @@ public class BookSqlDAO implements BookDAO
 		Book book = new Book();
 		book.setBookId(rs.getInt("book_id"));
 		book.setIsbn(rs.getString("isbn"));
-		book.setAuthor(rs.getString("author"));
 		book.setTitle(rs.getString("title"));
+		book.setAuthor(rs.getString("author"));
 		book.setImgLink(rs.getString("cover_img_link"));
+		book.setCompleted(rs.getBoolean("completed"));
+		book.setCurrentBook(rs.getBoolean("current_book"));
 		return book;
 	}
 }
