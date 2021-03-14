@@ -43,7 +43,6 @@ public class BookController
 				bookCreated = booksDAO.createBook(newBook.getTitle(), newBook.getAuthor(), newBook.getIsbn(), newBook.getImgLink(), currentUserId);
 			
 				if(bookCreated == true) {
-					System.out.println("----------------------------- Book Created == true");
 					status = HttpStatus.CREATED;
 				} else {
 					status = HttpStatus.EXPECTATION_FAILED;
