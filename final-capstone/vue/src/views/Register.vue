@@ -1,5 +1,12 @@
 <template>
-  <div id="register" class="center">
+  <div id="register" 
+    class="center"
+    :style="{backgroundImage: `url(${registerImg})`, 
+      backgroundSize: 'auto', 
+      backgroundRepeat: 'no-repeat',
+      BackgroundPosition: 'center' 
+    }"
+  >
     <form class="form-register" @submit.prevent="register">
       <div>
         <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
@@ -88,6 +95,7 @@
 
 <script>
 import authService from "../services/AuthService.js";
+import registerImg from "@/assets/register.png";
 
 export default {
   name: "register",
@@ -104,6 +112,7 @@ export default {
       },
       registrationErrors: false,
       registrationErrorMsg: "There were problems registering this user.",
+      registerImg
     };
   },
   methods: {
