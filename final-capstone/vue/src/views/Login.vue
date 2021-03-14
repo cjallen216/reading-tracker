@@ -1,5 +1,12 @@
 <template>
-  <div id="login" class="text-center">
+  <div id="login"
+    class="center" 
+    :style="{backgroundImage: `url(${loginImg})`, 
+      backgroundSize: 'auto', 
+      backgroundRepeat: 'no-repeat',
+      BackgroundPosition: 'center' 
+    }"
+  >
     <form class="form-signin" @submit.prevent="login">
       <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
       <div class="alert alert-danger" role="alert" v-if="invalidCredentials">
@@ -46,6 +53,7 @@
 
 <script>
 import authService from "../services/AuthService.js";
+import loginImg from "@/assets/login.png";
 
 export default {
   name: "login",
@@ -57,6 +65,7 @@ export default {
         password: "",
       },
       invalidCredentials: false,
+      loginImg
     };
   },
   methods: {
