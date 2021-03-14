@@ -26,6 +26,11 @@ public class Book {
 		this.imgLink = imgLink;
 	}
 	
+	public Book(String title, String author) {
+		this.title = title;
+		this.author = author;
+	}
+	
 	public Book () {}
 	
 	public int getBookId() {

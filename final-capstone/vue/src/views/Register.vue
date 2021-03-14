@@ -1,21 +1,20 @@
 <template>
   <div id="register" 
-    class="center"
     :style="{backgroundImage: `url(${registerImg})`, 
       backgroundSize: 'auto', 
       backgroundRepeat: 'no-repeat',
       BackgroundPosition: 'center' 
     }"
   >
-    <form class="form-register" @submit.prevent="register">
+    <form class="form" @submit.prevent="register">
       <div>
-        <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
+        <h1 class="title">Create Account</h1>
       </div>
       <div class="alert alert-danger" role="alert" id="regerror" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
       <div class="form-body">
-        <div class="input-line" style="color:red;">&nbsp;&nbsp;*
+        <div class="input-line" style="color:red;">*
           <input
             type="text"
             id="username"
@@ -26,7 +25,7 @@
             autofocus
           />
         </div>
-        <div class="input-line" style="color:red;">&nbsp;&nbsp;*
+        <div class="input-line" style="color:red;">*
           <input
             type="text"
             id="first-name"
@@ -36,16 +35,16 @@
             required
           />
         </div>
-        <div class="input-line">&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="input-line">
           <input
             type="text"
             id="last-name"
             class="form-control"
-            placeholder="Last Name"
+            placeholder="  Last Name"
             v-model="user.lastName"
           />
         </div>
-        <div class="input-line" style="color:red;">&nbsp;&nbsp;*
+        <div class="input-line" style="color:red;">*
           <input
             type="email"
             id="email-address"
@@ -55,7 +54,7 @@
             required
           />
         </div>
-        <div class="input-line" style="color:red;">&nbsp;&nbsp;*
+        <div class="input-line" style="color:red;">*
           <input
             type="password"
             id="password"
@@ -65,7 +64,7 @@
             required
           />
         </div>
-        <div class="input-line" style="color:red;">&nbsp;&nbsp;*
+        <div class="input-line" style="color:red;">*
           <input
             type="password"
             id="confirmPassword"
@@ -75,13 +74,13 @@
             required
           />
         </div>
-        <div class="center">
-          <p class="requirements">Fields marked with * are required</p>
-          <router-link :to="{ name: 'login' }">Have an account?</router-link>
-        </div>
+        <div>
+          <p class="requirements">* Required</p>
+          <router-link class="finished-link"  :to="{ name: 'login' }">Have an account?</router-link>
+        </div><br>
         <div class="center">
           <button
-            class="btn btn-lg btn-primary btn-block"
+            class="button"
             type="submit"
             id="button"
           >
@@ -95,7 +94,7 @@
 
 <script>
 import authService from "../services/AuthService.js";
-import registerImg from "@/assets/register.png";
+import registerImg from "@/assets/login.png";
 
 export default {
   name: "register",
@@ -152,44 +151,8 @@ export default {
 #register {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+
   align-items: center;
-}
-
-#register button {
-  margin: 10px;
-  font-size: 1rem;
-}
-
-.form-register {
-  background-color: rgb(247, 244, 231);
-  border-radius: 10px;
-  width: 25%;
-  box-shadow: 10px 10px #888888;
-}
-
-.form-register div {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1em;
-  padding: 6px 0px;
-}
-
-.form-body input {
-  border-style: none;
-  border-color: gray;
-  background-color: rgb(247, 244, 231);
-}
-
-h1,
-p {
-  font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
-}
-
-.input-line {
-  border-style: none;
-  border-bottom-style: solid;
-  border-color: rgb(194, 194, 194);
 }
 
 .requirements {

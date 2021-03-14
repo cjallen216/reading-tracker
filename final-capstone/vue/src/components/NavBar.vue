@@ -17,18 +17,36 @@ export default {
 </script>
 
 <style>
+  #nav {
+    padding: 6px;
+  }
 
-#nav {
-  padding: 10px;
-}
+  #nav a {
+    font-weight: bold;
+    color:whitesmoke;
+  }
 
-#nav a {
-  font-weight: bold;
-  color:#6a49ff;
-}
+  #nav a.router-link-exact-active {
+    text-decoration: none;  
+    color: whitesmoke;
+    text-transform: uppercase;
+  }
 
-#nav a.router-link-exact-active {
-  text-decoration: none;  
-  color: black;
-}
+  #nav ul {
+    padding: 5px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  #nav ul li {
+    list-style: none;
+    width: 10%;
+    background-color: #875F9A;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 50px;
+    box-shadow: 4px 8px #51395c;
+    cursor: pointer;
+  }
 </style>

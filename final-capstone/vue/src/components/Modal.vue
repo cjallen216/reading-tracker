@@ -10,7 +10,7 @@
           class="modal-header"
           id="modalTitle"
         >
-          <slot name="header">
+          <slot name="header" class="center">
             Success!
           </slot>
         </header>
@@ -28,7 +28,7 @@
 
             <button
               type="button"
-              class="btn-green"
+              class="button btn-close"
               @click="close"
               aria-label="Close modal"
             >Close
@@ -65,7 +65,7 @@
   }
 
   .modal {
-    background: #FFFFFF;
+    background: whitesmoke;
     box-shadow: 2px 2px 20px 1px;
     overflow-x: auto;
     display: flex;
@@ -79,35 +79,31 @@
   }
 
   .modal-header {
-    border-bottom: 1px solid #eeeeee;
-    color: #4AAE9B;
+    border-bottom: 1px solid whitesmoke;
+    color: #03A678;
     justify-content: space-between;
+    align-content: center;
+    font-size: 5vw;
+    font-weight: bold;
+    -webkit-text-stroke: 1px #875F9A;
   }
 
   .modal-footer {
-    border-top: 1px solid #eeeeee;
+    border-top: 1px solid whitesmoke;
     justify-content: center;
   }
 
   .modal-body {
     position: relative;
     padding: 20px 10px;
+    box-shadow: 10px 10px #51395c;
   }
 
   .btn-close {
-    border: none;
-    font-size: 20px;
-    padding: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    color: #4AAE9B;
+    color: #03A678;
     background: transparent;
+    font-weight: bold;
   }
 
-  .btn-green {
-    color: white;
-    background: #4AAE9B;
-    border: 1px solid #4AAE9B;
-    border-radius: 2px;
-  }
+
 </style>

@@ -72,7 +72,7 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
         int bookUserId = bookSqlDAO.getBookUserId(BOOK_ID, USER_ID);
         
         // assert
-        assertNotEquals(0, bookUserId);
+        assertNotEquals(0, bookUserId, MESSAGE);
     }
     
     @Test
@@ -83,20 +83,9 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
     	ISBN = "ISBN" ;
     	IMG = "abcefghijklmnopqrstuvwxyz";
     	
-		String insertBook = "INSERT INTO books (title, author, isbn, cover_img_link) VALUES (?,?,?,?)";
-		GeneratedKeyHolder bookKeyHolder = new GeneratedKeyHolder();
-		String book_id_column = "book_id";
-		boolean bookCreated = false;
-		
-		bookCreated = jdbcTemplate.update(connection -> {
-			PreparedStatement prepared = connection.prepareStatement(insertBook, new String[] { book_id_column });
-			prepared.setString(1, TITLE);
-			prepared.setString(2, AUTHOR);
-			prepared.setString(3, ISBN);
-			prepared.setString(4, IMG);
-			return prepared;
-		}, bookKeyHolder) == 1;
-		BOOK_ID = (int) bookKeyHolder.getKeys().get(book_id_column);
+        bookSqlDAO.createBook(TITLE, AUTHOR, ISBN, IMG, USER_ID);
+        Book book = bookSqlDAO.getBookByTitle(TITLE);
+        BOOK_ID = book.getBookId();
 
         // act
        Book actual = bookSqlDAO.getBookByID(BOOK_ID);
@@ -111,7 +100,8 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
     
     @Test
     public void getBooksByUserId(){
-        // arrange         
+        // arrange    
+    	MESSAGE = "Returns the size of the user's book list";
         for (int i = 0; i < 5; i++) {        	
         	TITLE = "TITLE" + i;
         	AUTHOR = "AUTHOR";
@@ -127,7 +117,7 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
     	List<Book> actual = bookSqlDAO.getBooksByUserId(USER_ID);
 
         // assert
-        assertEquals(expectedCount, actual.size());
+        assertEquals(expectedCount, actual.size(), MESSAGE);
     }
     
     @Test

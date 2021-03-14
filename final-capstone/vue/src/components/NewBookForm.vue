@@ -1,10 +1,9 @@
 <template>
   <div id="new-book">
-    <form class="new-book-form">
+    <form class="form">
       <div>
-        <h1>Add A Book</h1>
+        <h1 class="title">Add A Book</h1>
       </div>
-
       <div class="form-body">
         <div class="input-line">
           <input
@@ -38,13 +37,9 @@
             v-model="book.imgLink"
           />
         </div>
-
         <div class="center">
-          <button 
-            v-on:click.prevent="
-            saveBook();
-            "
-          >
+          <br><button 
+            v-on:click.prevent="saveBook();" class="button">
             Add Book
           </button>
           <modal v-show="isCreateBookModalVisible" @close="closeCreateBookModal">
@@ -62,10 +57,9 @@
         </div>
       </div>
     </form>
-    <p></p>
-    <router-link v-bind:to="{ name: 'my-books' }"
-      >I'm done adding books</router-link
-    >
+    <router-link class="finished-link" v-bind:to="{ name: 'my-books' }" >
+      I'm done adding books
+    </router-link>
   </div>
 </template>
 <script>
@@ -103,11 +97,13 @@ export default {
   methods: {
     saveBook() {
       booksService.create(this.book).then((response) => {
-        if (response.status === 200) {
+        if (response.status === 201) {
           this.showCreateBookModal();
           this.$store.commit("SAVE_BOOK", this.book);
-        } else {
+        } else if(response.status === 409) {
           this.showDuplicateBookModal();
+        } else {
+          alert("Conan the Librarian was unable to add your book at this time. Please try again later.")
         }
       });
     },
@@ -140,34 +136,5 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.new-book-form {
-  margin: 20px;
-}
-
-.new-book-form input,
-.new-book-form button {
-  margin: 10px;
-  font-size: 1rem;
-}
-
-.new-book-form {
-  background-color: rgb(247, 244, 231);
-  border-radius: 10px;
-  width: 25%;
-  box-shadow: 10px 10px #888888;
-  }
-
-.input-line {
-  border-style: none;
-  border-bottom-style: solid;
-  border-color: rgb(194, 194, 194);
-}
-
-.form-body input {
-  border-style: none;
-  border-color: gray;
-  background-color: rgb(247, 244, 231);
 }
 </style>

@@ -4,6 +4,7 @@ import com.techelevator.model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.postgresql.translation.messages_bg;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -31,7 +32,7 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		
 		// assert        
         Assert.assertTrue(userCreated);        
-        Assert.assertEquals("TEST_USER", user.getUsername());
+        Assert.assertEquals("TEST_USER", user.getUsername(), MESSAGE);
     }
     
     @Test
@@ -44,7 +45,7 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		User user = userSqlDAO.findByUsername("TEST_USER");
 		
 		// assert        
-        Assert.assertEquals("TEST_USER", user.getUsername());
+        Assert.assertEquals("TEST_USER", user.getUsername(), MESSAGE);
     }
     
     @Test
@@ -58,7 +59,7 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		int userId = userSqlDAO.findIdByUsername("TEST_USER");
 		
 		// assert        
-        Assert.assertEquals(nextId, userId);
+        Assert.assertEquals(String.valueOf(nextId), String.valueOf(userId), MESSAGE);
     }
     
     @Test
@@ -72,7 +73,7 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		
 		// assert
 		Assert.assertTrue(userCreated); 
-        Assert.assertEquals("test_firstName", user.getFirstName());
+        Assert.assertEquals("test_firstName", user.getFirstName(), MESSAGE);
     }
     
     @Test
@@ -86,7 +87,7 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		
 		// assert
         Assert.assertTrue(userCreated);
-        Assert.assertEquals("test@email.com", user.getEmail());
+        Assert.assertEquals("test@email.com", user.getEmail(), MESSAGE);
     }
     
     @Test
@@ -100,6 +101,6 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		
 		// assert        
         Assert.assertTrue(userCreated);
-        Assert.assertEquals("TEST_USER", user.getUsername());        
+        Assert.assertEquals("TEST_USER", user.getUsername(), MESSAGE);        
     }  
 }
