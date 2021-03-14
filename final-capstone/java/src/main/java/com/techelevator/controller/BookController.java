@@ -12,7 +12,6 @@ import com.techelevator.dao.BookDAO;
 import com.techelevator.dao.UserDAO;
 import com.techelevator.model.Book;
 import com.techelevator.model.BookAlreadyExistsException;
-import com.techelevator.model.User;
 
 @RequestMapping(path = "books/")
 @RestController
@@ -38,22 +37,7 @@ public class BookController
 			int currentUserId = userDAO.findIdByUsername(currentUser.getName());
 			booksDAO.createBook(newBook.getTitle(), newBook.getAuthor(), newBook.getIsbn(), newBook.getImgLink(), currentUserId);
 		}
-		
-//		Book book = booksDAO.getBookByTitle(newBook.getTitle());
-//			if (book !=null) {
-//				throw new BookAlreadyExistsException();
-//			}
-//			else {
-//				int currentUserId = userDAO.findIdByUsername(currentUser.getName());
-//				booksDAO.createBook(newBook.getTitle(), newBook.getIsbn(), newBook.getAuthor(), newBook.getImgLink(), currentUserId);
-//		}
 	}
-
-	//@GetMapping("")
-	//public List<Book> listAll()
-	//{
-		//return booksDAO.listAll();
-	//}
 
 	@GetMapping("")
 	public List<Book> getBooksByUserId(Principal currentUser)

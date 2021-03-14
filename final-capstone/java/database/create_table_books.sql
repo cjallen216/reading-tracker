@@ -15,10 +15,10 @@ CREATE SEQUENCE seq_book_id
 
 CREATE TABLE books(
 	book_id INTEGER DEFAULT nextval('seq_book_id') PRIMARY KEY NOT NULL,
-	isbn VARCHAR(13),
-	title VARCHAR(128),
-	author VARCHAR(64),
-	cover_img_link TEXT        
+	isbn VARCHAR(32),
+	title VARCHAR(256),
+	author VARCHAR(128),
+	cover_img_link VARCHAR(512)        
 );
 
 COMMIT TRANSACTION;

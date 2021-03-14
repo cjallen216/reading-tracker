@@ -7,8 +7,7 @@ public class Book {
 	private String author;
 	private String imgLink;
 	private boolean completed;
-	private boolean currentBook;
-	
+	private boolean currentBook;	
 	
 	public Book(int bookId, String isbn, String title, String author, String imgLink, boolean completed, boolean currentBook) {
 		this.bookId = bookId;
@@ -81,7 +80,5 @@ public class Book {
 	
 	public void setCurrentBook(boolean currentBook) {
 		this.currentBook = currentBook;
-	}
-	
-	
+	}	
 }

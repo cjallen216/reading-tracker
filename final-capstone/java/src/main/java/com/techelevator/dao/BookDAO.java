@@ -17,5 +17,7 @@ public interface BookDAO
 	public Book getBookByIsbn(String isbn);
 	
 	public Book getBookByTitle(String title);
+	
+	public int getBookUserId(int book_id, int user_id);
 
 }
