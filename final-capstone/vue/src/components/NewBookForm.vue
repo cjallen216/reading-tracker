@@ -39,7 +39,7 @@
           />
         </div>
 
-        <div class="input-center">
+        <div class="center">
           <button 
             v-on:click.prevent="
             saveBook();
@@ -157,10 +157,6 @@ export default {
   border-radius: 10px;
   width: 25%;
   box-shadow: 10px 10px #888888;
-  }
-
-.input-center {
-  text-align: center;
   }
 
 .input-line {

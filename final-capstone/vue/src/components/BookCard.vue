@@ -1,5 +1,5 @@
 <template>
-  <div class="card" v-bind:class="{ read: book.read }">
+  <div class="card center" v-bind:class="{ read: book.read }">
     <h2 class="book-title">
       <router-link
         v-bind:to="{ name: 'book-details', params: { isbn: book.isbn } }"
@@ -19,14 +19,14 @@
         v-on:click.prevent="setRead(true)"
         v-if="!book.read"
       >
-        Read
+        Mark Read
       </button>
       <button
         class="mark-unread"
         v-on:click.prevent="setRead(false)"
         v-if="book.read"
       >
-        Completed
+        UnMark Read
       </button>
     </div>
     <button v-if="enableAdd" v-on:click.prevent="addToReadingList(book)">
@@ -63,12 +63,11 @@ export default {
   height: 450px;
   margin: 20px;
   background-color: whitesmoke;
-  text-align: center;
   box-shadow: 5px 5px #505050;
 }
 
 .card.read {
-  background-color: #a2c7e5;
+  background-color: #6f96b6;
 }
 
 .card .book-title {

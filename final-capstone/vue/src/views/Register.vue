@@ -1,5 +1,5 @@
 <template>
-  <div id="register" class="text-center">
+  <div id="register" class="center">
     <form class="form-register" @submit.prevent="register">
       <div>
         <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
@@ -68,11 +68,11 @@
             required
           />
         </div>
-        <div class="input-center">
+        <div class="center">
           <p class="requirements">Fields marked with * are required</p>
           <router-link :to="{ name: 'login' }">Have an account?</router-link>
         </div>
-        <div class="input-center">
+        <div class="center">
           <button
             class="btn btn-lg btn-primary btn-block"
             type="submit"
@@ -157,10 +157,6 @@ export default {
   border-radius: 10px;
   width: 25%;
   box-shadow: 10px 10px #888888;
-}
-
-.input-center {
-  text-align: center;
 }
 
 .form-register div {

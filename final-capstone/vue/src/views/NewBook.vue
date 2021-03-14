@@ -11,11 +11,8 @@ import newBookForm from "../components/NewBookForm.vue"
 export default {
     components: {
         newBookForm
-    },
-
+    }
 }
 </script>
-
 <style>
-
 </style>

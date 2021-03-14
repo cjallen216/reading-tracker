@@ -1,5 +1,5 @@
 <template>
-  <div class="reading-list">
+  <div class="center">
       <div class="bookshelf">
           <reading-list />
       </div>
@@ -20,9 +20,6 @@ export default {
 </script>
 
 <style>
-.reading-list {
-    text-align: center;
-}
 .bookshelf {
     background: linear-gradient(#e5e6e3 90%, #cabaa1 10%);
     background-size: 500px 500px;
