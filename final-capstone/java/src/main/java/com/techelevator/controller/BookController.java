@@ -6,14 +6,14 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.techelevator.dao.BookDAO;
 import com.techelevator.dao.UserDAO;
 import com.techelevator.model.Book;
-import com.techelevator.model.BookAlreadyExistsException;
 
-@RequestMapping(path = "books/")
 @RestController
 @CrossOrigin
 public class BookController
@@ -23,20 +23,34 @@ public class BookController
 	@Autowired
 	private UserDAO userDAO;
 
-	@PostMapping("")
-	public void createBook(@Valid @RequestBody Book newBook, Principal currentUser)
+	@PostMapping("/addBook")
+	public ResponseEntity<String> createBook(@RequestBody Book newBook, Principal currentUser)
 	{
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		boolean bookCreated = false;
+
 		try {
-			Book book = booksDAO.getBookByTitle(newBook.getTitle());
+			Book duplicate = booksDAO.getBookByTitle(newBook.getTitle());
+			boolean isDuplicate = duplicate.getTitle().equals(newBook.getTitle());
 			
-			if (book !=null) {
-				throw new BookAlreadyExistsException();
+			if(isDuplicate) {
+				status = HttpStatus.CONFLICT;
 			}
-		}
-		catch (Exception e) {
-			int currentUserId = userDAO.findIdByUsername(currentUser.getName());
-			booksDAO.createBook(newBook.getTitle(), newBook.getAuthor(), newBook.getIsbn(), newBook.getImgLink(), currentUserId);
-		}
+		} catch (RuntimeException e) {
+			String expected = "Book title: " + newBook.getTitle() + " was not found.";
+			if (e.getMessage().equals(expected)) {
+				int currentUserId = userDAO.findIdByUsername(currentUser.getName());
+				bookCreated = booksDAO.createBook(newBook.getTitle(), newBook.getAuthor(), newBook.getIsbn(), newBook.getImgLink(), currentUserId);
+			
+				if(bookCreated == true) {
+					System.out.println("----------------------------- Book Created == true");
+					status = HttpStatus.CREATED;
+				} else {
+					status = HttpStatus.EXPECTATION_FAILED;
+				}
+			} 
+		}		
+		return new ResponseEntity<String>(status);
 	}
 
 	@GetMapping("")

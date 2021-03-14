@@ -35,6 +35,7 @@ public class BookSqlDAO implements BookDAO {
 			return prepared;
 		}, bookKeyHolder) == 1;
 		int newBookId = (int) bookKeyHolder.getKeys().get(book_id_column);
+		System.out.println("**************************************** new book Id = " + newBookId);
 
 		String insertBookUser = "INSERT INTO books_users (user_id, book_id, current_book, completed) VALUES (?,?,?,?)";
 		GeneratedKeyHolder bookUserKeyHolder = new GeneratedKeyHolder();
@@ -50,6 +51,7 @@ public class BookSqlDAO implements BookDAO {
 			return prepared;
 		}, bookUserKeyHolder) == 1;
 		int newBookUserId = (int) bookUserKeyHolder.getKeys().get(book_user_id_column);
+		System.out.println("**************************************** new books_users Id = " + newBookUserId);
 
 		return (bookCreated && bookUserCreated);
 	}
