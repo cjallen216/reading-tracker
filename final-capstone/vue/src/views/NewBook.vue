@@ -1,14 +1,12 @@
 <template>
     <div 
         :style="{backgroundImage: `url(${addBookImg})`, 
-            backgroundSize: 'contain', 
-            backgroundRepeat: 'no-repeat',
-            BackgroundPosition: 'center' 
+            backgroundSize: '36%', 
+            backgroundRepeat: 'no-repeat'
         }"
     >
       <new-book-form />  
-    </div>
-  
+    </div>  
 </template>
 
 <script>

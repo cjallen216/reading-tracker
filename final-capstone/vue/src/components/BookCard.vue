@@ -15,21 +15,21 @@
     />
     <div class="button-container" v-if="!enableAdd">
       <button
-        class="mark-read"
+        class="mark-read button"
         v-on:click.prevent="setRead(true)"
         v-if="!book.read"
       >
         Mark Read
       </button>
       <button
-        class="mark-unread"
+        class="mark-unread button"
         v-on:click.prevent="setRead(false)"
         v-if="book.read"
       >
         UnMark Read
       </button>
     </div>
-    <button v-if="enableAdd" v-on:click.prevent="addToReadingList(book)">
+    <button class="button" v-if="enableAdd" v-on:click.prevent="addToReadingList(book)">
       Add to Reading List
     </button>
   </div>
@@ -63,18 +63,11 @@ export default {
   height: 450px;
   margin: 20px;
   background-color: whitesmoke;
-  box-shadow: 5px 5px #505050;
+  box-shadow: 8px 10px #51395c;
+  border-radius: 5px;
 }
 
 .card.read {
   background-color: #6f96b6;
-}
-
-.card .book-title {
-  font-size: 1rem;
-}
-
-.card .book-author {
-  font-size: 0.75rem;
 }
 </style>

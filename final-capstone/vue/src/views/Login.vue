@@ -1,14 +1,14 @@
 <template>
   <div id="login"
-    class="center" 
+
     :style="{backgroundImage: `url(${loginImg})`, 
-      backgroundSize: 'auto', 
+      backgroundSize: 'contain', 
       backgroundRepeat: 'no-repeat',
       BackgroundPosition: 'center' 
     }"
   >
-    <form class="form-signin" @submit.prevent="login">
-      <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
+    <form class="form" @submit.prevent="login">
+      <h1 class="title">Please Sign In</h1>
       <div class="alert alert-danger" role="alert" v-if="invalidCredentials">
         Invalid username and password!
       </div>
@@ -40,11 +40,13 @@
             required
           />
         </div>
-        <div class="center">
-          <router-link :to="{ name: 'register' }">Register New User</router-link>
+        <div class="finished-link">
+          <router-link :to="{ name: 'register' }">
+            Register New User
+          </router-link>
         </div>
         <div class="center">
-          <button type="submit">Sign in</button>
+          <button class="button" type="submit">Sign in</button>
         </div>
       </div>
     </form>
@@ -99,41 +101,4 @@ export default {
   align-items: center;
 }
 
-#login button {
-  margin: 10px;
-  font-size: 1rem;
-}
-
-.form-signin {
-  background-color: rgb(247, 244, 231);
-  border-radius: 10px;
-  width: 25%;
-  box-shadow: 10px 10px #888888;
-}
-
-.form-signin div {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-  padding: 6px 0px;
-}
-
-.form-body input {
-  border-style: none;
-  border-color: gray;
-  background-color: rgb(247, 244, 231);
-  margin: 10px;
-  font-size: 1rem;
-}
-
-h1,
-h3 {
-  font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
-}
-
-.input-line {
-  border-style: none;
-  border-bottom-style: solid;
-  border-color: rgb(194, 194, 194);
-}
 </style>

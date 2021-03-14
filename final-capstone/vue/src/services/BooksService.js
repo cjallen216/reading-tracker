@@ -7,7 +7,7 @@ const http = axios.create({
 export default {
 
     create(book) {
-        return http.post(`/books/`, book);
+        return http.post('/books/addBook', book);
     },
 
     list(user) {
