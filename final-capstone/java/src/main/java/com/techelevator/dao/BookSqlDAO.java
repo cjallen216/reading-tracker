@@ -163,6 +163,8 @@ public class BookSqlDAO implements BookDAO {
 		book.setAuthor(rs.getString("author"));
 		book.setTitle(rs.getString("title"));
 		book.setImgLink(rs.getString("cover_img_link"));
+		book.setCompleted(rs.getBoolean("completed"));
+		book.setCurrentBook(rs.getBoolean("current_book"));
 		return book;
 	}
 }
