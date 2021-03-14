@@ -1,5 +1,5 @@
 <template>
-  <div class="details" v-bind:class="{isbn : book.isbn}">
+  <div class="center" v-bind:class="{isbn : book.isbn}">
       <h2 class="book-title">{{book.title}}</h2>
       <h3 class="book-author">{{book.author}}</h3>
       <img v-if="book.isbn" v-bind:src="'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'" />
@@ -24,7 +24,4 @@ export default {
 }
 </script>
 <style>
-    .details {
-        text-align: center;
-    }
 </style>

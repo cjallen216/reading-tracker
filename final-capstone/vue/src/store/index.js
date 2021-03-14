@@ -47,7 +47,7 @@ export default new Vuex.Store({
       localStorage.removeItem('user');
       state.token = '';
       state.user = {};
-      axios.defaults.headers.common = {};
+      delete axios.defaults.headers.common['Authorization']
     },
 
     SAVE_BOOK(state,book) {
