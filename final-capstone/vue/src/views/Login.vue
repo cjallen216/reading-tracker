@@ -33,10 +33,10 @@
             required
           />
         </div>
-        <div class="input-center">
+        <div class="center">
           <router-link :to="{ name: 'register' }">Register New User</router-link>
         </div>
-        <div class="input-center">
+        <div class="center">
           <button type="submit">Sign in</button>
         </div>
       </div>
@@ -100,10 +100,6 @@ export default {
   border-radius: 10px;
   width: 25%;
   box-shadow: 10px 10px #888888;
-}
-
-.input-center {
-  text-align: center;
 }
 
 .form-signin div {
