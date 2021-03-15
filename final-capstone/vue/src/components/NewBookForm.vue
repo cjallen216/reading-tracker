@@ -99,7 +99,6 @@ export default {
       booksService.create(this.book).then((response) => {
         if (response.status === 201) {
           this.showCreateBookModal();
-          this.$store.commit("SAVE_BOOK", this.book);
         } else if(response.status === 409) {
           this.showDuplicateBookModal();
         } else {

@@ -9,13 +9,16 @@
 </template>
 
 <script>
-import ReadingList from '../components/ReadingList.vue'
+import ReadingList from '../components/ReadingList.vue';
+import booksService from '@/services/BooksService.js';
 
 export default {
     components: {
         ReadingList
     },
-
+    mounted() {
+        booksService.getMyBooks();
+    }
 }
 </script>
 

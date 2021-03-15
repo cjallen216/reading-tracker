@@ -20,7 +20,7 @@ public class BookSqlDAO implements BookDAO {
 	}
 
 	@Override
-	public boolean createBook(String title, String author, String isbn, String imgLink, int currentUserId) {
+	public Book createBook(String title, String author, String isbn, String imgLink, int currentUserId) {
 		String insertBook = "INSERT INTO books (title, author, isbn, cover_img_link) VALUES (?,?,?,?)";
 		GeneratedKeyHolder bookKeyHolder = new GeneratedKeyHolder();
 		String book_id_column = "book_id";
@@ -50,8 +50,13 @@ public class BookSqlDAO implements BookDAO {
 			return prepared;
 		}, bookUserKeyHolder) == 1;
 		int newBookUserId = (int) bookUserKeyHolder.getKeys().get(book_user_id_column);
+		Book newBook = null;
+		
+		if (bookCreated && bookUserCreated) {
+			newBook = getBookByTitle(title);
+		}
 
-		return (bookCreated && bookUserCreated);
+		return newBook;
 	}
 
 	@Override
@@ -173,6 +178,17 @@ public class BookSqlDAO implements BookDAO {
 		} else {
 			throw new RuntimeException("No book user found for " + book_id + "book id and " + user_id + "user id.");
 		}
+	}
+	
+	public Book updateBook(Book book, int userId) {
+		String sql = "UPDATE books_users"
+				+ "SET current_book = ? "
+				+ "SET completed = ? "
+				+ "WHERE user_id = ? "
+				+ "	AND book_id = ?;";
+		
+		jdbcTemplate.update(sql, book.getCurrentBook(), book.getCompleted(), userId, book.getBookId());
+		return getBookByTitle(book.getTitle());		
 	}
 
 	private Book mapRowToBook(SqlRowSet rs)	{

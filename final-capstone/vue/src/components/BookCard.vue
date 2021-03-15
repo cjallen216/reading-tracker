@@ -16,7 +16,7 @@
     <div class="button-container" v-if="!enableAdd">
       <button
         class="mark-read button"
-        v-on:click.prevent="setRead(true)"
+        v-on:click.prevent="setReadStatus(true)"
         v-if="!book.read"
       >
         Mark Read
@@ -35,6 +35,7 @@
   </div>
 </template>
 <script>
+import booksService from '@/services/BooksService.js';
 
 export default {
   name: "book-card",
@@ -46,9 +47,10 @@ export default {
     },
   },
   methods: {
-    setRead(value) {
-      this.$store.commit("SET_READ_STATUS", { book: this.book, value: value });
+    setReadStatus(value) {
+      booksService.updateBookStatus(this.book, 'read', value );
     },
+    
     addToReadingList(book) {
       let addedBook = Object.assign({ read: false }, book);
       this.$store.commit("SAVE_BOOK", addedBook);

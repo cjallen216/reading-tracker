@@ -40,20 +40,22 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
     }
 
     @Test
-    public void createNewBookReturnsTrue(){
+    public void createNewBookReturnsCreatedBook(){
         // arrange 
-    	MESSAGE = "Creating a new book returns true.";
     	TITLE = "TITLE_createNewBookReturnsTrue";
     	AUTHOR = "AUTHOR";
     	ISBN = "ISBN" ;
     	IMG = "abcefghijklmnopqrstuvwxyz";
-        boolean expected = true;
+        Book expected = new Book(BOOK_ID, ISBN, TITLE, AUTHOR, IMG, false, false);
 
         // act
-        boolean actual = bookSqlDAO.createBook(TITLE, AUTHOR, ISBN, IMG, USER_ID);
+        Book actual = bookSqlDAO.createBook(TITLE, AUTHOR, ISBN, IMG, USER_ID);
 
         // assert
-        assertEquals(expected, actual, MESSAGE);
+        assertEquals(TITLE, actual.getTitle(), "The title should be " + TITLE);
+        assertEquals(AUTHOR, actual.getAuthor(), "The author should be " + AUTHOR);
+        assertEquals(ISBN, actual.getIsbn(), "The isbn should be " + ISBN);
+        assertEquals(IMG, actual.getImgLink(), "The cover image link should be " + IMG);
     }
     
     @Test
@@ -91,11 +93,11 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
        Book actual = bookSqlDAO.getBookByID(BOOK_ID);
 
         // assert
-        assertEquals(TITLE, actual.getTitle(), "The title should be TITLE_getBookById");
-        assertEquals(AUTHOR, actual.getAuthor(), "The author should be AUTHOR");
-        assertEquals(ISBN, actual.getIsbn(), "The isbn should be ISBN");
-        assertEquals(IMG, actual.getImgLink(), "The cover image link should be abcefghijklmnopqrstuvwxyz");
-        assertEquals(BOOK_ID, actual.getBookId(), "The book id should be " + BOOK_ID);
+       assertEquals(TITLE, actual.getTitle(), "The title should be " + TITLE);
+       assertEquals(AUTHOR, actual.getAuthor(), "The author should be " + AUTHOR);
+       assertEquals(ISBN, actual.getIsbn(), "The isbn should be " + ISBN);
+       assertEquals(IMG, actual.getImgLink(), "The cover image link should be " + IMG);
+       assertEquals(BOOK_ID, actual.getBookId(), "The book id should be " + BOOK_ID);
     }
     
     @Test
@@ -133,10 +135,10 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
        Book actual = bookSqlDAO.getBookByIsbn(ISBN);
 
         // assert
-        assertEquals(TITLE, actual.getTitle(), "The title should be TITLE_getBookByIsbn");
-        assertEquals(AUTHOR, actual.getAuthor(), "The author should be AUTHOR");
-        assertEquals(ISBN, actual.getIsbn(), "The isbn should be ISBN");
-        assertEquals(IMG, actual.getImgLink(), "The cover image link should be abcefghijklmnopqrstuvwxyz");        
+       assertEquals(TITLE, actual.getTitle(), "The title should be " + TITLE);
+       assertEquals(AUTHOR, actual.getAuthor(), "The author should be " + AUTHOR);
+       assertEquals(ISBN, actual.getIsbn(), "The isbn should be " + ISBN);
+       assertEquals(IMG, actual.getImgLink(), "The cover image link should be " + IMG);    
     }
     
     @Test
@@ -152,9 +154,9 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
        Book actual = bookSqlDAO.getBookByTitle(TITLE);
 
         // assert
-        assertEquals(TITLE, actual.getTitle(), "The title should be TITLE_getBookByTitle");
-        assertEquals(AUTHOR, actual.getAuthor(), "The author should be AUTHOR");
-        assertEquals(ISBN, actual.getIsbn(), "The isbn should be ISBN");
-        assertEquals(IMG, actual.getImgLink(), "The cover image link should be abcefghijklmnopqrstuvwxyz");       
+       assertEquals(TITLE, actual.getTitle(), "The title should be " + TITLE);
+       assertEquals(AUTHOR, actual.getAuthor(), "The author should be " + AUTHOR);
+       assertEquals(ISBN, actual.getIsbn(), "The isbn should be " + ISBN);
+       assertEquals(IMG, actual.getImgLink(), "The cover image link should be " + IMG);     
     }
 }
