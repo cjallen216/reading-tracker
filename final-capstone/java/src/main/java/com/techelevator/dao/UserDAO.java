@@ -6,17 +6,17 @@ import java.util.List;
 
 public interface UserDAO {
 
-    List<User> getAllUsers();
+    List<User> findAll();
 
     User getUserById(Long userId);
 
-    User getUserByUsername(String username);
+    User findByUsername(String username);
 
-    int getUserIdByUsername(String username);
+    int findIdByUsername(String username);
     
-    User getUserByFirstName(String firstName);
+    User findByFirstName(String firstName);
     
-    User getUserByEmail(String email);
+    User findByEmail(String email);
 
-    boolean createUser(String firstName, String lastName, String email, String username, String password, String role);
+    boolean create(String firstName, String lastName, String email, String username, String password, String role);
 }

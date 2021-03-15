@@ -36,7 +36,7 @@ public class BookController
 		} catch (RuntimeException e) {
 			String expected = "Book title: " + newBook.getTitle() + " was not found.";
 			if (e.getMessage().equals(expected)) {
-				int currentUserId = userDAO.getUserIdByUsername(currentUser.getName());
+				int currentUserId = userDAO.findIdByUsername(currentUser.getName());
 				createdBook = booksDAO.createBook(newBook.getTitle(), newBook.getAuthor(), newBook.getIsbn(), newBook.getImgLink(), currentUserId);
 			
 				if(createdBook.getTitle() == newBook.getTitle()) {
@@ -53,7 +53,7 @@ public class BookController
 	public ResponseEntity<BookList> getBooksByUserId(Principal user)
 	{	
 		String userName = user.getName();
-		int currentUserId = userDAO.getUserIdByUsername(userName);
+		int currentUserId = userDAO.findIdByUsername(userName);
 		BookList bookList = new BookList(booksDAO.getBooksByUserId(currentUserId));
 		return ResponseEntity.ok(bookList);
 	}
@@ -63,7 +63,7 @@ public class BookController
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		Book updatedBook = null;
 		String userName = user.getName();
-		int userId = userDAO.getUserIdByUsername(userName);
+		int userId = userDAO.findIdByUsername(userName);
 		
 		if(statusType.equals("current")) {
 			book.setCurrentBook(value);

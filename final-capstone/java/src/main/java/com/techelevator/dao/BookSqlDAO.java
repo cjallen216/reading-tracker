@@ -195,8 +195,8 @@ public class BookSqlDAO implements BookDAO {
 		Book book = new Book();
 		book.setBookId(rs.getInt("book_id"));
 		book.setIsbn(rs.getString("isbn"));
-		book.setAuthor(rs.getString("author"));
 		book.setTitle(rs.getString("title"));
+		book.setAuthor(rs.getString("author"));
 		book.setImgLink(rs.getString("cover_img_link"));
 		book.setCompleted(rs.getBoolean("completed"));
 		book.setCurrentBook(rs.getBoolean("current_book"));
