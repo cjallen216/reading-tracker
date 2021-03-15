@@ -76,7 +76,9 @@
         </div>
         <div>
           <p class="requirements">* Required</p>
-          <router-link class="finished-link"  :to="{ name: 'login' }">Have an account?</router-link>
+          <div class="finished-link">
+            <router-link :to="{ name: 'login' }">Have an account?</router-link>
+          </div>
         </div><br>
         <div class="center">
           <button

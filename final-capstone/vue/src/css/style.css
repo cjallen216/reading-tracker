@@ -50,7 +50,8 @@
 
 .finished-link {
     font-size: 1.25vw;
-    padding:100px;
+    padding:20px;
+    text-align: center;
 }
 
 .book-title a {
