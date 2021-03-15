@@ -27,67 +27,67 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		MESSAGE = "Should return true if user created in database";
 		
 		// act
-		boolean userCreated = userSqlDAO.create("test_firstName", "test_lastName", "test@email.com", "TEST_USER", "test_password", "user");
-		User user = userSqlDAO.findByUsername("TEST_USER");
+		boolean userCreated = userSqlDAO.createUser("test_firstName", "test_lastName", "test@email.com", "TEST_USER", "test_password", "user");
+		User user = userSqlDAO.getUserByUsername("TEST_USER");
 		
 		// assert        
         Assert.assertTrue(userCreated);        
-        Assert.assertEquals("TEST_USER", user.getUsername(), MESSAGE);
+        Assert.assertEquals(MESSAGE, "TEST_USER", user.getUsername());
     }
     
     @Test
-    public void findByUsername() {
+    public void getUserByUsername() {
 		// arrange
 		MESSAGE = "Should return user with matching username";
 		
 		// act
-		userSqlDAO.create("test_firstName", "test_lastName", "test@email.com", "TEST_USER", "test_password", "user");
-		User user = userSqlDAO.findByUsername("TEST_USER");
+		userSqlDAO.createUser("test_firstName", "test_lastName", "test@email.com", "TEST_USER", "test_password", "user");
+		User user = userSqlDAO.getUserByUsername("TEST_USER");
 		
 		// assert        
-        Assert.assertEquals("TEST_USER", user.getUsername(), MESSAGE);
+        Assert.assertEquals(MESSAGE, "TEST_USER", user.getUsername());
     }
     
     @Test
-    public void findIdByUsername() {
+    public void getUserIdByUsername() {
 		// arrange    	
 		MESSAGE = "Should return user id of user with matching username";
-		int nextId = userSqlDAO.findNextUserId();
+		int nextId = userSqlDAO.getNextUserId();
 		
 		// act
-		userSqlDAO.create("test_firstName", "test_lastName", "test@email.com", "TEST_USER", "test_password", "user");
-		int userId = userSqlDAO.findIdByUsername("TEST_USER");
+		userSqlDAO.createUser("test_firstName", "test_lastName", "test@email.com", "TEST_USER", "test_password", "user");
+		int userId = userSqlDAO.getUserIdByUsername("TEST_USER");
 		
 		// assert        
-        Assert.assertEquals(String.valueOf(nextId), String.valueOf(userId), MESSAGE);
+        Assert.assertEquals(MESSAGE, String.valueOf(nextId), String.valueOf(userId));
     }
     
     @Test
-    public void findByFirstName() {
+    public void getUserByFirstName() {
 		// arrange
 		MESSAGE = "Should return user with matching first name";
 		
 		// act
-		boolean userCreated = userSqlDAO.create("test_firstName", "test_lastName", "test@email.com", "TEST_USER", "test_password", "user");
-		User user = userSqlDAO.findByFirstName("test_firstName");
+		boolean userCreated = userSqlDAO.createUser("test_firstName", "test_lastName", "test@email.com", "TEST_USER", "test_password", "user");
+		User user = userSqlDAO.getUserByFirstName("test_firstName");
 		
 		// assert
 		Assert.assertTrue(userCreated); 
-        Assert.assertEquals("test_firstName", user.getFirstName(), MESSAGE);
+        Assert.assertEquals(MESSAGE, "test_firstName", user.getFirstName());
     }
     
     @Test
-    public void findByEmail() {
+    public void getUserByEmail() {
 		// arrange
 		MESSAGE = "Should return user with matching email";
 		
 		// act
-		boolean userCreated = userSqlDAO.create("test_firstName", "test_lastName", "test@email.com", "TEST_USER", "test_password", "user");
-        User user = userSqlDAO.findByEmail("test@email.com");
+		boolean userCreated = userSqlDAO.createUser("test_firstName", "test_lastName", "test@email.com", "TEST_USER", "test_password", "user");
+        User user = userSqlDAO.getUserByEmail("test@email.com");
 		
 		// assert
         Assert.assertTrue(userCreated);
-        Assert.assertEquals("test@email.com", user.getEmail(), MESSAGE);
+        Assert.assertEquals(MESSAGE, "test@email.com", user.getEmail());
     }
     
     @Test
@@ -96,11 +96,11 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		MESSAGE = "Should be able to create user with empty string or null last name";
 		
 		// act
-		boolean userCreated = userSqlDAO.create("test_firstName", "", "test@email.com", "TEST_USER","test_password", "user");
-        User user = userSqlDAO.findByUsername("TEST_USER");
+		boolean userCreated = userSqlDAO.createUser("test_firstName", "", "test@email.com", "TEST_USER","test_password", "user");
+        User user = userSqlDAO.getUserByUsername("TEST_USER");
 		
 		// assert        
         Assert.assertTrue(userCreated);
-        Assert.assertEquals("TEST_USER", user.getUsername(), MESSAGE);        
+        Assert.assertEquals(MESSAGE, "TEST_USER", user.getUsername());        
     }  
 }
