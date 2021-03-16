@@ -49,12 +49,8 @@ export default {
     stop() {
       clearInterval(this.timer);
       this.isRunning = false;
-<<<<<<< HEAD
-      // total = this.total + this.timer;
-=======
-      total = this.total + this.timer;
+      this.total = this.total + this.timer;
       
->>>>>>> develop
     },
     reset() {
         this.total = this.total + this.elapsedTime
