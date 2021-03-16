@@ -9,13 +9,22 @@
 </template>
 
 <script>
-import ReadingList from '../components/ReadingList.vue'
+import ReadingList from '../components/ReadingList.vue';
+import booksService from '@/services/BooksService.js';
 
 export default {
     components: {
         ReadingList
     },
-
+    mounted() {
+        booksService.getMyBooks().then((response) => {
+            if (response.status === 200) {
+                this.$store.commit('SET_MY_BOOKS', response.data);
+          } else {
+            alert("Conan the Librarian was unable to pull your books at this time. Please try again later.")
+          }
+        });        
+    }
 }
 </script>
 
