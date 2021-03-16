@@ -5,7 +5,7 @@
     <button class="button" @click="stop" v-if="this.isRunning">Stop Timer</button>
     <button class="button" @click="reset">Reset</button>
     <h4>Total Time Spent Reading: {{this.total}}</h4>
-    <h4>Total Time Spent Reading: {{this.formattedTotal}}</h4>
+    <h4>Total Time Spent Reading: {{$store.state.total}}</h4>
   
   
   </div>
@@ -19,7 +19,7 @@ export default {
       elapsedTime: 0,
       timer: undefined,
       isRunning: false,
-      total: undefined
+      total: 0
     };
   },
   computed: {
@@ -34,7 +34,7 @@ export default {
 
 
       const date = new Date(null);
-      date.setSeconds(this.elapsedTime / 1000);
+      date.setSeconds(this.total / 1000);
       const utc = date.toUTCString();
       return utc.substr(utc.indexOf(":") - 2, 8);
     }
@@ -50,11 +50,13 @@ export default {
       clearInterval(this.timer);
       this.isRunning = false;
       total = this.total + this.timer;
+      
     },
     reset() {
-        this.total = this.formattedElapsedTime
-        
-        this.elapsedTime = 0;
+        this.total = this.total + this.elapsedTime
+        this.$store.commit('SAVE_TIME', this.formattedTotal)
+       this.elapsedTime = 0;
+          
     },
   }
 };
