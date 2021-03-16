@@ -19,7 +19,7 @@ export default {
     mounted() {
         booksService.getMyBooks().then((response) => {
             if (response.status === 200) {
-                this.$store.commit('SET_MY_BOOKS', response.data);
+                this.$store.commit('SET_MY_BOOKS', response.data.books);
           } else {
             alert("Conan the Librarian was unable to pull your books at this time. Please try again later.")
           }
