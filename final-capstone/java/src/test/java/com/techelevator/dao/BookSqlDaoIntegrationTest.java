@@ -3,19 +3,10 @@ package com.techelevator.dao;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.techelevator.model.Book;
-
-import com.techelevator.model.Book;
-
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import java.sql.PreparedStatement;
 import java.util.List;
 
 import javax.sql.DataSource;

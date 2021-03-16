@@ -44,20 +44,15 @@ public class BookController
 					status = HttpStatus.EXPECTATION_FAILED; //417 status code
 				}				
 			}				
-		} catch (Exception e) {
-			String expected = "Book title: " + newBook.getTitle() + " was not found.";
-			if (e.getMessage().equals(expected)) {				
-				createdBook = booksDAO.createBook(newBook.getTitle(), newBook.getAuthor(), newBook.getIsbn(), newBook.getImgLink(), currentUserId);
-				
-				if(createdBook.getTitle().equals(newBook.getTitle())) {
-					status = HttpStatus.CREATED; // 201 status code
-				} else {
-					status = HttpStatus.EXPECTATION_FAILED; //417 status code
-				}
-			}			
-		}
+		} catch (Exception e) {			
+			createdBook = booksDAO.createBook(newBook.getTitle(), newBook.getAuthor(), newBook.getIsbn(), newBook.getImgLink(), currentUserId);
 			
-		
+			if(createdBook.getTitle().equals(newBook.getTitle())) {
+				status = HttpStatus.CREATED; // 201 status code
+			} else {
+				status = HttpStatus.EXPECTATION_FAILED; //417 status code
+			}
+		}	
 		
 		return new ResponseEntity<Book>(createdBook, status);
 	}
