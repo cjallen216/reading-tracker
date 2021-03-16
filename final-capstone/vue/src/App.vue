@@ -19,7 +19,7 @@ import navBar from "@/components/NavBar.vue";
   body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
-    background: linear-gradient(to right, #03A678 20%, #6f96b6 80%);
+    background: linear-gradient(to bottom right, #117864 10%, #A3E4D7 90%);
     height: 100%;
     display: flex;
     flex-direction: column;

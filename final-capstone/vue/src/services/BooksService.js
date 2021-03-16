@@ -7,12 +7,17 @@ const http = axios.create({
 export default {
 
     create(book) {
-        return http.post('/books/addBook', book);
+        return http.post('/addBook', book);
     },
 
-    list(user) {
-        return http.get('books/myBooks/', user).then(results => {
-            this.$store.commit('SET_BOOK_LIST_RESULTS', results);
-        });
+    getMyBooks() {
+      return http.get("/myBooks");
     },
+
+    updateBookStatus(book, statusType, value){
+        return http.put('/myBooks')
+        .then((response) => {
+            this.$store.commit('UPDATE_BOOK_STATUS', response.data);
+        });
+    }
 }

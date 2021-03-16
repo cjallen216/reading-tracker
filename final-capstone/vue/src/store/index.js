@@ -47,19 +47,20 @@ export default new Vuex.Store({
       localStorage.removeItem('user');
       state.token = '';
       state.user = {};
-      delete axios.defaults.headers.common['Authorization']
+      axios.defaults.headers.common = {};
     },
 
-    SAVE_BOOK(state,book) {
+    SAVE_BOOK(state, book) {
       state.books.push(book);
     },
 
-    SET_READ_STATUS(state, payload) {
-      payload.book.read = payload.value;
+    UPDATE_BOOK_STATUS(state, book) {
+      const bookToUpdate = state.books.find(bookToUpdate => bookToUpdate.id === book.id);
+      Object.assign(bookToUpdate, book);
     },
     
-    LIST_EVERYTHING(state,books){
-      state.books = books
+    SET_MY_BOOKS(state, myBooks){
+      state.myBooks = myBooks
     }
   }
 })
