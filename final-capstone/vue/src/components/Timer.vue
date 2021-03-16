@@ -49,7 +49,7 @@ export default {
     stop() {
       clearInterval(this.timer);
       this.isRunning = false;
-      this.total = this.total + this.timer;
+      total = this.total + this.timer;
       
     },
     reset() {
