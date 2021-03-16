@@ -5,7 +5,7 @@
     <button class="button" @click="stop" v-if="this.isRunning">Stop Timer</button>
     <button class="button" @click="reset">Reset</button>
     <h4>Total Time Spent Reading: {{this.total}}</h4>
-    <h4>Total Time Spent Reading: {{this.formattedTotal}}</h4>
+    <!-- <h4>Total Time Spent Reading: {{this.formattedTotal}}</h4> -->
   
   
   </div>
@@ -49,7 +49,7 @@ export default {
     stop() {
       clearInterval(this.timer);
       this.isRunning = false;
-      total = this.total + this.timer;
+      // total = this.total + this.timer;
     },
     reset() {
         this.total = this.formattedElapsedTime

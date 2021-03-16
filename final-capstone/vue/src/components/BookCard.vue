@@ -13,6 +13,12 @@
         'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'
       "
     />
+    <img
+      v-if="!book.isbn"
+      v-bind:src="
+        'https://mrb.imgix.net/assets/default-book.png?auto=format&ixlib=react-9.0.3&w=150'
+      "
+    />
     <div class="button-container" v-if="!enableAdd">
       <button
         class="mark-read button"
@@ -93,5 +99,10 @@ export default {
 
 .card.read {
   background-color: #6f96b6;
+}
+
+img {
+  height: 200px;
+  width: 150px;
 }
 </style>
