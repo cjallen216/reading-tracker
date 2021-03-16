@@ -39,7 +39,7 @@ public class BookController
 		} catch (RuntimeException e) {
 			String expected = "Book title: " + newBook.getTitle() + " was not found.";
 			if (e.getMessage().equals(expected)) {
-				int currentUserId = userDAO.findIdByUsername(currentUser.getName());
+				int currentUserId = userDAO.getUserIdByUsername(currentUser.getName());
 				bookCreated = booksDAO.createBook(newBook.getTitle(), newBook.getAuthor(), newBook.getIsbn(), newBook.getImgLink(), currentUserId);
 			
 				if(bookCreated == true) {
@@ -55,7 +55,7 @@ public class BookController
 	@GetMapping("")
 	public List<Book> getBooksByUserId(Principal currentUser)
 	{
-		int currentUserId = userDAO.findIdByUsername(currentUser.getName());
+		int currentUserId = userDAO.getUserIdByUsername(currentUser.getName());
 		return booksDAO.getBooksByUserId(currentUserId);
 	}
 
