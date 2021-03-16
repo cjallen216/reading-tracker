@@ -7,24 +7,17 @@ const http = axios.create({
 export default {
 
     create(book) {
-        return http.post('/addBook', book)
-        .then((book) => {
-            this.$store.commit('SAVE_BOOK', book);
-        });
+        return http.post('/addBook', book);
     },
 
     getMyBooks() {
-      BookList list = restTemplate.getForObject("/myBooks", BookList.class);
-      List<Book> books = list.getBooks();         
-        return books.then((books) => {
-            this.$store.commit('SET_MY_BOOKS', books);
-        });
+      return http.get("/myBooks");
     },
 
     updateBookStatus(book, statusType, value){
         return http.put('/myBooks')
-        .then((updatedBook) => {
-            this.$store.commit('UPDATE_BOOK_STATUS', updatedBook);
+        .then((response) => {
+            this.$store.commit('UPDATE_BOOK_STATUS', response.data);
         });
     }
 }

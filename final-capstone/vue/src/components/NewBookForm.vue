@@ -42,17 +42,18 @@
             v-on:click.prevent="saveBook();" class="button">
             Add Book
           </button>
-          <modal v-show="isCreateBookModalVisible" @close="closeCreateBookModal">
+          <modal v-show="isCreateBookModalVisible" @close="closeCreateBookModal(); ; clearFormFields()">
             <h3 slot="body">
               Title: {{ this.book.title }}<br />
               Author: {{ this.book.author }}<br />
               ISBN #{{ this.book.isbn }}<br />
             </h3>
           </modal>
-          <modal v-show="isDuplicateBookModalVisible" @close="closeDuplicateBookModal">
-            <h3 slot="body">
+          <modal v-show="isDuplicateBookModalVisible" @close="closeDuplicateBookModal(); clearFormFields()">
+            <h2 slot="header"></h2>
+            <h2 slot="body">
               You already have {{ this.book.title }} on your list!<br />
-            </h3>
+            </h2>
           </modal>
         </div>
       </div>
@@ -96,37 +97,42 @@ export default {
   },
   methods: {
     saveBook() {
-      booksService.create(this.book).then((response) => {
-        if (response.status === 201) {
-          this.showCreateBookModal();
-        } else if(response.status === 409) {
-          this.showDuplicateBookModal();
-        } else {
-          alert("Conan the Librarian was unable to add your book at this time. Please try again later.")
-        }
-      });
-    },
+        booksService.create(this.book).then((response) => {
+          if (response.status === 201) {
+            this.showCreateBookModal();
+            this.$store.commit('SAVE_BOOK', response.data);
+          } else if(response.status === 204){        
+            this.showDuplicateBookModal();
+          } else {
+            alert("Conan the Librarian was unable to add your book at this time. Please try again later.")
+          }
+          
+        });
+      },
+
     showCreateBookModal() {
       this.isCreateBookModalVisible = true;
     },
+
     closeCreateBookModal(){
       this.isCreateBookModalVisible = false;
-      this.clearFormFields();
     },
+
     showDuplicateBookModal() {
       this.isDuplicateBookModalVisible = true;
     },
+
     closeDuplicateBookModal(){
       this.isDuplicateBookModalVisible = false;
-      this.clearFormFields();
     },
+
     clearFormFields(){
         this.book.title = "";
         this.book.author = "";
         this.book.isbn = "";
         this.book.imgLink = "";
     }
-  },
+  }
 };
 </script>
 <style>

@@ -10,10 +10,10 @@ public interface BookDAO
 
 	public List<Book> listAll();
 
-	public Book getBookByID(int book_id);
+	public Book getBookByID(int book_id);	
 	
 	public List<Book> getBooksByUserId(int user_id);
-	
+
 	public Book getBookByIsbn(String isbn);
 	
 	public Book getBookByTitle(String title);
@@ -22,4 +22,5 @@ public interface BookDAO
 	
 	public Book updateBook(Book book, int userId);
 
+	public int insertBookUser(int bookId, int userId);
 }

@@ -17,7 +17,13 @@ export default {
         ReadingList
     },
     mounted() {
-        booksService.getMyBooks();
+        booksService.getMyBooks().then((response) => {
+            if (response.status === 200) {
+                this.$store.commit('SET_MY_BOOKS', response.data);
+          } else {
+            alert("Conan the Librarian was unable to pull your books at this time. Please try again later.")
+          }
+        });        
     }
 }
 </script>

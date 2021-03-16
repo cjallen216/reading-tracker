@@ -39,6 +39,11 @@ import booksService from '@/services/BooksService.js';
 
 export default {
   name: "book-card",
+  data(){
+    return {
+      readStatus: false
+    }
+  },
   props: {
     book: Object,
     enableAdd: {
@@ -47,14 +52,31 @@ export default {
     },
   },
   methods: {
-    setReadStatus(value) {
-      booksService.updateBookStatus(this.book, 'read', value );
+    setReadStatus() {
+      this.readStatus = !this.book.read;
+      booksService.updateBookStatus(this.book, 'read', !this.book.read).then((response) => {
+        if (response.status === 200) {
+                this.$store.commit('UPDATE_BOOK_STATUS', response.data);
+          } else {
+            alert("Conan the Librarian was unable to change your read status at this time. Please try again later.")
+          }
+      });
+    },
+
+    setCurrentlyReading(){
+      booksService.updateBookStatus(this.book, 'reading', !this.book.reading).then((response) => {
+        if (response.status === 200) {
+          this.$store.commit('UPDATE_BOOK_STATUS', response.data);
+        } else {
+          alert("Conan the Librarian was unable to mark " + this.book.title + " as your current book. Please try again later.");
+        }
+      });
     },
     
     addToReadingList(book) {
       let addedBook = Object.assign({ read: false }, book);
       this.$store.commit("SAVE_BOOK", addedBook);
-    },
+    }
   },
 };
 </script>
