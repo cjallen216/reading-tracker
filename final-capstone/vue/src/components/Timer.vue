@@ -30,7 +30,7 @@ export default {
       const utc = date.toUTCString();
       return utc.substr(utc.indexOf(":") - 2, 8);
     },
-    formattedTotal() {
+    formattedTotal() {  
       const date = new Date(null);
       date.setSeconds(this.total / 1000);
       const utc = date.toUTCString();
@@ -48,6 +48,7 @@ export default {
       clearInterval(this.timer);
       this.isRunning = false;
       this.total = this.total + this.timer;
+      
     },
     reset() {
       this.total = this.total + this.elapsedTime;
