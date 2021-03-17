@@ -1,12 +1,19 @@
 <template>
   <div>
     <main id="main-grid">
-      <div
-        id="current-read"
-      >
+      <div id="current-read">
         <h1>
-          Currently Reading:<br />
-          This Book
+          Currently Reading:
+          <br />
+          <router-link
+            v-show="book.reading"
+            v-bind:book="book"
+            v-for="book in $store.state.books"
+            v-bind:key="book.title"
+            v-bind:to="{ name: 'book-details', params: { title: book.title } }"
+            >{{ book.title }}
+            <br />
+          </router-link>
         </h1>
       </div>
       <div id="conan">
@@ -34,6 +41,14 @@ export default {
     Timer,
   },
   name: "dashboard",
+
+  computed: {
+    currentlyReading() {
+      let filteredBooks = this.books;
+      filteredBooks = this.$store.filter;
+      return this.$store.books.filter((book) => book.reading == true);
+    },
+  },
 };
 </script>
 
