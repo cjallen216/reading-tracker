@@ -3,12 +3,15 @@
     <h1>Welcome To The Dewey Decimal Reading Tracker</h1>
     <h3>Conan The Librarian Approved!</h3>
     <h1>Dashboard</h1>
-    <p><iframe width="560" height="315" src="https://www.youtube.com/embed/XHbdoO7uCkk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>   
+  <dashboard />
   </div>
 </template>
 
 <script>
+import Dashboard from '../components/Dashboard.vue';
+
 export default {
+  components: { Dashboard },
   name: "home"
 };
 </script>

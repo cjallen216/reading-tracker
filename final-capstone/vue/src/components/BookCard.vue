@@ -13,6 +13,12 @@
         'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'
       "
     />
+    <img
+      v-if="!book.isbn"
+      v-bind:src="
+        'https://mrb.imgix.net/assets/default-book.png?auto=format&ixlib=react-9.0.3&w=150'
+      "
+    />
     <div class="button-container">
       <button class="button"
         @click="setReadStatus()"
@@ -98,10 +104,14 @@ export default {
 .card.read {
   background-color: #6f96b6;
 }
-
 .button.reading{
     color: whitesmoke;
     background: #117864;
     box-shadow: 2px 6px #51395c;
+}
+
+img {
+  height: 200px;
+  width: 150px;
 }
 </style>

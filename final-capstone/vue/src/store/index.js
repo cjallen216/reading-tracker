@@ -22,6 +22,7 @@ export default new Vuex.Store({
     user: currentUser || {},
     books: [
       {
+      
         title: "Go Dog Go",
         author: "P. D. Eastman",
         read: false,
@@ -30,6 +31,7 @@ export default new Vuex.Store({
         reading: false
       },
     ],
+    total: 0,
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -62,6 +64,10 @@ export default new Vuex.Store({
     
     SET_MY_BOOKS(state, myBooks){
       state.books = myBooks
+    },
+    SAVE_TIME(state, time){
+      state.total = time
     }
+    
   }
 })
