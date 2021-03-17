@@ -3,13 +3,10 @@
     <main id="main-grid">
       <div
         id="current-read"
-        v-bind:book="book"
-        v-bind:key="book.readingStatus == true"
       >
         <h1>
           Currently Reading:<br />
           This Book
-          <book-card />
         </h1>
       </div>
       <div id="conan">
@@ -30,13 +27,11 @@
 </template>
 
 <script>
-import BookCard from "./BookCard.vue";
 import Timer from "./Timer.vue";
 
 export default {
   components: {
     Timer,
-    BookCard,
   },
   name: "dashboard",
 };
