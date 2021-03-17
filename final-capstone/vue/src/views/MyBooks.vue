@@ -4,7 +4,7 @@
           <reading-list />
       </div>
       <p></p>
-      <router-link v-bind:to="{name: 'new-book-form'}">Add another book to your Reading List</router-link>
+      <router-link v-bind:to="{name: 'new-book-form'}">Add another book to your reading list</router-link>
   </div>
 </template>
 

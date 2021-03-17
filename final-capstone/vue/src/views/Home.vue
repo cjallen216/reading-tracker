@@ -2,7 +2,6 @@
   <div class="center">
     <h1>Welcome To The Dewey Decimal Reading Tracker</h1>
     <h3>Conan The Librarian Approved!</h3>
-    <h1>Dashboard</h1>
   <dashboard />
   </div>
 </template>

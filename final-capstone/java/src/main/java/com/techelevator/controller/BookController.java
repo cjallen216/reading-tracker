@@ -73,9 +73,9 @@ public class BookController
 		boolean readingUpdated = updatedBook.getReading() == bookToUpdate.getReading();
 		
 		if(readUpdated && readingUpdated) {
-			httpStatus = HttpStatus.ACCEPTED;
+			httpStatus = HttpStatus.ACCEPTED; //202 status code
 		} else {
-			httpStatus = HttpStatus.EXPECTATION_FAILED;
+			httpStatus = HttpStatus.EXPECTATION_FAILED; //417 status code
 		}	
 		return new ResponseEntity<Book>(updatedBook, httpStatus);
 	}

@@ -13,7 +13,7 @@
         'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'
       "
     />
-    <img
+      <img
       v-if="!book.isbn"
       v-bind:src="
         'https://mrb.imgix.net/assets/default-book.png?auto=format&ixlib=react-9.0.3&w=150'
@@ -32,11 +32,6 @@
       >
         {{ readingButtonText }}
       </button>
-    </div>
-    <div class="button-container">
-      <button class="button" v-on:click.prevent="addToReadingList()">
-        Add to Reading List
-      </button>  
     </div>
   </div>
 </template>
@@ -104,6 +99,7 @@ export default {
 .card.read {
   background-color: #6f96b6;
 }
+
 .button.reading{
     color: whitesmoke;
     background: #117864;
