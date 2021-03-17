@@ -20,9 +20,19 @@
         {{ readButtonText }}
       </button>
     </div>
-    <button class="button" v-on:click.prevent="addToReadingList()">
-      Add to Reading List
-    </button>  </div>
+    <div class="button-container">
+      <button class="button" :class="{reading : readingStatus }"
+        @click="setReadingStatus()"
+      >
+        {{ readingButtonText }}
+      </button>
+    </div>
+    <div class="button-container">
+      <button class="button" v-on:click.prevent="addToReadingList()">
+        Add to Reading List
+      </button>  
+    </div>
+  </div>
 </template>
 <script>
 import booksService from '@/services/BooksService.js';
@@ -33,8 +43,17 @@ export default {
     readButtonText(){
       return this.readStatus == true ? "Unmark Read" : "Mark Read";
     }, 
+
     readStatus(){
       return this.book.read;
+    },
+
+    readingStatus(){
+      return this.book.reading;
+    },
+
+    readingButtonText(){
+      return this.readingStatus == true ? "Currently Reading" : "Mark Currently Reading";
     }
   },
   props: {
@@ -52,8 +71,8 @@ export default {
       });
     },
 
-    setCurrentlyReading(){
-      this.book.reading = !this.book.reading;
+    setReadingStatus(){
+      this.book.reading = !this.readingStatus;
       booksService.updateBookStatus(this.book).then((response) => {
         if (response.status === 200) {
           this.$store.commit('UPDATE_BOOK_STATUS', response.data);
@@ -78,5 +97,11 @@ export default {
 
 .card.read {
   background-color: #6f96b6;
+}
+
+.button.reading{
+    color: whitesmoke;
+    background: #117864;
+    box-shadow: 2px 6px #51395c;
 }
 </style>

@@ -18,8 +18,8 @@ export default {
         }
     },
     created () {
-        const isbn = this.$route.params.isbn;
-        this.book = this.$store.state.books.find( book => book.isbn == isbn);
+        const title = this.$route.params.title;
+        this.book = this.$store.state.books.find( book => book.title == title);
     }
 }
 </script>

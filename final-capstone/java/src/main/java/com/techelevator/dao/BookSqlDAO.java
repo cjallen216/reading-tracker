@@ -21,7 +21,16 @@ public class BookSqlDAO implements BookDAO {
 
 	@Override
 	public Book createBook(Book bookToCreate, int userId) {
-		boolean isExisting = bookToCreate.getBookId() > 0;
+		boolean bookCreated = false;		
+		int bookUserCreated = 0;
+		int bookId = bookToCreate.getBookId();
+		boolean isExisting = bookId > 0;
+		
+		if(isExisting) {
+			bookCreated = true;
+			insertNewBookUser(bookId, userId);
+		}
+		
 		String title = bookToCreate.getTitle();
 		String author = bookToCreate.getAuthor();
 		String isbn = bookToCreate.getIsbn();
@@ -30,7 +39,6 @@ public class BookSqlDAO implements BookDAO {
 		String insertBook = "INSERT INTO books (title, author, isbn, cover_img_link) VALUES (?,?,?,?)";
 		GeneratedKeyHolder bookKeyHolder = new GeneratedKeyHolder();
 		String book_id_column = "book_id";
-		boolean bookCreated = false;
 		
 		bookCreated = jdbcTemplate.update(connection -> {
 			PreparedStatement prepared = connection.prepareStatement(insertBook, new String[] { book_id_column });
@@ -40,19 +48,17 @@ public class BookSqlDAO implements BookDAO {
 			prepared.setString(4, imgLink);
 			return prepared;
 		}, bookKeyHolder) == 1;
-		int newBookId = (int) bookKeyHolder.getKeys().get(book_id_column);
+		bookId = (int) bookKeyHolder.getKeys().get(book_id_column);
+		bookUserCreated = insertNewBookUser(bookId, userId);
 		
-		int bookUserCreated = insertBookUser(newBookId, userId);
-
-		Book newBook = null;
-		
+		Book newBook = null;		
 		if (bookCreated == true && bookUserCreated > 0) {
 			newBook = getBookByTitle(title);
 		}
 		return newBook;
 	}
 	
-	private int insertBookUser(int bookId, int userId) {
+	public int insertNewBookUser(int bookId, int userId) {
 		String insertBookUser = "INSERT INTO books_users (user_id, book_id, read, reading) VALUES (?,?,?,?)";
 		GeneratedKeyHolder bookUserKeyHolder = new GeneratedKeyHolder();
 		String book_user_id_column = "books_users_id";
@@ -192,6 +198,19 @@ public class BookSqlDAO implements BookDAO {
 			return mapRowToBook(results);
 		} else	{
 			return null;
+		}
+	}
+	
+	@Override
+	public int getBookIdByTitle(String title) {
+		String sql = "SELECT book_id "
+					+ "FROM books "
+					+ "WHERE title = ?;";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, title);
+		if (results.next())	{
+			return results.getInt("book_id");
+		} else	{
+			return 0;
 		}
 	}
 	

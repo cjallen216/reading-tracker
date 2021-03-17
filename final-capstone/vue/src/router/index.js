@@ -73,7 +73,7 @@ const router = new Router({
       }
     },
     {
-      path: "/book/:isbn",
+      path: "/book/:title",
       name: 'book-details',
       component: BookDetails,
       meta: {

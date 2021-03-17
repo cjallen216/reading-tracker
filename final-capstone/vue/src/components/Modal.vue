@@ -10,7 +10,7 @@
           class="title"
           id="modalTitle"
         >
-          <slot name="header" class="center">
+          <slot name="header" class="center title">
             Success!
           </slot>
         </header>
@@ -24,8 +24,6 @@
         </section>
         <footer class="modal-footer">
           <slot name="footer">
-            
-
             <button
               type="button"
               class="button btn-close"

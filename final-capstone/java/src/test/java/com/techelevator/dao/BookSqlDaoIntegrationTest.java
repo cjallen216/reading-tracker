@@ -2,7 +2,10 @@ package com.techelevator.dao;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.postgresql.translation.messages_bg;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+
 import com.techelevator.model.Book;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -31,16 +34,16 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
     }
 
     @Test
-    public void createNewBookReturnsCreatedBook(){
+    public void createBookReturnsCreatedBook(){
         // arrange 
-    	TITLE = "TITLE_createNewBookReturnsTrue";
+    	TITLE = "TITLE createNewBookReturnsTrue";
     	AUTHOR = "AUTHOR";
     	ISBN = "ISBN" ;
-    	IMG = "abcefghijklmnopqrstuvwxyz";
-        Book expected = new Book(BOOK_ID, ISBN, TITLE, AUTHOR, IMG, false, false);
+    	IMG = "abcefghijklmnopqrstuvwxyz";    	
+    	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
 
         // act
-        Book actual = bookSqlDAO.createBook(TITLE, AUTHOR, ISBN, IMG, USER_ID);
+        Book actual = bookSqlDAO.createBook(bookToCreate, USER_ID);
 
         // assert
         assertEquals(TITLE, actual.getTitle(), "The title should be " + TITLE);
@@ -50,35 +53,64 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
     }
     
     @Test
+    public void createExistingBookForNewUser_updatesBooksUsersTable() {
+    	// arrange
+    	MESSAGE = "createBook with existing book for new user updates books_users table";
+    	
+    	// act
+    	
+    	// assert
+    }
+    
+    @Test 
+    public void getBookIdByTitle() {
+    	// arrange
+    	MESSAGE = "getBookIdByTitle returns the book id for the given title";
+    	TITLE = "TITLE getBookIdByTitle";
+    	AUTHOR = "AUTHOR";
+    	ISBN = "ISBN" ;
+    	IMG = "abcefghijklmnopqrstuvwxyz"; 
+    	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
+        bookSqlDAO.createBook(bookToCreate, USER_ID);
+        Book testBook = bookSqlDAO.getBookByTitle(TITLE);
+        BOOK_ID = testBook.getBookId();
+        
+    	// act
+        int actual = bookSqlDAO.getBookIdByTitle(TITLE);
+    	
+    	// assert
+        assertEquals(BOOK_ID, actual, MESSAGE);
+    }
+    
+    @Test
     public void createNewBookUpdatesBooksUsersTable(){
         // arrange         
     	MESSAGE = "Creating a new book updates the books_users table.";
-    	TITLE = "TITLE_createNewBookUpdatesBooksUsersTable";
+    	TITLE = "TITLE createNewBookUpdatesBooksUsersTable";
     	AUTHOR = "AUTHOR";
     	ISBN = "ISBN" ;
-    	IMG = "abcefghijklmnopqrstuvwxyz";                
+    	IMG = "abcefghijklmnopqrstuvwxyz"; 
+    	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
         
         // act
-        bookSqlDAO.createBook(TITLE, AUTHOR, ISBN, IMG, USER_ID);
-        Book book = bookSqlDAO.getBookByTitle(TITLE);
-        BOOK_ID = book.getBookId();        
+        bookSqlDAO.createBook(bookToCreate, USER_ID);
+        BOOK_ID = bookSqlDAO.getBookIdByTitle(TITLE);       
         int bookUserId = bookSqlDAO.getBookUserId(BOOK_ID, USER_ID);
         
         // assert
-        assertNotEquals(0, bookUserId, MESSAGE);
+        assertNotEquals(-1, bookUserId, MESSAGE);
     }
     
     @Test
     public void getBookById(){
         // arrange         
-    	TITLE = "TITLE_getBooksById";
+    	TITLE = "TITLE getBooksById";
     	AUTHOR = "AUTHOR";
     	ISBN = "ISBN" ;
     	IMG = "abcefghijklmnopqrstuvwxyz";
-    	
-        bookSqlDAO.createBook(TITLE, AUTHOR, ISBN, IMG, USER_ID);
-        Book book = bookSqlDAO.getBookByTitle(TITLE);
-        BOOK_ID = book.getBookId();
+    	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
+        bookSqlDAO.createBook(bookToCreate, USER_ID);
+        BOOK_ID = bookSqlDAO.getBookIdByTitle(TITLE); 
 
         // act
        Book actual = bookSqlDAO.getBookByID(BOOK_ID);
@@ -99,9 +131,9 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
         	TITLE = "TITLE" + i;
         	AUTHOR = "AUTHOR";
         	ISBN = "ISBN" + i;
-        	IMG = "abcefghijklmnopqrstuvwxyz";
-        	
-        	bookSqlDAO.createBook(TITLE, AUTHOR, ISBN, IMG, USER_ID);
+        	IMG = "abcefghijklmnopqrstuvwxyz";        	
+        	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
+            bookSqlDAO.createBook(bookToCreate, USER_ID);
     	}
     	
     	int expectedCount = 5;
@@ -116,11 +148,12 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
     @Test
     public void getBookByIsbn() {
         // arrange 
-    	TITLE = "TITLE_getBookByIsbn";
+    	TITLE = "TITLE getBookByIsbn";
     	AUTHOR = "AUTHOR";
-    	ISBN = "ISBN";
+    	ISBN = "ISBN1234567890";
     	IMG = "abcefghijklmnopqrstuvwxyz";
-    	bookSqlDAO.createBook(TITLE, AUTHOR, ISBN, IMG, USER_ID);
+    	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
+        bookSqlDAO.createBook(bookToCreate, USER_ID);
 
         // act
        Book actual = bookSqlDAO.getBookByIsbn(ISBN);
@@ -135,11 +168,12 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
     @Test
     public void getBookByTitle() {
         // arrange 
-    	TITLE = "TITLE_getBookByTitle";
+    	TITLE = "TITLE getBookByTitle";
     	AUTHOR = "AUTHOR";
     	ISBN = "ISBN";
     	IMG = "abcefghijklmnopqrstuvwxyz";
-    	bookSqlDAO.createBook(TITLE, AUTHOR, ISBN, IMG, USER_ID);
+    	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
+        bookSqlDAO.createBook(bookToCreate, USER_ID);
 
         // act
        Book actual = bookSqlDAO.getBookByTitle(TITLE);
@@ -149,5 +183,97 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
        assertEquals(AUTHOR, actual.getAuthor(), "The author should be " + AUTHOR);
        assertEquals(ISBN, actual.getIsbn(), "The isbn should be " + ISBN);
        assertEquals(IMG, actual.getImgLink(), "The cover image link should be " + IMG);     
+    }
+    
+    @Test
+    public void getBookUserId() {
+        // arrange 
+    	MESSAGE = "Get Book User Id should return the book user id matching the book id and the user id.";
+    	TITLE = "TITLE getBookUserId";
+    	AUTHOR = "AUTHOR";
+    	ISBN = "ISBN";
+    	IMG = "abcefghijklmnopqrstuvwxyz";
+    	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
+        bookSqlDAO.createBook(bookToCreate, USER_ID);
+    	
+        BOOK_ID = bookSqlDAO.getBookIdByTitle(TITLE); 
+    	int expected = 0;
+    	
+    	String sql = "SELECT books_users_id FROM books_users WHERE book_id = ? AND user_id = ?";
+    	SqlRowSet result = jdbcTemplate.queryForRowSet(sql, BOOK_ID, USER_ID);
+    	if(result.next()) {
+    		expected = result.getInt("books_users_id");
+    	}
+
+        // act
+       int actual = bookSqlDAO.getBookUserId(BOOK_ID, USER_ID);
+
+        // assert
+       assertEquals(expected, actual, MESSAGE);
+    }
+    
+    @Test
+    public void updateReaderDetails_ReadStatus() {
+        // arrange 
+     	MESSAGE = "Update Reader Details should update Read status to true.";
+     	TITLE = "TITLE updateReaderDetails ReadStatus";
+     	AUTHOR = "AUTHOR";
+     	ISBN = "ISBN1234";
+     	IMG = "abcefghijklmnopqrstuvwxyz";
+    	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
+        bookSqlDAO.createBook(bookToCreate, USER_ID);
+    	   	
+     	Book expected = bookSqlDAO.getBookByTitle(TITLE);     	
+     	expected.setRead(true);
+     	
+     	// act
+     	Book actual = bookSqlDAO.updateReaderDetails(expected, USER_ID);
+     	
+     	// assert 
+     	assertEquals(expected.getRead(), actual.getRead(), MESSAGE);
+    }
+    
+    @Test
+    public void updateReaderDetails_ReadingStatus() {
+        // arrange 
+     	MESSAGE = "Update Reader Details should update Reading status to true.";
+     	TITLE = "TITLE updateReaderDetails ReadingStatus";
+     	AUTHOR = "AUTHOR";
+     	ISBN = "ISBN5678";
+     	IMG = "abcefghijklmnopqrstuvwxyz";     	
+    	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
+        bookSqlDAO.createBook(bookToCreate, USER_ID);
+    	    	
+     	Book expected = bookSqlDAO.getBookByTitle(TITLE);     	
+     	expected.setReading(true);
+     	
+     	// act
+     	Book actual = bookSqlDAO.updateReaderDetails(expected, USER_ID);
+     	
+     	// assert 
+     	assertEquals(expected.getReading(), actual.getReading(), MESSAGE);
+    }
+    
+    @Test
+    public void insertNewBookUserReturnsBookUserId() {
+    	// arrange
+    	MESSAGE = "Inserting a new book user returns the new book user id";
+     	TITLE = "TITLE insertNewBookUserReturnsBookUserId";
+     	AUTHOR = "AUTHOR";
+     	ISBN = "ISBN";
+     	IMG = "abcefghijklmnopqrstuvwxyz";     	
+     	
+     	String sql = "INSERT INTO books (title, author, isbn, cover_img_link)"
+     			+ " VALUES(?, ?, ?, ?);";
+     	
+     	jdbcTemplate.update(sql, TITLE, AUTHOR, ISBN, IMG);    	    	
+        BOOK_ID = bookSqlDAO.getBookIdByTitle(TITLE); 
+     	
+     	// act
+     	int actual = bookSqlDAO.insertNewBookUser(BOOK_ID, USER_ID);
+        int expected = bookSqlDAO.getBookUserId(BOOK_ID, USER_ID);     	
+     	
+     	// assert
+     	assertEquals(expected, actual, MESSAGE);     	
     }
 }

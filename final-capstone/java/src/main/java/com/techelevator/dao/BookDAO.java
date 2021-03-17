@@ -23,4 +23,6 @@ public interface BookDAO
 	public Book updateReaderDetails(Book book, int userId);
 	
 	public boolean checkForDuplicateBook(Book bookToCreate, int userId);
+	
+	public int getBookIdByTitle(String title);
 }

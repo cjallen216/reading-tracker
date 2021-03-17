@@ -1,6 +1,5 @@
 package com.techelevator.controller;
 
-
 import java.security.Principal;
 import java.util.List;
 
@@ -45,8 +44,7 @@ public class BookController
 			} else {
 				status = HttpStatus.EXPECTATION_FAILED; //417 status code
 			}
-		}
-		
+		}		
 		return new ResponseEntity<Book>(createdBook, status);
 	}
 
@@ -67,8 +65,6 @@ public class BookController
 	
 	@PostMapping("/myBooks")
 	public ResponseEntity<Book> updateBookDetails(@RequestBody Book bookToUpdate, Principal currentUser){
-		System.out.println("------------------------------------------------------ book to update" + bookToUpdate.toString());
-		System.out.println("------------------------------------------------------");
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 		String userName = currentUser.getName();
 		int currentUserId = userDAO.findIdByUsername(userName);		
@@ -81,9 +77,6 @@ public class BookController
 		} else {
 			httpStatus = HttpStatus.EXPECTATION_FAILED;
 		}	
-		
-		System.out.println("------------------------------------------------------ updated book " + updatedBook.toString());
-		System.out.println("------------------------------------------------------");
 		return new ResponseEntity<Book>(updatedBook, httpStatus);
 	}
 
