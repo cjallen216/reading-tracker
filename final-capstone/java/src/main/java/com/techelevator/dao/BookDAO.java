@@ -6,7 +6,7 @@ import com.techelevator.model.Book;
 
 public interface BookDAO
 {
-	public Book createBook(String author, String isbn, String title, String imgLink, int currentUserId);
+	public Book createBook(Book bookToCreate, int currentUserId);
 
 	public List<Book> listAll();
 
@@ -20,7 +20,7 @@ public interface BookDAO
 	
 	public int getBookUserId(int book_id, int user_id);
 	
-	public Book updateBook(Book book, int userId);
-
-	public int insertBookUser(int bookId, int userId);
+	public Book updateReaderDetails(Book book, int userId);
+	
+	public boolean checkForDuplicateBook(Book bookToCreate, int userId);
 }

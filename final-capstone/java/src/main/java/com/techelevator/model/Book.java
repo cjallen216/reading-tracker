@@ -6,20 +6,27 @@ public class Book {
 	private String title;
 	private String author;
 	private String imgLink;
-	private boolean completed;
-	private boolean currentBook;	
+	private boolean read;
+	private boolean reading;	
 	
-	public Book(int bookId, String isbn, String title, String author, String imgLink, boolean completed, boolean currentBook) {
+	public Book(int bookId, String isbn, String title, String author, String imgLink, boolean read, boolean reading) {
 		this.bookId = bookId;
 		this.isbn = isbn;
 		this.title = title;
 		this.author = author;
 		this.imgLink = imgLink;
-		this.completed = completed;
-		this.currentBook = currentBook;
+		this.read = read;
+		this.reading = reading;
 	}
 	public Book(int bookId, String isbn, String title, String author, String imgLink) {
 		this.bookId = bookId;
+		this.isbn = isbn;
+		this.title = title;
+		this.author = author;
+		this.imgLink = imgLink;
+	}
+	
+	public Book(String isbn, String title, String author, String imgLink) {
 		this.isbn = isbn;
 		this.title = title;
 		this.author = author;
@@ -72,18 +79,31 @@ public class Book {
 	public void setImgLink(String imgLink) {
 		this.imgLink = imgLink;
 	}
-	public boolean getCompleted() {
-		return completed;
+	public boolean getRead() {
+		return read;
 	}
 	
-	public void setCompleted(boolean completed) {
-		this.completed = completed;
+	public void setRead(boolean read) {
+		this.read = read;
 	}
-	public boolean getCurrentBook() {
-		return currentBook;
+	public boolean getReading() {
+		return reading;
 	}
 	
-	public void setCurrentBook(boolean currentBook) {
-		this.currentBook = currentBook;
+	public void setReading(boolean reading) {
+		this.reading = reading;
+	}
+	
+	@Override
+	public String toString() {
+		return "Book [\r\n"
+				+ "bookId=" + bookId
+				+ ",\r\nisbn=" + isbn 
+				+ ",\r\ntitle=" + title 
+				+ ",\r\nauthor=" + author 
+				+ ",\r\nimgLink=" + imgLink 
+				+ ",\r\nread=" + read 
+				+ ",\r\nreading=" + reading 
+				+ "\r\n]";
 	}	
 }

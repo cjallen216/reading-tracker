@@ -11,11 +11,11 @@ export default {
     },
 
     getMyBooks() {
-      return http.get("/myBooks");
+      return http.get('/myBooks');
     },
 
-    updateBookStatus(book, statusType, value){
-        return http.put('/myBooks')
+    updateBookStatus(book){
+        return http.post('/myBooks', book)
         .then((response) => {
             this.$store.commit('UPDATE_BOOK_STATUS', response.data);
         });

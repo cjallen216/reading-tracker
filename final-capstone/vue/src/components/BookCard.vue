@@ -1,8 +1,8 @@
 <template>
-  <div class="card center" v-bind:class="{ read: book.read }">
+  <div class="card center" :class="{ read: readStatus }">
     <h2 class="book-title">
       <router-link
-        v-bind:to="{ name: 'book-details', params: { isbn: book.isbn } }"
+        v-bind:to="{ name: 'book-details', params: { title: book.title } }"
         >{{ book.title }}</router-link
       >
     </h2>
@@ -13,69 +13,54 @@
         'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'
       "
     />
-    <div class="button-container" v-if="!enableAdd">
-      <button
-        class="mark-read button"
-        v-on:click.prevent="setReadStatus(true)"
-        v-if="!book.read"
+    <div class="button-container">
+      <button class="button"
+        @click="setReadStatus()"
       >
-        Mark Read
-      </button>
-      <button
-        class="mark-unread button"
-        v-on:click.prevent="setRead(false)"
-        v-if="book.read"
-      >
-        UnMark Read
+        {{ readButtonText }}
       </button>
     </div>
-    <button class="button" v-if="enableAdd" v-on:click.prevent="addToReadingList(book)">
+    <button class="button" v-on:click.prevent="addToReadingList()">
       Add to Reading List
-    </button>
-  </div>
+    </button>  </div>
 </template>
 <script>
 import booksService from '@/services/BooksService.js';
 
 export default {
   name: "book-card",
-  data(){
-    return {
-      readStatus: false
+  computed: {
+    readButtonText(){
+      return this.readStatus == true ? "Unmark Read" : "Mark Read";
+    }, 
+    readStatus(){
+      return this.book.read;
     }
   },
   props: {
-    book: Object,
-    enableAdd: {
-      type: Boolean,
-      default: false,
-    },
+    book: Object    
   },
   methods: {
     setReadStatus() {
-      this.readStatus = !this.book.read;
-      booksService.updateBookStatus(this.book, 'read', !this.book.read).then((response) => {
+      this.book.read = !this.readStatus;
+      booksService.updateBookStatus(this.book).then((response) => {
         if (response.status === 200) {
                 this.$store.commit('UPDATE_BOOK_STATUS', response.data);
           } else {
-            alert("Conan the Librarian was unable to change your read status at this time. Please try again later.")
+            alert("Conan the Librarian was unable to change the status of " + this.book.title + ". Please try again later.")
           }
       });
     },
 
     setCurrentlyReading(){
-      booksService.updateBookStatus(this.book, 'reading', !this.book.reading).then((response) => {
+      this.book.reading = !this.book.reading;
+      booksService.updateBookStatus(this.book).then((response) => {
         if (response.status === 200) {
           this.$store.commit('UPDATE_BOOK_STATUS', response.data);
         } else {
           alert("Conan the Librarian was unable to mark " + this.book.title + " as your current book. Please try again later.");
         }
       });
-    },
-    
-    addToReadingList(book) {
-      let addedBook = Object.assign({ read: false }, book);
-      this.$store.commit("SAVE_BOOK", addedBook);
     }
   },
 };

@@ -1,6 +1,9 @@
 package com.techelevator.controller;
 
+
 import java.security.Principal;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,33 +29,23 @@ public class BookController
 		HttpStatus status = HttpStatus.BAD_REQUEST; // 400 status code
 		Book createdBook = null;
 		int currentUserId = userDAO.findIdByUsername(currentUser.getName());
-		int newBookUserId = -1;
-
-		try {
-			Book existingBook = booksDAO.getBookByTitle(newBook.getTitle());
-			int bookUserId = booksDAO.getBookUserId(existingBook.getBookId(), currentUserId);
+		
+		boolean isDuplicate = booksDAO.checkForDuplicateBook(newBook, currentUserId);
+		
+		if(isDuplicate) {
+			status = HttpStatus.NO_CONTENT; // 204 status code
+		} else {
+			createdBook = booksDAO.createBook(newBook, currentUserId);
 			
-			if(bookUserId > -1) {
-				status = HttpStatus.NO_CONTENT; // 204 status code
-			} else {
-				newBookUserId = booksDAO.insertBookUser(existingBook.getBookId(), currentUserId);
-				
-				if(newBookUserId > -1) {
-					createdBook = existingBook;
-					status = HttpStatus.CREATED; // 201 status code
-				} else {
-					status = HttpStatus.EXPECTATION_FAILED; //417 status code
-				}				
-			}				
-		} catch (Exception e) {			
-			createdBook = booksDAO.createBook(newBook.getTitle(), newBook.getAuthor(), newBook.getIsbn(), newBook.getImgLink(), currentUserId);
+			String createdBookTitle = createdBook.getTitle();
+			String newBookTitle = newBook.getTitle();
 			
-			if(createdBook.getTitle().equals(newBook.getTitle())) {
+			if(createdBookTitle.equals(newBookTitle)) {
 				status = HttpStatus.CREATED; // 201 status code
 			} else {
 				status = HttpStatus.EXPECTATION_FAILED; //417 status code
 			}
-		}	
+		}
 		
 		return new ResponseEntity<Book>(createdBook, status);
 	}
@@ -60,37 +53,38 @@ public class BookController
 	@GetMapping("/myBooks")
 	public ResponseEntity<BookList> getBooksByUserId(Principal user)
 	{	
+		HttpStatus status = HttpStatus.BAD_REQUEST; // 400 status code
 		String userName = user.getName();
 		int currentUserId = userDAO.findIdByUsername(userName);
 		BookList bookList = new BookList(booksDAO.getBooksByUserId(currentUserId));
-		return ResponseEntity.ok(bookList);
+		List<Book> myBooks = bookList.getBooks();
+		
+		if(myBooks.size() > 0) {
+			status = HttpStatus.OK; // 400 status code
+		} 
+		return new ResponseEntity<BookList>(bookList, status);
 	}
 	
-	@PutMapping("/myBooks")
-	public ResponseEntity<Book> updateBookDetails(Book bookToUpdate, String statusType, boolean value, Principal currentUser){
-		HttpStatus status = HttpStatus.BAD_REQUEST;
-		Book updatedBook = null;
+	@PostMapping("/myBooks")
+	public ResponseEntity<Book> updateBookDetails(@RequestBody Book bookToUpdate, Principal currentUser){
+		System.out.println("------------------------------------------------------ book to update" + bookToUpdate.toString());
+		System.out.println("------------------------------------------------------");
+		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 		String userName = currentUser.getName();
-		int currentUserId = userDAO.findIdByUsername(userName);
+		int currentUserId = userDAO.findIdByUsername(userName);		
+		Book updatedBook = booksDAO.updateReaderDetails(bookToUpdate, currentUserId);
+		boolean readUpdated = updatedBook.getRead() == bookToUpdate.getRead();
+		boolean readingUpdated = updatedBook.getReading() == bookToUpdate.getReading();
 		
-		if(statusType.equals("reading")) {
-			bookToUpdate.setCurrentBook(value);
-		} else if(statusType.equals("read")) {
-			bookToUpdate.setCompleted(value);
-		}
-
-		int bookUserId = booksDAO.getBookUserId(bookToUpdate.getBookId(), currentUserId);	
-			
-		if(bookUserId != -1) {
-			updatedBook = booksDAO.updateBook(bookToUpdate, currentUserId);
-		}
-		
-		if(updatedBook != null) {
-			status = HttpStatus.ACCEPTED;
+		if(readUpdated && readingUpdated) {
+			httpStatus = HttpStatus.ACCEPTED;
 		} else {
-			status = HttpStatus.EXPECTATION_FAILED;
-		}		
-		return new ResponseEntity<Book>(updatedBook, status);
+			httpStatus = HttpStatus.EXPECTATION_FAILED;
+		}	
+		
+		System.out.println("------------------------------------------------------ updated book " + updatedBook.toString());
+		System.out.println("------------------------------------------------------");
+		return new ResponseEntity<Book>(updatedBook, httpStatus);
 	}
 
 }

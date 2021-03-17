@@ -26,7 +26,8 @@ export default new Vuex.Store({
         author: "P. D. Eastman",
         read: false,
         isbn: "0679844902",
-        imgLink: ""
+        imgLink: "",
+        reading: false
       },
     ],
   },
