@@ -33,6 +33,15 @@
         {{ readingButtonText }}
       </button>
     </div>
+
+ <div class="button-container">
+      <button class="button"
+        @click="removeBook()"
+      >
+        Remove Book
+      </button>
+    </div>
+
   </div>
 </template>
 <script>
@@ -57,6 +66,7 @@ export default {
       return this.readingStatus == true ? "Currently Reading" : "Mark Currently Reading";
     }
   },
+
   props: {
     book: Object    
   },
@@ -83,6 +93,15 @@ export default {
       });
     }
   },
+   removeBook() {
+      booksService.delete(this.book).then((response) => {
+        if (response.status === 200) {
+                this.$store.commit('REMOVE_BOOK', this.book);
+          } else {
+            alert("Conan the Librarian was unable to remove " + this.book.title + ". Please try again later.")
+          }
+      });
+    },
 };
 </script>
 <style>

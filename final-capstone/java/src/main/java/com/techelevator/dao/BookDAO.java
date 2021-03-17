@@ -25,4 +25,6 @@ public interface BookDAO
 	public boolean checkForDuplicateBook(Book bookToCreate, int userId);
 	
 	public int getBookIdByTitle(String title);
+	
+	public Boolean deleteBookById(int user_id, int book_id);
 }

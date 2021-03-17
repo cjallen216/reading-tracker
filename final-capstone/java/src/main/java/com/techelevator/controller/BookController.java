@@ -80,4 +80,20 @@ public class BookController
 		return new ResponseEntity<Book>(updatedBook, httpStatus);
 	}
 
+	@DeleteMapping("/myBooks") 
+    public ResponseEntity<String> deleteBookById(@RequestBody Book bookToRemove, Principal currentUser) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		int bookToRemoveId = bookToRemove.getBookId();
+        String userName = currentUser.getName();
+		int currentUserId = userDAO.findIdByUsername(userName);
+        boolean isDeleted = booksDAO.deleteBookById(bookToRemoveId, currentUserId);
+        if (isDeleted == true)
+        {
+        	status = HttpStatus.OK;
+        }
+        else {
+        	status = HttpStatus.EXPECTATION_FAILED;
+        }
+        return new ResponseEntity<String>(status);
+    }
 }

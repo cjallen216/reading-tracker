@@ -14,6 +14,10 @@ export default {
       return http.get('/myBooks');
     },
 
+    delete(book) {
+        return http.delete('/myBooks', book)
+    },
+
     updateBookStatus(book){
         return http.post('/myBooks', book)
         .then((response) => {

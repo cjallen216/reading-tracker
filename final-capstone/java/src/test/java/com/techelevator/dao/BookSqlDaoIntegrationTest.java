@@ -276,4 +276,26 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
      	// assert
      	assertEquals(expected, actual, MESSAGE);     	
     }
+    
+    @Test
+    public void removeBookById() {
+        // arrange 
+    	MESSAGE = "Remove book by ID should return true";
+    	TITLE = "TITLE_removeBook";
+    	AUTHOR = "AUTHOR";
+    	ISBN = "ISBN";
+    	IMG = "abcefghijklmnopqrstuvwxyz";
+    	Book book = new Book(ISBN, TITLE, AUTHOR, IMG);
+    	bookSqlDAO.createBook(TEST_BOOK, USER_ID);
+    	Book testBook = bookSqlDAO.getBookByTitle(TITLE);
+    	BOOK_ID = testBook.getBookId();
+    	
+    	//act
+    	boolean actual = bookSqlDAO.deleteBookById(BOOK_ID, USER_ID);
+    	
+    	//assert
+    	assertEquals(true, actual, MESSAGE);
+ 
+    }
+    
 }

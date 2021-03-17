@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -243,6 +244,41 @@ public class BookSqlDAO implements BookDAO {
 		jdbcTemplate.update(sql,reading, read, userId, bookId);
 		return getBookByTitle(book.getTitle());		
 	}
+	
+	@Override
+    public Boolean deleteBookById(int user_id, int book_id) {
+		boolean isDeleted = false;
+		int booksUsersId = -1;
+		String sql = "SELECT books_users_id FROM books_users WHERE book_id = ? AND user_id = ?;";
+		SqlRowSet result = jdbcTemplate.queryForRowSet(sql, book_id, user_id);
+		
+		if (result.next()) {
+			booksUsersId = result.getInt("books_users_id");
+		}
+		
+        sql = "DELETE FROM books_users WHERE book_id = ? AND user_id = ?;";
+        
+        try {
+            jdbcTemplate.update(sql, book_id, user_id);
+        } catch (DataAccessException e) {
+            System.out.println("Delete book failed" + "\n Book ID: " + book_id + "\n User ID: " + user_id);
+        }
+        
+		sql = "SELECT books_users_id FROM books_users WHERE books_users_id = ?;";
+		
+		if (booksUsersId > -1) {
+			try {
+				result = jdbcTemplate.queryForRowSet(sql, booksUsersId);
+			} catch (DataAccessException e) {
+	            isDeleted = true;
+	        }
+		}
+		else {
+			System.out.println("Could not find Book ID " + book_id + "connected to User ID ");
+		}
+		return isDeleted;
+    }
+	
 
 	private Book mapRowToBook(SqlRowSet rs)	{
 		Book book = new Book();

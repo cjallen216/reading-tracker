@@ -57,6 +57,11 @@ export default new Vuex.Store({
       state.books.push(book);
     },
 
+    REMOVE_BOOK(state, book) {
+      let index = state.books.findIndex(thisBook => thisBook.bookId == book.bookId);
+      state.books.splice(index, 1);
+    },
+
     UPDATE_BOOK_STATUS(state, book) {
       const bookToUpdate = state.books.find(bookToUpdate => bookToUpdate.id === book.id);
       Object.assign(bookToUpdate, book);
