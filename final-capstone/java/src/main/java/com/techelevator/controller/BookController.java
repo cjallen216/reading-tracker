@@ -2,6 +2,7 @@ package com.techelevator.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,25 +27,18 @@ public class BookController
 	public ResponseEntity<Book> createBook(@RequestBody Book newBook, Principal currentUser)
 	{	
 		HttpStatus status = HttpStatus.BAD_REQUEST; // 400 status code
-		Book createdBook = null;
 		int currentUserId = userDAO.findIdByUsername(currentUser.getName());
-		
-		boolean isDuplicate = booksDAO.checkForDuplicateBook(newBook, currentUserId);
-		
-		if(isDuplicate) {
+		Book createdBook = booksDAO.createBook(newBook, currentUserId);
+		boolean isEmpty = createdBook.isEmpty();
+			
+		if(isEmpty) {
+			// user already has this book
 			status = HttpStatus.NO_CONTENT; // 204 status code
+		} else if(!isEmpty){
+			status = HttpStatus.CREATED; // 201 status code
 		} else {
-			createdBook = booksDAO.createBook(newBook, currentUserId);
-			
-			String createdBookTitle = createdBook.getTitle();
-			String newBookTitle = newBook.getTitle();
-			
-			if(createdBookTitle.equals(newBookTitle)) {
-				status = HttpStatus.CREATED; // 201 status code
-			} else {
-				status = HttpStatus.EXPECTATION_FAILED; //417 status code
-			}
-		}		
+			status = HttpStatus.EXPECTATION_FAILED; //417 status code	
+		}	
 		return new ResponseEntity<Book>(createdBook, status);
 	}
 

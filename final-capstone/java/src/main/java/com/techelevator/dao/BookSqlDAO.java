@@ -21,6 +21,12 @@ public class BookSqlDAO implements BookDAO {
 
 	@Override
 	public Book createBook(Book bookToCreate, int userId) {
+		boolean isDuplicate = checkForDuplicateBook(bookToCreate, userId);
+		
+		if(isDuplicate) {
+			return new Book();
+		}
+		
 		boolean bookCreated = false;		
 		int bookUserCreated = 0;
 		int bookId = bookToCreate.getBookId();
@@ -80,17 +86,12 @@ public class BookSqlDAO implements BookDAO {
 	
 	public boolean checkForDuplicateBook(Book bookToCreate, int userId) {
 		boolean isDuplicate = false;
-		int bookId = bookToCreate.getBookId();
-		int bookUserId = 0;
+		int bookId = getBookIdByTitle(bookToCreate.getTitle());
+		int bookUserId = getBookUserId(bookId, userId);	
 		
-		if(bookId != 0) {
-			bookUserId = getBookUserId(bookId, userId);
-			
-			if(bookUserId != 0) {
-				isDuplicate = true;
-			}		
-		}
-		
+		if(bookUserId != 0) {
+			isDuplicate = true;
+		}			
 		return isDuplicate;
 	}
 	

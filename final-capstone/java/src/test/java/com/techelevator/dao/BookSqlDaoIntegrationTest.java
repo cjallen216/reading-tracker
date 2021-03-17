@@ -276,4 +276,25 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
      	// assert
      	assertEquals(expected, actual, MESSAGE);     	
     }
+    
+    @Test
+    public void createNewBookReturnsEmptyBookIfUserAlreadyHasSameBook() {
+        // arrange 
+     	MESSAGE = "Create new book should return an empty book if user already has the requested book.";
+     	TITLE = "TITLE createNewBookReturns204IfUserAlreadyHasSameBook";
+     	AUTHOR = "AUTHOR";
+     	ISBN = "ISBN";
+     	IMG = "abcefghijklmnopqrstuvwxyz";     	
+    	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
+        bookSqlDAO.createBook(bookToCreate, USER_ID);
+        
+        // act
+        Book actual = bookSqlDAO.createBook(bookToCreate, USER_ID);
+        
+        // assert
+        assertEquals(null, actual.getTitle(), "The title should be null");
+        assertEquals(null, actual.getAuthor(), "The author should be null");
+        assertEquals(null, actual.getIsbn(), "The isbn should be null");
+        assertEquals(null, actual.getImgLink(), "The cover image link should be null");
+    }
 }
