@@ -1,16 +1,27 @@
 <template>
   <div>
     <main id="main-grid">
-      <div id="current-read">
-        <h1>        
-          Currently Reading:<br>
+      <div
+        id="current-read"
+      >
+        <h1>
+          Currently Reading:<br />
           This Book
         </h1>
-        </div>
-      <div id="conan"><iframe width="560" height="315" src="https://www.youtube.com/embed/XHbdoO7uCkk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+      </div>
+      <div id="conan">
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/XHbdoO7uCkk"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
       <div id="timer">
-        <timer/>
-        </div>
+        <timer />
+      </div>
     </main>
   </div>
 </template>
@@ -61,9 +72,7 @@ export default {
     grid-template-areas:
       "current"
       "conan"
-      "timer"
-      ;
+      "timer";
   }
 }
-
 </style>
