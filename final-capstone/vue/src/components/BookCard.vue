@@ -33,11 +33,6 @@
         {{ readingButtonText }}
       </button>
     </div>
-    <div class="button-container">
-      <button class="button" v-on:click.prevent="addToReadingList()">
-        Add to Reading List
-      </button>  
-    </div>
   </div>
 </template>
 <script>

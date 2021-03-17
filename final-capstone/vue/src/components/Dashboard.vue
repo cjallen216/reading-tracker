@@ -1,30 +1,43 @@
 <template>
   <div>
     <main id="main-grid">
-      <div id="current-read">
-        <h1>        
-        Currently Reading:<br>
-        This Book
+      <div
+        id="current-read"
+        v-bind:book="book"
+        v-bind:key="book.readingStatus == true"
+      >
+        <h1>
+          Currently Reading:<br />
+          This Book
+          <book-card />
         </h1>
-        <book-card/>
-        </div>
-      <div id="conan"><iframe width="560" height="315" src="https://www.youtube.com/embed/XHbdoO7uCkk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+      </div>
+      <div id="conan">
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/XHbdoO7uCkk"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
       <div id="timer">
-        <timer/>
-        </div>
-      <div id="my-books">
-        <my-books />
-        </div>
+        <timer />
+      </div>
     </main>
   </div>
 </template>
 
 <script>
-import MyBooks from '../views/MyBooks.vue';
-import BookCard from './BookCard.vue';
-import Timer from './Timer.vue';
+import BookCard from "./BookCard.vue";
+import Timer from "./Timer.vue";
+
 export default {
-  components: { Timer, MyBooks, BookCard },
+  components: {
+    Timer,
+    BookCard,
+  },
   name: "dashboard",
 };
 </script>
@@ -34,9 +47,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 15px;
-  grid-template-areas:
-    "current conan timer"
-    "books books books";
+  grid-template-areas: "current conan timer";
   align-items: center;
 }
 
@@ -64,10 +75,7 @@ export default {
     grid-template-areas:
       "current"
       "conan"
-      "timer"
-      "books"
-      ;
+      "timer";
   }
 }
-
 </style>
