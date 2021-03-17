@@ -15,6 +15,9 @@ VALUES( -- INSERT VALUES BELOW
 SELECT book_id FROM books WHERE title = 'TITLE'; -- title_value from above
 
 /*************************************************************/
+/*      CHANGE VALUES BELOW                                  */
+/*      TO YOUR DATABASE BOOK ID / USER ID                   */
+/*************************************************************/
 
 INSERT INTO books_users(book_id, user_id, reading, read)
 VALUES( -- INSERT VALUES BELOW
