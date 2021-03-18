@@ -1,13 +1,13 @@
 <template>
-  <div id="timer">
+  <div id="timer-container">
     <div>{{ formattedElapsedTime }}</div>
-    <button class="timer button" @click="start" v-if="!this.isRunning">
-      Start Timer
+    <button class="timer-button" @click="start" v-if="!this.isRunning">
+      Start
     </button>
-    <button class="timer button" @click="stop" v-if="this.isRunning">
-      Stop Timer
+    <button class="timer-button" @click="stop" v-if="this.isRunning">
+      Stop
     </button>
-    <button class="timer button" @click="reset">Reset</button>
+    <button class="timer-button" @click="reset">Save</button>
     <h4 class="dashboard-link">
       Total Time Spent Reading:
       <br> {{ $store.state.total }}
@@ -65,19 +65,32 @@ export default {
 </script>
 
 <style>
-#timer {
+#timer-container {
   display: flex;
   flex-direction: column;
-  align-content: center;
-  width: 250px;
   gap: 10px;
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-size: 4rem;
+  background-color:#A3E4D7;
+  border-radius: 20px;
+  padding-right: 70px;
+  padding-left: 70px;
 }
 
-.timer.button {
-  line-height: 50px;
+.timer-button {
+  color: whitesmoke;
+  background: #875F9A;
+  box-shadow: 2px 6px #51395c;
+  font-weight: bold;
+  padding: 5px 10px 5px 10px;
+  cursor: pointer;
   font-size: 2.5rem;
+  border-radius: 5px;
+  text-align: center;
+  gap: 10px;
+  justify-content: space-around;
+  align-content: space-around;
+  /* width: 250px; */
 }
 
 h4 {

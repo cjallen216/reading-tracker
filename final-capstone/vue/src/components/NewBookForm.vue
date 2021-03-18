@@ -29,27 +29,30 @@
             v-model="book.isbn"
           />
         </div>
-        <div class="input-line">
-          <input
-            class="imgLink-input"
-            type="text"
-            placeholder="Cover Image Link"
-            v-model="book.imgLink"
-          />
-        </div>
         <div class="center">
-          <br><button 
-            v-on:click.prevent="saveBook();" class="button">
+          <br /><button v-on:click.prevent="saveBook()" class="button">
             Add Book
           </button>
-          <modal v-show="isCreateBookModalVisible" @close="closeCreateBookModal(); clearFormFields()">
+          <modal
+            v-show="isCreateBookModalVisible"
+            @close="
+              closeCreateBookModal();
+              clearFormFields();
+            "
+          >
             <h3 slot="body">
               Title: {{ this.book.title }}<br />
               Author: {{ this.book.author }}<br />
               ISBN #{{ this.book.isbn }}<br />
             </h3>
           </modal>
-          <modal v-show="isDuplicateBookModalVisible" @close="closeDuplicateBookModal(); clearFormFields()">
+          <modal
+            v-show="isDuplicateBookModalVisible"
+            @close="
+              closeDuplicateBookModal();
+              clearFormFields();
+            "
+          >
             <h2 slot="header"></h2>
             <h2 slot="body">
               You already have {{ this.book.title }} on your list.<br />
@@ -58,19 +61,19 @@
         </div>
       </div>
     </form>
-    <router-link class="finished-link" v-bind:to="{ name: 'my-books' }" >
+    <router-link class="finished-link" v-bind:to="{ name: 'my-books' }">
       I'm done adding books
     </router-link>
   </div>
 </template>
 <script>
-import booksService from "../services/BooksService.js"
+import booksService from "../services/BooksService.js";
 import modal from "@/components/Modal.vue";
 
 export default {
   name: "new-book-form",
   components: {
-    modal
+    modal,
   },
   data() {
     return {
@@ -83,7 +86,7 @@ export default {
         imgLink: "",
       },
       isCreateBookModalVisible: false,
-      isDuplicateBookModalVisible: false
+      isDuplicateBookModalVisible: false,
     };
   },
   computed: {
@@ -98,23 +101,25 @@ export default {
   },
   methods: {
     saveBook() {
-        booksService.create(this.book).then((response) => {
-          if (response.status === 201) {
-            this.showCreateBookModal();
-            this.$store.commit('SAVE_BOOK', response.data);
-          } else if(response.status === 204){        
-            this.showDuplicateBookModal();
-          } else {
-            alert("Conan the Librarian was unable to add your book at this time. Please try again later.")
-          }          
-        });
-      },
+      booksService.create(this.book).then((response) => {
+        if (response.status === 201) {
+          this.showCreateBookModal();
+          this.$store.commit("SAVE_BOOK", response.data);
+        } else if (response.status === 204) {
+          this.showDuplicateBookModal();
+        } else {
+          alert(
+            "Conan the Librarian was unable to add your book at this time. Please try again later."
+          );
+        }
+      });
+    },
 
     showCreateBookModal() {
       this.isCreateBookModalVisible = true;
     },
 
-    closeCreateBookModal(){
+    closeCreateBookModal() {
       this.isCreateBookModalVisible = false;
     },
 
@@ -122,17 +127,17 @@ export default {
       this.isDuplicateBookModalVisible = true;
     },
 
-    closeDuplicateBookModal(){
+    closeDuplicateBookModal() {
       this.isDuplicateBookModalVisible = false;
     },
 
-    clearFormFields(){
-        this.book.title = "";
-        this.book.author = "";
-        this.book.isbn = "";
-        this.book.imgLink = "";
-    }
-  }
+    clearFormFields() {
+      this.book.title = "";
+      this.book.author = "";
+      this.book.isbn = "";
+      this.book.imgLink = "";
+    },
+  },
 };
 </script>
 <style>
