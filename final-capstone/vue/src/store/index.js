@@ -21,7 +21,7 @@ export default new Vuex.Store({
     token: currentToken || '',
     user: currentUser || {},
     books: [
-      {      
+      { 
         title: "Go Dog Go",
         author: "P. D. Eastman",
         read: false,
@@ -56,6 +56,11 @@ export default new Vuex.Store({
       state.books.push(book);
     },
 
+    REMOVE_BOOK(state, bookId) {
+      let index = state.books.findIndex(thisBook => thisBook.bookId == bookId);
+      state.books.splice(index, 1);
+    },
+
     UPDATE_BOOK_STATUS(state, book) {
       const bookToUpdate = state.books.find(bookToUpdate => bookToUpdate.id === book.id);
       Object.assign(bookToUpdate, book);
@@ -67,6 +72,6 @@ export default new Vuex.Store({
     
     SAVE_TIME(state, time){
       state.total = time
-    }    
+    }  
   }
 })

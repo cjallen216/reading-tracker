@@ -13,7 +13,7 @@
         'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'
       "
     />
-      <img
+    <img
       v-if="!book.isbn"
       v-bind:src="
         'https://mrb.imgix.net/assets/default-book.png?auto=format&ixlib=react-9.0.3&w=150'
@@ -33,13 +33,37 @@
         {{ readingButtonText }}
       </button>
     </div>
+    <div class="button-container">
+      <button class="button"
+        @click="removeBook()"
+      >
+        Remove Book
+      </button>
+      <modal v-show="isRemovedModalVisible" @close="closeRemovedModal()">
+        <h2 slot="header"></h2>
+        <h3 slot="body">
+          {{ this.book.title }} 
+          <br>was removed
+          <br>from your book list.
+        </h3>
+    </modal>
+    </div>
   </div>
 </template>
 <script>
 import booksService from '@/services/BooksService.js';
+import modal from "@/components/Modal.vue";
 
 export default {
   name: "book-card",
+  data(){
+    return {
+      isRemovedModalVisible: false
+    }
+  },
+  components: {
+    modal
+  },
   computed: {
     readButtonText(){
       return this.readStatus == true ? "Unmark Read" : "Mark Read";
@@ -57,6 +81,7 @@ export default {
       return this.readingStatus == true ? "Currently Reading" : "Mark Currently Reading";
     }
   },
+
   props: {
     book: Object    
   },
@@ -64,10 +89,13 @@ export default {
     setReadStatus() {
       this.book.read = !this.readStatus;
       booksService.updateBookStatus(this.book).then((response) => {
-        if (response.status === 200) {
+        this.$store.commit('UPDATE_BOOK_STATUS', response.data);
+        if (response.status === 202) {
                 this.$store.commit('UPDATE_BOOK_STATUS', response.data);
           } else {
-            alert("Conan the Librarian was unable to change the status of " + this.book.title + ". Please try again later.")
+            alert("Conan the Librarian was unable to change the status of\r\n" 
+            + this.book.title 
+            + ".\r\nPlease try again later.")
           }
       });
     },
@@ -75,14 +103,36 @@ export default {
     setReadingStatus(){
       this.book.reading = !this.readingStatus;
       booksService.updateBookStatus(this.book).then((response) => {
-        if (response.status === 200) {
+        if (response.status === 202) {
           this.$store.commit('UPDATE_BOOK_STATUS', response.data);
         } else {
-          alert("Conan the Librarian was unable to mark " + this.book.title + " as your current book. Please try again later.");
+          alert("Conan the Librarian was unable to mark\r\n" 
+          + this.book.title 
+          + "\r\nas your current book. Please try again later.");
         }
       });
-    }
+    },
+
+   removeBook() {
+      booksService.remove(this.book).then((response) => {
+        if (response.status === 200) {
+          this.$store.commit('REMOVE_BOOK', this.book.bookId);
+        } else {
+          alert("Conan the Librarian was unable to remove\r\n" 
+          + this.book.title + 
+          ".\r\nPlease try again later.")
+        }
+      });
+    },
+  }, 
+
+  showRemovedModal(){
+    this.isRemovedModalVisible = true;
   },
+
+  closeRemovedModal(){
+    this.isRemovedModalVisible = true;
+  }
 };
 </script>
 <style>
@@ -99,7 +149,6 @@ export default {
 .card.read {
   background-color: #6f96b6;
 }
-
 .button.reading{
     color: whitesmoke;
     background: #117864;

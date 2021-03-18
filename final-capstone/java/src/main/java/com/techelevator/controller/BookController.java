@@ -27,7 +27,7 @@ public class BookController
 	public ResponseEntity<Book> createBook(@RequestBody Book newBook, Principal currentUser)
 	{	
 		HttpStatus status = HttpStatus.BAD_REQUEST; // 400 status code
-		int currentUserId = userDAO.findIdByUsername(currentUser.getName());
+		int currentUserId = userDAO.getUserIdByUsername(currentUser.getName());
 		Book createdBook = booksDAO.createBook(newBook, currentUserId);
 		boolean isEmpty = createdBook.isEmpty();
 			
@@ -47,7 +47,7 @@ public class BookController
 	{	
 		HttpStatus status = HttpStatus.BAD_REQUEST; // 400 status code
 		String userName = user.getName();
-		int currentUserId = userDAO.findIdByUsername(userName);
+		int currentUserId = userDAO.getUserIdByUsername(userName);
 		BookList bookList = new BookList(booksDAO.getBooksByUserId(currentUserId));
 		List<Book> myBooks = bookList.getBooks();
 		
@@ -61,7 +61,7 @@ public class BookController
 	public ResponseEntity<Book> updateBookDetails(@RequestBody Book bookToUpdate, Principal currentUser){
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 		String userName = currentUser.getName();
-		int currentUserId = userDAO.findIdByUsername(userName);		
+		int currentUserId = userDAO.getUserIdByUsername(userName);		
 		Book updatedBook = booksDAO.updateReaderDetails(bookToUpdate, currentUserId);
 		boolean readUpdated = updatedBook.getRead() == bookToUpdate.getRead();
 		boolean readingUpdated = updatedBook.getReading() == bookToUpdate.getReading();
@@ -73,5 +73,21 @@ public class BookController
 		}	
 		return new ResponseEntity<Book>(updatedBook, httpStatus);
 	}
-
+	
+	@DeleteMapping("/myBooks") 
+    public ResponseEntity<String> removeBook(@RequestBody Book bookToRemove, Principal currentUser) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		int bookId = bookToRemove.getBookId();
+        String userName = currentUser.getName();
+		int currentUserId = userDAO.getUserIdByUsername(userName);
+        boolean isDeleted = booksDAO.removeBook(bookToRemove, currentUserId);
+        
+        if (isDeleted){
+        	status = HttpStatus.OK;
+        } else {
+        	status = HttpStatus.EXPECTATION_FAILED;
+        }
+        
+        return new ResponseEntity<String>(Integer.toString(bookId), status);
+    }
 }
