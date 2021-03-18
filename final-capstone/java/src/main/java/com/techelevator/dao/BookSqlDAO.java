@@ -260,11 +260,11 @@ public class BookSqlDAO implements BookDAO {
 
         String deleteSql = "DELETE FROM books_users WHERE book_id = ? AND user_id = ?;";
         
-		if (bookUsersId > 0) {
+		if (booksUsersId > 0) {
         try {
-            jdbcTemplate.update(sql, book_id, user_id);
+            jdbcTemplate.update(bookUserssql, bookId, userId);
         } catch (DataAccessException e) {
-            System.out.println("Delete book failed" + "\n Book ID: " + book_id + "\n User ID: " + user_id);
+            System.out.println("Delete book failed" + "\n Book ID: " + bookId + "\n User ID: " + userId);
         }
 	        try {
 				result = jdbcTemplate.queryForRowSet(bookUserssql, booksUsersId);
