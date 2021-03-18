@@ -62,7 +62,7 @@ export default new Vuex.Store({
     },
 
     UPDATE_BOOK_STATUS(state, book) {
-      const bookToUpdate = state.books.find(bookToUpdate => bookToUpdate.id === book.id);
+      let bookToUpdate = state.books.findIndex(thisBook => thisBook.bookId == book.bookId);
       Object.assign(bookToUpdate, book);
     },
     

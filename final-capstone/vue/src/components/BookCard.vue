@@ -89,7 +89,6 @@ export default {
     setReadStatus() {
       this.book.read = !this.readStatus;
       booksService.updateBookStatus(this.book).then((response) => {
-        this.$store.commit('UPDATE_BOOK_STATUS', response.data);
         if (response.status === 202) {
                 this.$store.commit('UPDATE_BOOK_STATUS', response.data);
           } else {
