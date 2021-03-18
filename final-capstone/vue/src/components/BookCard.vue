@@ -85,6 +85,7 @@ export default {
   methods: {
     setReadStatus() {
       this.book.read = !this.readStatus;
+      this.book.reading = !this.readingStatus;
       booksService.updateBookStatus(this.book).then((response) => {
         if (response.status === 202) {
           this.$store.commit("UPDATE_BOOK_STATUS", response.data);

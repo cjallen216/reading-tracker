@@ -37,7 +37,7 @@ public class BookController
 		} else {
 			createdBook = booksDAO.createBook(newBook, currentUserId);
 			
-			if(createdBook.toString() == (newBook.toString())){
+			if(createdBook.toString() != null){
 				status = HttpStatus.CREATED; // 201 status code
 			} else {
 				status = HttpStatus.EXPECTATION_FAILED; //417 status code	
