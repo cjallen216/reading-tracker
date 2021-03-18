@@ -1,4 +1,8 @@
 <template>
+  <div>
+    <h1 class="login-title">
+      Welcome To The Dewey Decimal Reading Tracker
+    </h1>
   <div id="login"
 
     :style="{backgroundImage: `url(${loginImg})`, 
@@ -50,6 +54,8 @@
         </div>
       </div>
     </form>
+    </div>
+    <h2 class="login-approve">Conan The Librarian Approved!</h2>
   </div>
 </template>
 
@@ -100,6 +106,16 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.login-title {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.login-approve {
+  text-align: center;
+  font-size: 2rem;
 }
 
 </style>
