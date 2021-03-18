@@ -1,7 +1,7 @@
 <template>
   <div class="center">
-    <h1>Welcome To The Dewey Decimal Reading Tracker</h1>
-    <h3>Conan The Librarian Approved!</h3>
+    <h1 class="dashboard-link">Welcome To The Dewey Decimal Reading Tracker</h1>
+    <h2 class="dashboard-link">Conan The Librarian Approved!</h2>
   <dashboard />
   </div>
 </template>
@@ -14,3 +14,8 @@ export default {
   name: "home"
 };
 </script>
+<style>
+h2 {
+  margin: top 10px bottom 20px;
+}
+</style>

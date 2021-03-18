@@ -2,10 +2,10 @@
   <div>
     <main id="main-grid">
       <div id="current-read">
-        <h1>
+        <h1 class="dashboard-title">
           Currently Reading:
-          <br />
-          <router-link
+        <br /> </h1>
+          <router-link class="dashboard-link"
             v-show="book.reading"
             v-bind:book="book"
             v-for="book in $store.state.books"
@@ -14,11 +14,11 @@
             >{{ book.title }}
             <br />
           </router-link>
-        </h1>
+
       </div>
       <div id="conan">
         <iframe
-          width="560"
+          width="460"
           height="315"
           src="https://www.youtube.com/embed/XHbdoO7uCkk"
           frameborder="0"
@@ -43,8 +43,6 @@ export default {
   },
   computed: {
     currentlyReading() {
-      let filteredBooks = this.books;
-      filteredBooks = this.$store.filter;
       return this.$store.books.filter((book) => book.reading == true);
     },
   },
@@ -58,7 +56,6 @@ export default {
   gap: 15px;
   grid-template-areas:
     "current conan timer";
-  align-items: center;
 }
 
 #current-read {
@@ -67,7 +64,6 @@ export default {
 
 #timer {
   grid-area: timer;
-  margin-left: 28%;
 }
 
 #my-books {

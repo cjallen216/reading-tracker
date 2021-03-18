@@ -1,14 +1,17 @@
 <template>
   <div id="timer">
     <div>{{ formattedElapsedTime }}</div>
-    <button class="button" @click="start" v-if="!this.isRunning">
+    <button class="timer button" @click="start" v-if="!this.isRunning">
       Start Timer
     </button>
-    <button class="button" @click="stop" v-if="this.isRunning">
+    <button class="timer button" @click="stop" v-if="this.isRunning">
       Stop Timer
     </button>
-    <button class="button" @click="reset">Reset</button>
-    <h4>Total Time Spent Reading: {{ $store.state.total }}</h4>
+    <button class="timer button" @click="reset">Reset</button>
+    <h4 class="dashboard-link">
+      Total Time Spent Reading:
+      <br> {{ $store.state.total }}
+    </h4>
   </div>
 </template>
 
@@ -30,10 +33,8 @@ export default {
       const utc = date.toUTCString();
       return utc.substr(utc.indexOf(":") - 2, 8);
     },
+
     formattedTotal() {
-       
-
-
       const date = new Date(null);
       date.setSeconds(this.total / 1000);
       const utc = date.toUTCString();
@@ -47,12 +48,13 @@ export default {
       }, 1000);
       this.isRunning = true;
     },
+
     stop() {
       clearInterval(this.timer);
       this.isRunning = false;
-      this.total = this.total + this.timer;
-      
+      this.total = this.total + this.timer;      
     },
+
     reset() {
       this.total = this.total + this.elapsedTime;
       this.$store.commit("SAVE_TIME", this.formattedTotal);
@@ -73,7 +75,12 @@ export default {
   font-size: 4rem;
 }
 
+.timer.button {
+  line-height: 50px;
+  font-size: 2.5rem;
+}
+
 h4 {
-  font-size: 2rem;
+  margin: 10px;
 }
 </style>
