@@ -22,12 +22,6 @@ public class BookSqlDAO implements BookDAO {
 
 	@Override
 	public Book createBook(Book bookToCreate, int userId) {
-		boolean isDuplicate = checkForDuplicateBook(bookToCreate, userId);
-		
-		if(isDuplicate) {
-			return new Book();
-		}
-		
 		boolean bookCreated = false;		
 		int bookUserCreated = 0;
 		int bookId = bookToCreate.getBookId();

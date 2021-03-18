@@ -1,11 +1,11 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.User;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.postgresql.translation.messages_bg;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import javax.sql.DataSource;
 
@@ -37,16 +37,18 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		boolean userCreated = userSqlDAO.createUser(FIRST_NAME, LAST_NAME, EMAIL, USERNAME, PASSWORD, ROLE);
 		User user = userSqlDAO.getUserByUsername(USERNAME);
 		String actual = user.getUsername();
+		String expected = USERNAME;
 		
 		// assert        
-        Assert.assertTrue(userCreated);        
-        Assert.assertEquals(USERNAME, actual);
+        assertTrue(userCreated);        
+        assertEquals(expected, actual, MESSAGE);
     }
     
     @Test
     public void findByUsername() {
 		// arrange
 		MESSAGE = "Should return user with matching username";
+		String expected = USERNAME;
 		
 		// act
 		userSqlDAO.createUser(FIRST_NAME, LAST_NAME, EMAIL, USERNAME, PASSWORD, ROLE);
@@ -54,7 +56,7 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		String actual = user.getUsername();
 		
 		// assert        
-        Assert.assertEquals(USERNAME, actual);
+        assertEquals(expected, actual, MESSAGE);
     }
     
     @Test
@@ -62,19 +64,22 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		// arrange    	
 		MESSAGE = "Should return user id of user with matching username";
 		int nextId = userSqlDAO.getNextUserId();
+		String expected = String.valueOf(nextId);
 		
 		// act
 		userSqlDAO.createUser(FIRST_NAME, LAST_NAME, EMAIL, USERNAME, PASSWORD, ROLE);
 		int userId = userSqlDAO.getUserIdByUsername(USERNAME);
+		String actual = String.valueOf(userId);
 		
 		// assert        
-        Assert.assertEquals(String.valueOf(nextId), String.valueOf(userId));
+        assertEquals(expected, actual, MESSAGE);
     }
     
     @Test
     public void findByFirstName() {
 		// arrange
 		MESSAGE = "Should return user with matching first name";
+		String expected = FIRST_NAME;
 		
 		// act
 		boolean userCreated = userSqlDAO.createUser(FIRST_NAME, LAST_NAME, EMAIL, USERNAME, PASSWORD, ROLE);
@@ -82,14 +87,15 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
 		String actual = user.getFirstName();
 		
 		// assert
-		Assert.assertTrue(userCreated); 
-        Assert.assertEquals(FIRST_NAME, actual);
+		assertTrue(userCreated); 
+        assertEquals(expected, actual, MESSAGE);
     }
     
     @Test
     public void findByEmail() {
 		// arrange
 		MESSAGE = "Should return user with matching email";
+		String expected = EMAIL;
 		
 		// act
 		boolean userCreated = userSqlDAO.createUser(FIRST_NAME, LAST_NAME, EMAIL, USERNAME, PASSWORD, ROLE);
@@ -97,14 +103,15 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
         String actual = user.getEmail();
 		
 		// assert
-        Assert.assertTrue(userCreated);
-        Assert.assertEquals(EMAIL, actual);
+        assertTrue(userCreated);
+        assertEquals(expected, actual, MESSAGE);
     }
     
     @Test
     public void createNewUserWithoutLastName() {
 		// arrange
 		MESSAGE = "Should be able to create user with empty string or null last name";
+		String expected = USERNAME;
 		
 		// act
 		boolean userCreated = userSqlDAO.createUser(FIRST_NAME, LAST_NAME, EMAIL, USERNAME, PASSWORD, ROLE);
@@ -112,7 +119,7 @@ public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
         String actual = user.getUsername();
 		
 		// assert        
-        Assert.assertTrue(userCreated);
-        Assert.assertEquals(USERNAME, actual);        
+        assertTrue(userCreated);
+        assertEquals(expected, actual, MESSAGE);
     }  
 }

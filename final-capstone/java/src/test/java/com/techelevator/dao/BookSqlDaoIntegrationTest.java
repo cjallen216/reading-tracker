@@ -2,13 +2,11 @@ package com.techelevator.dao;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.postgresql.translation.messages_bg;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.techelevator.model.Book;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
@@ -278,24 +276,22 @@ public class BookSqlDaoIntegrationTest extends DAOIntegrationTest {
     }
     
     @Test
-    public void createNewBookReturnsEmptyBookIfUserAlreadyHasSameBook() {
+    public void checkForDuplicateBookReturnsTrueIfUserAlreadyHasBook() {
         // arrange 
-     	MESSAGE = "Create new book should return an empty book if user already has the requested book.";
-     	TITLE = "TITLE createNewBookReturns204IfUserAlreadyHasSameBook";
+     	MESSAGE = "CreateDuplicate returns true if user already has the requested book.";
+     	TITLE = "TITLE checkDuplicateReturnsTrueIfUserAlreadyHasBook";
      	AUTHOR = "AUTHOR";
      	ISBN = "ISBN";
      	IMG = "abcefghijklmnopqrstuvwxyz";     	
     	Book bookToCreate = new Book(ISBN, TITLE, AUTHOR, IMG);
         bookSqlDAO.createBook(bookToCreate, USER_ID);
+        boolean expected = true;
         
         // act
-        Book actual = bookSqlDAO.createBook(bookToCreate, USER_ID);
+        boolean actual = bookSqlDAO.checkForDuplicateBook(bookToCreate, USER_ID);
         
         // assert
-        assertEquals(null, actual.getTitle(), "The title should be null");
-        assertEquals(null, actual.getAuthor(), "The author should be null");
-        assertEquals(null, actual.getIsbn(), "The isbn should be null");
-        assertEquals(null, actual.getImgLink(), "The cover image link should be null");
+        assertEquals(expected, actual, MESSAGE);
     }
     
     @Test

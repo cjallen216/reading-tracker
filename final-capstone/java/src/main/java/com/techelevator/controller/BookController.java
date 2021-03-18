@@ -28,17 +28,21 @@ public class BookController
 	{	
 		HttpStatus status = HttpStatus.BAD_REQUEST; // 400 status code
 		int currentUserId = userDAO.getUserIdByUsername(currentUser.getName());
-		Book createdBook = booksDAO.createBook(newBook, currentUserId);
-		boolean isEmpty = createdBook.isEmpty();
+		boolean isDuplicate = booksDAO.checkForDuplicateBook(newBook, currentUserId);
+		Book createdBook = null;
 			
-		if(isEmpty) {
+		if(isDuplicate) {
 			// user already has this book
 			status = HttpStatus.NO_CONTENT; // 204 status code
-		} else if(!isEmpty){
-			status = HttpStatus.CREATED; // 201 status code
 		} else {
-			status = HttpStatus.EXPECTATION_FAILED; //417 status code	
-		}	
+			createdBook = booksDAO.createBook(newBook, currentUserId);
+			
+			if(createdBook.toString() == (newBook.toString())){
+				status = HttpStatus.CREATED; // 201 status code
+			} else {
+				status = HttpStatus.EXPECTATION_FAILED; //417 status code	
+			}
+		}
 		return new ResponseEntity<Book>(createdBook, status);
 	}
 
