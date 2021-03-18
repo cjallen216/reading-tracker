@@ -19,9 +19,10 @@ export default {
     },
 
     updateBookStatus(book){
-        return http.post('/myBooks', book)
-        .then((response) => {
-            this.$store.commit('UPDATE_BOOK_STATUS', response.data);
-        });
-    }
+        return http.post('/myBooks', book);
+    },
+
+    remove(book) {
+        return http.delete('/myBooks', {data: book});        
+    },
 }

@@ -14,11 +14,11 @@ CREATE SEQUENCE seq_books_users_id
   CACHE 1;
 
 CREATE TABLE books_users (
-        books_users_id INTEGER DEFAULT nextval('seq_books_users_id') PRIMARY KEY NOT NULL,
-        book_id INTEGER NOT NULL,
-        user_id INTEGER NOT NULL,
-        reading BOOLEAN NOT NULL,
-        read BOOLEAN NOT NULL
+  books_users_id INTEGER DEFAULT nextval('seq_books_users_id') PRIMARY KEY NOT NULL,
+  book_id INTEGER NOT NULL,
+  user_id INTEGER NOT NULL,
+  reading BOOLEAN NOT NULL,
+  read BOOLEAN NOT NULL
 );
 
 COMMIT TRANSACTION;

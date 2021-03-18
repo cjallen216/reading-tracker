@@ -42,7 +42,7 @@
             v-on:click.prevent="saveBook();" class="button">
             Add Book
           </button>
-          <modal v-show="isCreateBookModalVisible" @close="closeCreateBookModal(); ; clearFormFields()">
+          <modal v-show="isCreateBookModalVisible" @close="closeCreateBookModal(); clearFormFields()">
             <h3 slot="body">
               Title: {{ this.book.title }}<br />
               Author: {{ this.book.author }}<br />
@@ -52,7 +52,7 @@
           <modal v-show="isDuplicateBookModalVisible" @close="closeDuplicateBookModal(); clearFormFields()">
             <h2 slot="header"></h2>
             <h2 slot="body">
-              You already have {{ this.book.title }} on your list!<br />
+              You already have {{ this.book.title }} on your list.<br />
             </h2>
           </modal>
         </div>
@@ -78,6 +78,7 @@ export default {
         title: "",
         author: "",
         read: false,
+        reading: false,
         isbn: "",
         imgLink: "",
       },
@@ -105,8 +106,7 @@ export default {
             this.showDuplicateBookModal();
           } else {
             alert("Conan the Librarian was unable to add your book at this time. Please try again later.")
-          }
-          
+          }          
         });
       },
 

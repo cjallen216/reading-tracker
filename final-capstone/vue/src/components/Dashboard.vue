@@ -1,17 +1,24 @@
 <template>
   <div>
     <main id="main-grid">
-      <div
-        id="current-read"
-      >
-        <h1>
-          Currently Reading:<br />
-          This Book
-        </h1>
+      <div id="current-read">
+        <h1 class="dashboard-title">
+          Currently Reading:
+        <br /> </h1>
+          <router-link class="dashboard-link"
+            v-show="book.reading"
+            v-bind:book="book"
+            v-for="book in $store.state.books"
+            v-bind:key="book.title"
+            v-bind:to="{ name: 'book-details', params: { title: book.title } }"
+            >{{ book.title }}
+            <br />
+          </router-link>
+
       </div>
       <div id="conan">
         <iframe
-          width="560"
+          width="460"
           height="315"
           src="https://www.youtube.com/embed/XHbdoO7uCkk"
           frameborder="0"
@@ -27,13 +34,18 @@
 </template>
 
 <script>
-import Timer from "./Timer.vue";
+import Timer from './Timer.vue';
 
 export default {
-  components: {
-    Timer,
-  },
   name: "dashboard",
+  components: {
+    Timer
+  },
+  computed: {
+    currentlyReading() {
+      return this.$store.books.filter((book) => book.reading == true);
+    },
+  },
 };
 </script>
 
@@ -42,8 +54,8 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 15px;
-  grid-template-areas: "current conan timer";
-  align-items: center;
+  grid-template-areas:
+    "current conan timer";
 }
 
 #current-read {
@@ -52,7 +64,6 @@ export default {
 
 #timer {
   grid-area: timer;
-  margin-left: 28%;
 }
 
 #my-books {

@@ -23,12 +23,12 @@ public class UserSqlDAO implements UserDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public int findNextUserId() {
+    public int getNextUserId() {
     	return jdbcTemplate.queryForObject("SELECT last_value + 1 FROM seq_user_id", int.class);
     }
     
     @Override
-    public int findIdByUsername(String username) {
+    public int getUserIdByUsername(String username) {
         return jdbcTemplate.queryForObject("SELECT user_id FROM users WHERE username = ?", int.class, username);
     }
 
@@ -52,7 +52,7 @@ public class UserSqlDAO implements UserDAO {
 	}
 
     @Override
-    public List<User> findAll() {
+    public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
 		String sql = "SELECT user_id "
 						+ ", username "
@@ -71,8 +71,8 @@ public class UserSqlDAO implements UserDAO {
     }
 
     @Override
-    public User findByUsername(String username) throws UsernameNotFoundException {
-        for (User user : this.findAll()) {
+    public User getUserByUsername(String username) throws UsernameNotFoundException {
+        for (User user : this.getAllUsers()) {
             if( user.getUsername().toLowerCase().equals(username.toLowerCase())) {
                 return user;
             }
@@ -81,8 +81,8 @@ public class UserSqlDAO implements UserDAO {
     }    
     
     @Override
-    public User findByEmail(String email) throws UsernameNotFoundException {
-        for (User user : this.findAll()) {
+    public User getUserByEmail(String email) throws UsernameNotFoundException {
+        for (User user : this.getAllUsers()) {
             if(user.getEmail() != null && user.getEmail().toLowerCase().equals(email.toLowerCase())) {
                 return user;
             }
@@ -90,8 +90,8 @@ public class UserSqlDAO implements UserDAO {
         throw new UsernameNotFoundException("User " + email + " was not found.");
     }
     @Override
-    public User findByFirstName(String firstName) throws UsernameNotFoundException {
-        for (User user : this.findAll()) {
+    public User getUserByFirstName(String firstName) throws UsernameNotFoundException {
+        for (User user : this.getAllUsers()) {
             if(user.getFirstName() != null && user.getFirstName().toLowerCase().equals(firstName.toLowerCase())) {
                 return user;
             }
@@ -100,7 +100,7 @@ public class UserSqlDAO implements UserDAO {
     }
 
     @Override
-    public boolean create(String firstName, String lastName, String email, String username, String password, String role) {
+    public boolean createUser(String firstName, String lastName, String email, String username, String password, String role) {
         String insertUser = "INSERT INTO users (username, password_hash, role, first_name, last_name, email) VALUES(?,?,?,?,?,?)";
         String password_hash = new BCryptPasswordEncoder().encode(password);
         String ssRole = "ROLE_" + role.toUpperCase();        

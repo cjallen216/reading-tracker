@@ -2,6 +2,7 @@ package com.techelevator.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,25 +27,18 @@ public class BookController
 	public ResponseEntity<Book> createBook(@RequestBody Book newBook, Principal currentUser)
 	{	
 		HttpStatus status = HttpStatus.BAD_REQUEST; // 400 status code
-		Book createdBook = null;
-		int currentUserId = userDAO.findIdByUsername(currentUser.getName());
-		
-		boolean isDuplicate = booksDAO.checkForDuplicateBook(newBook, currentUserId);
-		
-		if(isDuplicate) {
+		int currentUserId = userDAO.getUserIdByUsername(currentUser.getName());
+		Book createdBook = booksDAO.createBook(newBook, currentUserId);
+		boolean isEmpty = createdBook.isEmpty();
+			
+		if(isEmpty) {
+			// user already has this book
 			status = HttpStatus.NO_CONTENT; // 204 status code
+		} else if(!isEmpty){
+			status = HttpStatus.CREATED; // 201 status code
 		} else {
-			createdBook = booksDAO.createBook(newBook, currentUserId);
-			
-			String createdBookTitle = createdBook.getTitle();
-			String newBookTitle = newBook.getTitle();
-			
-			if(createdBookTitle.equals(newBookTitle)) {
-				status = HttpStatus.CREATED; // 201 status code
-			} else {
-				status = HttpStatus.EXPECTATION_FAILED; //417 status code
-			}
-		}		
+			status = HttpStatus.EXPECTATION_FAILED; //417 status code	
+		}	
 		return new ResponseEntity<Book>(createdBook, status);
 	}
 
@@ -53,7 +47,7 @@ public class BookController
 	{	
 		HttpStatus status = HttpStatus.BAD_REQUEST; // 400 status code
 		String userName = user.getName();
-		int currentUserId = userDAO.findIdByUsername(userName);
+		int currentUserId = userDAO.getUserIdByUsername(userName);
 		BookList bookList = new BookList(booksDAO.getBooksByUserId(currentUserId));
 		List<Book> myBooks = bookList.getBooks();
 		
@@ -67,33 +61,33 @@ public class BookController
 	public ResponseEntity<Book> updateBookDetails(@RequestBody Book bookToUpdate, Principal currentUser){
 		HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 		String userName = currentUser.getName();
-		int currentUserId = userDAO.findIdByUsername(userName);		
+		int currentUserId = userDAO.getUserIdByUsername(userName);		
 		Book updatedBook = booksDAO.updateReaderDetails(bookToUpdate, currentUserId);
 		boolean readUpdated = updatedBook.getRead() == bookToUpdate.getRead();
 		boolean readingUpdated = updatedBook.getReading() == bookToUpdate.getReading();
 		
 		if(readUpdated && readingUpdated) {
-			httpStatus = HttpStatus.ACCEPTED;
+			httpStatus = HttpStatus.ACCEPTED; //202 status code
 		} else {
-			httpStatus = HttpStatus.EXPECTATION_FAILED;
+			httpStatus = HttpStatus.EXPECTATION_FAILED; //417 status code
 		}	
 		return new ResponseEntity<Book>(updatedBook, httpStatus);
 	}
-
+	
 	@DeleteMapping("/myBooks") 
-    public ResponseEntity<String> deleteBookById(@RequestBody Book bookToRemove, Principal currentUser) {
+    public ResponseEntity<String> removeBook(@RequestBody Book bookToRemove, Principal currentUser) {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
-		int bookToRemoveId = bookToRemove.getBookId();
+		int bookId = bookToRemove.getBookId();
         String userName = currentUser.getName();
-		int currentUserId = userDAO.findIdByUsername(userName);
-        boolean isDeleted = booksDAO.deleteBookById(bookToRemoveId, currentUserId);
-        if (isDeleted == true)
-        {
+		int currentUserId = userDAO.getUserIdByUsername(userName);
+        boolean isDeleted = booksDAO.removeBook(bookToRemove, currentUserId);
+        
+        if (isDeleted){
         	status = HttpStatus.OK;
-        }
-        else {
+        } else {
         	status = HttpStatus.EXPECTATION_FAILED;
         }
-        return new ResponseEntity<String>(status);
+        
+        return new ResponseEntity<String>(Integer.toString(bookId), status);
     }
 }

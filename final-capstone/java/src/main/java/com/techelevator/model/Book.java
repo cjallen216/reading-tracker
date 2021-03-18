@@ -105,5 +105,18 @@ public class Book {
 				+ ",\r\nread=" + read 
 				+ ",\r\nreading=" + reading 
 				+ "\r\n]";
-	}	
+	}
+	
+	public boolean isEmpty() {
+		if(title == null
+				&& author == null
+				&& isbn == null 
+				&& imgLink == null
+				&& read == false
+				&& reading == false
+			) {
+			return true;
+		}
+		return false;
+	}
 }

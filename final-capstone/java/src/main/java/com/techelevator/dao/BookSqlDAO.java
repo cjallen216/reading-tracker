@@ -22,6 +22,12 @@ public class BookSqlDAO implements BookDAO {
 
 	@Override
 	public Book createBook(Book bookToCreate, int userId) {
+		boolean isDuplicate = checkForDuplicateBook(bookToCreate, userId);
+		
+		if(isDuplicate) {
+			return new Book();
+		}
+		
 		boolean bookCreated = false;		
 		int bookUserCreated = 0;
 		int bookId = bookToCreate.getBookId();
@@ -81,17 +87,12 @@ public class BookSqlDAO implements BookDAO {
 	
 	public boolean checkForDuplicateBook(Book bookToCreate, int userId) {
 		boolean isDuplicate = false;
-		int bookId = bookToCreate.getBookId();
-		int bookUserId = 0;
+		int bookId = getBookIdByTitle(bookToCreate.getTitle());
+		int bookUserId = getBookUserId(bookId, userId);	
 		
-		if(bookId != 0) {
-			bookUserId = getBookUserId(bookId, userId);
-			
-			if(bookUserId != 0) {
-				isDuplicate = true;
-			}		
-		}
-		
+		if(bookUserId != 0) {
+			isDuplicate = true;
+		}			
 		return isDuplicate;
 	}
 	
@@ -139,7 +140,7 @@ public class BookSqlDAO implements BookDAO {
 	}
 
 	@Override
-	public List<Book> getBooksByUserId(int user_id)	{
+	public List<Book> getBooksByUserId(int userId)	{
 		List<Book> books = new ArrayList<>();
 		String sql = "SELECT b.book_id "
 				+ "        , isbn "
@@ -153,7 +154,7 @@ public class BookSqlDAO implements BookDAO {
 				+ "        ON b.book_id = bu.book_id "
 				+ "WHERE bu.user_id = ? "
 				+ "ORDER BY title;";
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, user_id);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
 		while (results.next()) {
 			Book book = mapRowToBook(results);
 			books.add(book);
@@ -216,13 +217,13 @@ public class BookSqlDAO implements BookDAO {
 	}
 	
 	@Override
-	public int getBookUserId(int book_id, int user_id) {
+	public int getBookUserId(int bookId, int userId) {
 		int booksUsersId = 0;
 		String sql = "SELECT books_users_id " 
 				+ "FROM books_users "
 				+ "WHERE book_id = ? "
 				+ "AND user_id = ?;";
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, book_id, user_id);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, bookId, userId);
 
 		while(results.next()) {
 			booksUsersId  = results.getInt("books_users_id");
@@ -246,39 +247,36 @@ public class BookSqlDAO implements BookDAO {
 	}
 	
 	@Override
-    public Boolean deleteBookById(int user_id, int book_id) {
+    public Boolean removeBook(Book bookToRemove, int userId) {
 		boolean isDeleted = false;
-		int booksUsersId = -1;
-		String sql = "SELECT books_users_id FROM books_users WHERE book_id = ? AND user_id = ?;";
-		SqlRowSet result = jdbcTemplate.queryForRowSet(sql, book_id, user_id);
+		int bookId = bookToRemove.getBookId();
+		int booksUsersId = 0;
+		String bookUserssql = "SELECT books_users_id FROM books_users WHERE book_id = ? AND user_id = ?;";
+		SqlRowSet result = jdbcTemplate.queryForRowSet(bookUserssql, bookId, userId);
 		
 		if (result.next()) {
 			booksUsersId = result.getInt("books_users_id");
 		}
-		
-        sql = "DELETE FROM books_users WHERE book_id = ? AND user_id = ?;";
+
+        String deleteSql = "DELETE FROM books_users WHERE book_id = ? AND user_id = ?;";
         
+		if (bookUsersId > 0) {
         try {
             jdbcTemplate.update(sql, book_id, user_id);
         } catch (DataAccessException e) {
             System.out.println("Delete book failed" + "\n Book ID: " + book_id + "\n User ID: " + user_id);
         }
-        
-		sql = "SELECT books_users_id FROM books_users WHERE books_users_id = ?;";
-		
-		if (booksUsersId > -1) {
-			try {
-				result = jdbcTemplate.queryForRowSet(sql, booksUsersId);
+	        try {
+				result = jdbcTemplate.queryForRowSet(bookUserssql, booksUsersId);
 			} catch (DataAccessException e) {
 	            isDeleted = true;
 	        }
 		}
 		else {
-			System.out.println("Could not find Book ID " + book_id + "connected to User ID ");
+			System.out.println("Could not find " + bookToRemove.getTitle() + "connected to User ID " + userId);
 		}
 		return isDeleted;
     }
-	
 
 	private Book mapRowToBook(SqlRowSet rs)	{
 		Book book = new Book();

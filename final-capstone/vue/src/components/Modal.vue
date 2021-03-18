@@ -7,10 +7,10 @@
         aria-describedby="modalDescription"
       >
         <header
-          class="title"
+          class="center title"
           id="modalTitle"
         >
-          <slot name="header" class="center title">
+          <slot name="header">
             Success!
           </slot>
         </header>
