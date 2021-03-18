@@ -8,137 +8,140 @@
     </h2>
     <h3 class="book-author">By: {{ book.author }}</h3>
     <img
+      class="book-image"
       v-if="book.isbn"
       v-bind:src="
         'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'
       "
     />
     <img
+      class="book-image"
       v-if="!book.isbn"
-      v-bind:src="
-        'https://mrb.imgix.net/assets/default-book.png?auto=format&ixlib=react-9.0.3&w=150'
-      "
+      v-bind:src="'https://mrb.imgix.net/assets/default-book.png?auto=format&ixlib=react-9.0.3&w=150'"
     />
     <div class="button-container">
-      <button class="button"
-        @click="setReadStatus()"
-      >
-        {{ readButtonText }}
-      </button>
-    </div>
-    <div class="button-container">
-      <button class="button" :class="{reading : readingStatus }"
+      <button
+        class="button"
+        :class="{ reading: readingStatus }"
         @click="setReadingStatus()"
       >
         {{ readingButtonText }}
       </button>
     </div>
     <div class="button-container">
-      <button class="button"
-        @click="removeBook()"
-      >
-        Remove Book
+      <button class="button" @click="setReadStatus()">
+        {{ readButtonText }}
       </button>
+    </div>
+    <div class="button-container">
+      <button class="remove-button" @click="removeBook()">Remove Book</button>
       <modal v-show="isRemovedModalVisible" @close="closeRemovedModal()">
         <h2 slot="header"></h2>
         <h3 slot="body">
-          {{ this.book.title }} 
-          <br>was removed
-          <br>from your book list.
+          {{ this.book.title }}
+          <br />was removed <br />from your book list.
         </h3>
-    </modal>
+      </modal>
     </div>
   </div>
 </template>
 <script>
-import booksService from '@/services/BooksService.js';
+import booksService from "@/services/BooksService.js";
 import modal from "@/components/Modal.vue";
 
 export default {
   name: "book-card",
-  data(){
+  data() {
     return {
-      isRemovedModalVisible: false
-    }
+      isRemovedModalVisible: false,
+    };
   },
   components: {
-    modal
+    modal,
   },
   computed: {
-    readButtonText(){
+    readButtonText() {
       return this.readStatus == true ? "Unmark Read" : "Mark Read";
-    }, 
+    },
 
-    readStatus(){
+    readStatus() {
       return this.book.read;
     },
 
-    readingStatus(){
+    readingStatus() {
       return this.book.reading;
     },
 
-    readingButtonText(){
-      return this.readingStatus == true ? "Currently Reading" : "Mark Currently Reading";
-    }
+    readingButtonText() {
+      return this.readingStatus == true
+        ? "Currently Reading"
+        : "Mark Currently Reading";
+    },
   },
 
   props: {
-    book: Object    
+    book: Object,
   },
   methods: {
     setReadStatus() {
       this.book.read = !this.readStatus;
       booksService.updateBookStatus(this.book).then((response) => {
         if (response.status === 202) {
-                this.$store.commit('UPDATE_BOOK_STATUS', response.data);
-          } else {
-            alert("Conan the Librarian was unable to change the status of\r\n" 
-            + this.book.title 
-            + ".\r\nPlease try again later.")
-          }
+          this.$store.commit("UPDATE_BOOK_STATUS", response.data);
+        } else {
+          alert(
+            "Conan the Librarian was unable to change the status of\r\n" +
+              this.book.title +
+              ".\r\nPlease try again later."
+          );
+        }
       });
     },
 
-    setReadingStatus(){
+    setReadingStatus() {
       this.book.reading = !this.readingStatus;
       booksService.updateBookStatus(this.book).then((response) => {
         if (response.status === 202) {
-          this.$store.commit('UPDATE_BOOK_STATUS', response.data);
+          this.$store.commit("UPDATE_BOOK_STATUS", response.data);
         } else {
-          alert("Conan the Librarian was unable to mark\r\n" 
-          + this.book.title 
-          + "\r\nas your current book. Please try again later.");
+          alert(
+            "Conan the Librarian was unable to mark\r\n" +
+              this.book.title +
+              "\r\nas your current book. Please try again later."
+          );
         }
       });
     },
 
-   removeBook() {
+    removeBook() {
       booksService.remove(this.book).then((response) => {
         if (response.status === 200) {
-          this.$store.commit('REMOVE_BOOK', this.book.bookId);
+          this.$store.commit("REMOVE_BOOK", this.book.bookId);
         } else {
-          alert("Conan the Librarian was unable to remove\r\n" 
-          + this.book.title + 
-          ".\r\nPlease try again later.")
+          alert(
+            "Conan the Librarian was unable to remove\r\n" +
+              this.book.title +
+              ".\r\nPlease try again later."
+          );
         }
       });
     },
-  }, 
+  },
 
-  showRemovedModal(){
+  showRemovedModal() {
     this.isRemovedModalVisible = true;
   },
 
-  closeRemovedModal(){
+  closeRemovedModal() {
     this.isRemovedModalVisible = true;
-  }
+  },
 };
 </script>
 <style>
 .card {
   border: 1px solid black;
-  width: 250px;
-  height: 450px;
+  width: 300px;
+  height: 500px;
   margin: 20px;
   background-color: whitesmoke;
   box-shadow: 8px 10px #51395c;
@@ -148,14 +151,28 @@ export default {
 .card.read {
   background-color: #6f96b6;
 }
-.button.reading{
-    color: whitesmoke;
-    background: #117864;
-    box-shadow: 2px 6px #51395c;
+.button.reading {
+  color: whitesmoke;
+  background: #117864;
+  box-shadow: 2px 6px #51395c;
+}
+
+.remove-button {
+  color: rgb(0, 0, 0);
+  background: rgba(253, 113, 113, 0.863);
+  box-shadow: 2px 6px black;
+  font-weight: bold;
+  padding: 5px 10px 5px 10px;
+  cursor: pointer;
+  font-size: 0.75vw;
+  border-radius: 5px;
+  text-align: center;
+  gap: 10px;
 }
 
 img {
   height: 200px;
   width: 150px;
+  flex-grow: 1;
 }
 </style>
