@@ -1,24 +1,26 @@
 <template>
   <div class="card center" :class="{ read: readStatus }">
-    <h2 class="book-title">
-      <router-link
-        v-bind:to="{ name: 'book-details', params: { title: book.title } }"
-        >{{ book.title }}</router-link
-      >
-    </h2>
-    <h3 class="book-author">By: {{ book.author }}</h3>
-    <img
-      class="book-image"
-      v-if="book.isbn"
-      v-bind:src="
-        'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'
-      "
-    />
-    <img
-      class="book-image"
-      v-if="!book.isbn"
-      v-bind:src="'https://mrb.imgix.net/assets/default-book.png?auto=format&ixlib=react-9.0.3&w=150'"
-    />
+    <div>
+      <h2 class="book-title">
+        <router-link
+          v-bind:to="{ name: 'book-details', params: { title: book.title } }"
+          >{{ book.title }}</router-link
+        >
+      </h2>
+      <h3 class="book-author">By: {{ book.author }}</h3>
+      <img
+        class="book-image"
+        v-if="book.isbn"
+        v-bind:src="
+          'http://covers.openlibrary.org/b/isbn/' + book.isbn + '-M.jpg'
+        "
+      />
+      <img
+        class="book-image"
+        v-if="!book.isbn"
+        v-bind:src="'https://mrb.imgix.net/assets/default-book.png?auto=format&ixlib=react-9.0.3&w=150'"
+      />
+    </div>
     <div class="button-container">
       <button
         class="button"
@@ -27,27 +29,15 @@
       >
         {{ readingButtonText }}
       </button>
-    </div>
-    <div class="button-container">
       <button class="button" @click="setReadStatus()">
         {{ readButtonText }}
       </button>
-    </div>
-    <div class="button-container">
-      <button class="remove-button" @click="removeBook()">Remove Book</button>
-      <modal v-show="isRemovedModalVisible" @close="closeRemovedModal()">
-        <h2 slot="header"></h2>
-        <h3 slot="body">
-          {{ this.book.title }}
-          <br />was removed <br />from your book list.
-        </h3>
-      </modal>
+      <button class="remove" @click="removeBook()">Remove Book</button>
     </div>
   </div>
 </template>
 <script>
 import booksService from "@/services/BooksService.js";
-import modal from "@/components/Modal.vue";
 
 export default {
   name: "book-card",
@@ -57,7 +47,6 @@ export default {
     };
   },
   components: {
-    modal,
   },
   computed: {
     readButtonText() {
@@ -85,6 +74,7 @@ export default {
   methods: {
     setReadStatus() {
       this.book.read = !this.readStatus;
+      this.book.reading = !this.readingStatus;
       booksService.updateBookStatus(this.book).then((response) => {
         if (response.status === 202) {
           this.$store.commit("UPDATE_BOOK_STATUS", response.data);
@@ -146,6 +136,9 @@ export default {
   background-color: whitesmoke;
   box-shadow: 8px 10px #51395c;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card.read {
@@ -157,22 +150,20 @@ export default {
   box-shadow: 2px 6px #51395c;
 }
 
-.remove-button {
-  color: rgb(0, 0, 0);
-  background: rgba(253, 113, 113, 0.863);
-  box-shadow: 2px 6px black;
+.remove {
+  color: whitesmoke;
+  background: #fd7171dc;
+  box-shadow: 2px 6px #51395c;
   font-weight: bold;
   padding: 5px 10px 5px 10px;
   cursor: pointer;
-  font-size: 0.75vw;
+  font-size: .75rem;
   border-radius: 5px;
   text-align: center;
   gap: 10px;
 }
 
 img {
-  height: 200px;
-  width: 150px;
   flex-grow: 1;
 }
 </style>
